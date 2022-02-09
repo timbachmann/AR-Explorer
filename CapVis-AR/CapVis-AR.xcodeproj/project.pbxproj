@@ -1,0 +1,590 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		222F3C4B27B3C59200EEF17B /* CapVis_ARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */; };
+		222F3C4D27B3C59200EEF17B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C4C27B3C59200EEF17B /* ContentView.swift */; };
+		222F3C4F27B3C59300EEF17B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222F3C4E27B3C59300EEF17B /* Assets.xcassets */; };
+		222F3C5227B3C59300EEF17B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222F3C5127B3C59300EEF17B /* Preview Assets.xcassets */; };
+		222F3C5C27B3C59400EEF17B /* CapVis_ARTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C5B27B3C59400EEF17B /* CapVis_ARTests.swift */; };
+		222F3C6627B3C59400EEF17B /* CapVis_ARUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C6527B3C59400EEF17B /* CapVis_ARUITests.swift */; };
+		222F3C6827B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		222F3C5827B3C59400EEF17B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222F3C3F27B3C59200EEF17B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 222F3C4627B3C59200EEF17B;
+			remoteInfo = "CapVis-AR";
+		};
+		222F3C6227B3C59400EEF17B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 222F3C3F27B3C59200EEF17B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 222F3C4627B3C59200EEF17B;
+			remoteInfo = "CapVis-AR";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		222F3C4727B3C59200EEF17B /* CapVis-AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CapVis-AR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARApp.swift; sourceTree = "<group>"; };
+		222F3C4C27B3C59200EEF17B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		222F3C4E27B3C59300EEF17B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		222F3C5127B3C59300EEF17B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		222F3C5727B3C59400EEF17B /* CapVis-ARTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CapVis-ARTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		222F3C5B27B3C59400EEF17B /* CapVis_ARTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARTests.swift; sourceTree = "<group>"; };
+		222F3C6127B3C59400EEF17B /* CapVis-ARUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CapVis-ARUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		222F3C6527B3C59400EEF17B /* CapVis_ARUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITests.swift; sourceTree = "<group>"; };
+		222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		222F3C4427B3C59200EEF17B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		222F3C5427B3C59400EEF17B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		222F3C5E27B3C59400EEF17B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		222F3C3E27B3C59200EEF17B = {
+			isa = PBXGroup;
+			children = (
+				222F3C4927B3C59200EEF17B /* CapVis-AR */,
+				222F3C5A27B3C59400EEF17B /* CapVis-ARTests */,
+				222F3C6427B3C59400EEF17B /* CapVis-ARUITests */,
+				222F3C4827B3C59200EEF17B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		222F3C4827B3C59200EEF17B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				222F3C4727B3C59200EEF17B /* CapVis-AR.app */,
+				222F3C5727B3C59400EEF17B /* CapVis-ARTests.xctest */,
+				222F3C6127B3C59400EEF17B /* CapVis-ARUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		222F3C4927B3C59200EEF17B /* CapVis-AR */ = {
+			isa = PBXGroup;
+			children = (
+				222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */,
+				222F3C4C27B3C59200EEF17B /* ContentView.swift */,
+				222F3C4E27B3C59300EEF17B /* Assets.xcassets */,
+				222F3C5027B3C59300EEF17B /* Preview Content */,
+			);
+			path = "CapVis-AR";
+			sourceTree = "<group>";
+		};
+		222F3C5027B3C59300EEF17B /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				222F3C5127B3C59300EEF17B /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		222F3C5A27B3C59400EEF17B /* CapVis-ARTests */ = {
+			isa = PBXGroup;
+			children = (
+				222F3C5B27B3C59400EEF17B /* CapVis_ARTests.swift */,
+			);
+			path = "CapVis-ARTests";
+			sourceTree = "<group>";
+		};
+		222F3C6427B3C59400EEF17B /* CapVis-ARUITests */ = {
+			isa = PBXGroup;
+			children = (
+				222F3C6527B3C59400EEF17B /* CapVis_ARUITests.swift */,
+				222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */,
+			);
+			path = "CapVis-ARUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		222F3C4627B3C59200EEF17B /* CapVis-AR */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 222F3C6B27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-AR" */;
+			buildPhases = (
+				222F3C4327B3C59200EEF17B /* Sources */,
+				222F3C4427B3C59200EEF17B /* Frameworks */,
+				222F3C4527B3C59200EEF17B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "CapVis-AR";
+			productName = "CapVis-AR";
+			productReference = 222F3C4727B3C59200EEF17B /* CapVis-AR.app */;
+			productType = "com.apple.product-type.application";
+		};
+		222F3C5627B3C59400EEF17B /* CapVis-ARTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 222F3C6E27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-ARTests" */;
+			buildPhases = (
+				222F3C5327B3C59400EEF17B /* Sources */,
+				222F3C5427B3C59400EEF17B /* Frameworks */,
+				222F3C5527B3C59400EEF17B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				222F3C5927B3C59400EEF17B /* PBXTargetDependency */,
+			);
+			name = "CapVis-ARTests";
+			productName = "CapVis-ARTests";
+			productReference = 222F3C5727B3C59400EEF17B /* CapVis-ARTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		222F3C6027B3C59400EEF17B /* CapVis-ARUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 222F3C7127B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-ARUITests" */;
+			buildPhases = (
+				222F3C5D27B3C59400EEF17B /* Sources */,
+				222F3C5E27B3C59400EEF17B /* Frameworks */,
+				222F3C5F27B3C59400EEF17B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				222F3C6327B3C59400EEF17B /* PBXTargetDependency */,
+			);
+			name = "CapVis-ARUITests";
+			productName = "CapVis-ARUITests";
+			productReference = 222F3C6127B3C59400EEF17B /* CapVis-ARUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		222F3C3F27B3C59200EEF17B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					222F3C4627B3C59200EEF17B = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					222F3C5627B3C59400EEF17B = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 222F3C4627B3C59200EEF17B;
+					};
+					222F3C6027B3C59400EEF17B = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 222F3C4627B3C59200EEF17B;
+					};
+				};
+			};
+			buildConfigurationList = 222F3C4227B3C59200EEF17B /* Build configuration list for PBXProject "CapVis-AR" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 222F3C3E27B3C59200EEF17B;
+			productRefGroup = 222F3C4827B3C59200EEF17B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				222F3C4627B3C59200EEF17B /* CapVis-AR */,
+				222F3C5627B3C59400EEF17B /* CapVis-ARTests */,
+				222F3C6027B3C59400EEF17B /* CapVis-ARUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		222F3C4527B3C59200EEF17B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222F3C5227B3C59300EEF17B /* Preview Assets.xcassets in Resources */,
+				222F3C4F27B3C59300EEF17B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		222F3C5527B3C59400EEF17B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		222F3C5F27B3C59400EEF17B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		222F3C4327B3C59200EEF17B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222F3C4D27B3C59200EEF17B /* ContentView.swift in Sources */,
+				222F3C4B27B3C59200EEF17B /* CapVis_ARApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		222F3C5327B3C59400EEF17B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222F3C5C27B3C59400EEF17B /* CapVis_ARTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		222F3C5D27B3C59400EEF17B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222F3C6627B3C59400EEF17B /* CapVis_ARUITests.swift in Sources */,
+				222F3C6827B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		222F3C5927B3C59400EEF17B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 222F3C4627B3C59200EEF17B /* CapVis-AR */;
+			targetProxy = 222F3C5827B3C59400EEF17B /* PBXContainerItemProxy */;
+		};
+		222F3C6327B3C59400EEF17B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 222F3C4627B3C59200EEF17B /* CapVis-AR */;
+			targetProxy = 222F3C6227B3C59400EEF17B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		222F3C6927B3C59400EEF17B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		222F3C6A27B3C59400EEF17B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		222F3C6C27B3C59400EEF17B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CapVis-AR/Preview Content\"";
+				DEVELOPMENT_TEAM = 883GXF926S;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.CapVis-AR";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		222F3C6D27B3C59400EEF17B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CapVis-AR/Preview Content\"";
+				DEVELOPMENT_TEAM = 883GXF926S;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.CapVis-AR";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		222F3C6F27B3C59400EEF17B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 883GXF926S;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.CapVis-ARTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CapVis-AR.app/CapVis-AR";
+			};
+			name = Debug;
+		};
+		222F3C7027B3C59400EEF17B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 883GXF926S;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.CapVis-ARTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CapVis-AR.app/CapVis-AR";
+			};
+			name = Release;
+		};
+		222F3C7227B3C59400EEF17B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 883GXF926S;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.CapVis-ARUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "CapVis-AR";
+			};
+			name = Debug;
+		};
+		222F3C7327B3C59400EEF17B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 883GXF926S;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.CapVis-ARUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "CapVis-AR";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		222F3C4227B3C59200EEF17B /* Build configuration list for PBXProject "CapVis-AR" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				222F3C6927B3C59400EEF17B /* Debug */,
+				222F3C6A27B3C59400EEF17B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		222F3C6B27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-AR" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				222F3C6C27B3C59400EEF17B /* Debug */,
+				222F3C6D27B3C59400EEF17B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		222F3C6E27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-ARTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				222F3C6F27B3C59400EEF17B /* Debug */,
+				222F3C7027B3C59400EEF17B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		222F3C7127B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-ARUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				222F3C7227B3C59400EEF17B /* Debug */,
+				222F3C7327B3C59400EEF17B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 222F3C3F27B3C59200EEF17B /* Project object */;
+}
