@@ -9,13 +9,39 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
-    }
-}
+        struct ContentView: View {
+            @State private var selectedTab: Tab = .home
+            
+            enum Tab {
+                case home
+                case camera
+                case ar
+            }
+            
+            var body: some View {
+                TabView(selection: $selectedTab) {
+                    CameraView()
+                        .tabItem {
+                            Label("Camera", systemImage: "camera")
+                        }
+                        .tag(Tab.camera)
+                    
+                    Home()
+                        .tabItem {
+                            Label("Home", systemImage: "map")
+                        }
+                        .tag(Tab.home)
+                    AR()
+                        .tabItem {
+                            Label("AR", systemImage: "arkit")
+                        }
+                        .tag(Tab.ar)
+                }
+            }
+        }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+        struct ContentView_Previews: PreviewProvider {
+            static var previews: some View {
+                ContentView()
+            }
+        }
