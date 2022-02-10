@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct CapVis_ARApp: App {
+    @StateObject private var imageData = ImageData()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(imageData)
         }
     }
 }

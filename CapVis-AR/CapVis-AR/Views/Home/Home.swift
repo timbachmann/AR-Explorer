@@ -10,21 +10,34 @@ import MapKit
 
 struct Home: View {
     
+    @EnvironmentObject var imageData: ImageData
+    @State private var showFavoritesOnly = false
+    
+    var filteredImages: [CapVisImage] {
+        imageData.capVisImages.filter { capVisImage in
+            (!showFavoritesOnly)
+        }
+    }
     @State var locationManager = CLLocationManager()
     @State var showMapAlert = false
-    @State var coordinateRegion = MKCoordinateRegion.init(center: CLLocationManager().location?.coordinate ?? CLLocationCoordinate2D(latitude: 34.011_286, longitude: -116.166_868), span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
     @State var trackingMode = MapUserTrackingMode.follow
+    @State var coordinateRegion = MKCoordinateRegion.init(center: CLLocationManager().location?.coordinate ?? CLLocationCoordinate2D(latitude: 34.011_286, longitude: -116.166_868), span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
+    
     
     var body: some View {
         ZStack {
-            Map(coordinateRegion: $coordinateRegion, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode)
+            Map(coordinateRegion: $coordinateRegion, interactionModes: .all, showsUserLocation: true, userTrackingMode: $trackingMode, annotationItems: filteredImages)
+                { (capVisImage) in
+                    MapMarker(coordinate: capVisImage.locationCoordinate,
+                                tint: Color.red);
+                    }
                 .ignoresSafeArea(edges: .top)
             HStack {
                 Spacer()
                 VStack(alignment: .leading) {
                     VStack {
                         Button(action: {
-                            
+                            // capVisImage = CapVisImage.init(lat: 47.61497, long: 7.66457)
                         }, label: {
                             Image(systemName: "map")
                         })
@@ -60,21 +73,12 @@ struct Home: View {
                     .padding(20.0)
                     Spacer()
                 }
-                
             }
-            
         }
-        
     }
 }
 
 extension Home {
-    ///Path to device settings if location is disabled
-    func goToDeviceSettings() {
-        guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    }
-    
     func zoomOnLocation() {
         coordinateRegion = MKCoordinateRegion.init(center: CLLocationManager().location?.coordinate ?? CLLocationCoordinate2D(latitude: 34.011_286, longitude: -116.166_868), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
     }
@@ -83,5 +87,6 @@ extension Home {
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         Home()
+            .environmentObject(ImageData())
     }
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2227E9F227B5450B00E545D4 /* CapVisImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2227E9F127B5450B00E545D4 /* CapVisImage.swift */; };
+		2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2227E9F327B54CF200E545D4 /* ImageData.swift */; };
+		2227E9F727B54D7400E545D4 /* imageData.json in Resources */ = {isa = PBXBuildFile; fileRef = 2227E9F627B54D7400E545D4 /* imageData.json */; };
 		222F3C4B27B3C59200EEF17B /* CapVis_ARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */; };
 		222F3C4D27B3C59200EEF17B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C4C27B3C59200EEF17B /* ContentView.swift */; };
 		222F3C4F27B3C59300EEF17B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222F3C4E27B3C59300EEF17B /* Assets.xcassets */; };
@@ -14,7 +17,6 @@
 		222F3C5C27B3C59400EEF17B /* CapVis_ARTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C5B27B3C59400EEF17B /* CapVis_ARTests.swift */; };
 		222F3C6627B3C59400EEF17B /* CapVis_ARUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C6527B3C59400EEF17B /* CapVis_ARUITests.swift */; };
 		222F3C6827B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */; };
-		2285092D27B3DF3F00E9FB26 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285091C27B3DF3F00E9FB26 /* MapView.swift */; };
 		2285092E27B3DF3F00E9FB26 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285091D27B3DF3F00E9FB26 /* Home.swift */; };
 		2285092F27B3DF3F00E9FB26 /* CameraService+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285091F27B3DF3F00E9FB26 /* CameraService+Extensions.swift */; };
 		2285093027B3DF3F00E9FB26 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092027B3DF3F00E9FB26 /* CameraPreview.swift */; };
@@ -48,6 +50,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2227E9F127B5450B00E545D4 /* CapVisImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CapVisImage.swift; path = "CapVis-AR/Model/CapVisImage.swift"; sourceTree = SOURCE_ROOT; };
+		2227E9F327B54CF200E545D4 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
+		2227E9F627B54D7400E545D4 /* imageData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = imageData.json; sourceTree = "<group>"; };
 		222F3C4727B3C59200EEF17B /* CapVis-AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CapVis-AR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARApp.swift; sourceTree = "<group>"; };
 		222F3C4C27B3C59200EEF17B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -58,7 +63,6 @@
 		222F3C6127B3C59400EEF17B /* CapVis-ARUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CapVis-ARUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		222F3C6527B3C59400EEF17B /* CapVis_ARUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITests.swift; sourceTree = "<group>"; };
 		222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		2285091C27B3DF3F00E9FB26 /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		2285091D27B3DF3F00E9FB26 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		2285091F27B3DF3F00E9FB26 /* CameraService+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CameraService+Extensions.swift"; sourceTree = "<group>"; };
 		2285092027B3DF3F00E9FB26 /* CameraPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
@@ -99,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2227E9F527B54D1F00E545D4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2227E9F627B54D7400E545D4 /* imageData.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		222F3C3E27B3C59200EEF17B = {
 			isa = PBXGroup;
 			children = (
@@ -122,10 +134,11 @@
 		222F3C4927B3C59200EEF17B /* CapVis-AR */ = {
 			isa = PBXGroup;
 			children = (
-				2285091927B3DF3F00E9FB26 /* Model */,
-				2285091A27B3DF3F00E9FB26 /* Views */,
 				222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */,
 				222F3C4C27B3C59200EEF17B /* ContentView.swift */,
+				2227E9F527B54D1F00E545D4 /* Resources */,
+				2285091927B3DF3F00E9FB26 /* Model */,
+				2285091A27B3DF3F00E9FB26 /* Views */,
 				222F3C4E27B3C59300EEF17B /* Assets.xcassets */,
 				222F3C5027B3C59300EEF17B /* Preview Content */,
 			);
@@ -160,6 +173,8 @@
 		2285091927B3DF3F00E9FB26 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2227E9F127B5450B00E545D4 /* CapVisImage.swift */,
+				2227E9F327B54CF200E545D4 /* ImageData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -177,7 +192,6 @@
 		2285091B27B3DF3F00E9FB26 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				2285091C27B3DF3F00E9FB26 /* MapView.swift */,
 				2285091D27B3DF3F00E9FB26 /* Home.swift */,
 			);
 			path = Home;
@@ -315,6 +329,7 @@
 			files = (
 				222F3C5227B3C59300EEF17B /* Preview Assets.xcassets in Resources */,
 				222F3C4F27B3C59300EEF17B /* Assets.xcassets in Resources */,
+				2227E9F727B54D7400E545D4 /* imageData.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,10 +357,11 @@
 				222F3C4D27B3C59200EEF17B /* ContentView.swift in Sources */,
 				2285093127B3DF3F00E9FB26 /* CameraService+Enums.swift in Sources */,
 				2285093827B3DF3F00E9FB26 /* ARViewRepresentable.swift in Sources */,
-				2285092D27B3DF3F00E9FB26 /* MapView.swift in Sources */,
 				2285093327B3DF3F00E9FB26 /* CameraView.swift in Sources */,
+				2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */,
 				2285093527B3DF3F00E9FB26 /* CustomCameraView.swift in Sources */,
 				2285092E27B3DF3F00E9FB26 /* Home.swift in Sources */,
+				2227E9F227B5450B00E545D4 /* CapVisImage.swift in Sources */,
 				2285093627B3DF3F00E9FB26 /* CameraService.swift in Sources */,
 				2285093027B3DF3F00E9FB26 /* CameraPreview.swift in Sources */,
 				2285093A27B3DF3F00E9FB26 /* AR.swift in Sources */,
@@ -518,6 +534,10 @@
 				DEVELOPMENT_TEAM = 883GXF926S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera needed";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location Needed";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location Needed";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location Needed";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -547,6 +567,10 @@
 				DEVELOPMENT_TEAM = 883GXF926S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera needed";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Location Needed";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Location Needed";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location Needed";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
