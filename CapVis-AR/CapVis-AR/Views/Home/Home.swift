@@ -34,7 +34,7 @@ struct Home: View {
     var body: some View {
         ZStack {
             MapViewRepresentable(mapMarkerImages: $images, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: trackingMode)
-                .ignoresSafeArea(edges: .top)
+                .edgesIgnoringSafeArea(.top)
             
             HStack {
                 Spacer()
@@ -50,9 +50,11 @@ struct Home: View {
                             .frame(width: buttonSize, height: buttonSize)
                             .background(Color.white.opacity(buttonOpacity))
                             .cornerRadius(10.0, corners: [.topLeft, .topRight])
+                        
                         Divider()
                             .frame(width: buttonSize)
                             .background(Color.white.opacity(buttonOpacity))
+                        
                         Button(action: {
                             zoomOnLocation()
                         }, label: {
@@ -63,9 +65,11 @@ struct Home: View {
                             .clipShape(Rectangle())
                             .frame(width: buttonSize, height: buttonSize)
                             .background(Color.white.opacity(buttonOpacity))
+                        
                         Divider()
                             .frame(width: buttonSize)
                             .background(Color.white.opacity(buttonOpacity))
+                        
                         Button(action: {
                             images = imageData.capVisImages.map { MapMarkerImage(title: $0.name, coordinate: $0.locationCoordinate) }
                         }, label: {

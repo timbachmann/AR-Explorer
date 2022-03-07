@@ -76,7 +76,7 @@ final class CameraModel: ObservableObject {
 
 struct CameraView: View {
     @StateObject var model = CameraModel()
-    
+    @Binding var selectedTab: ContentView.Tab
     @State var currentZoomFactor: CGFloat = 1.0
     
     var captureButton: some View {
@@ -85,11 +85,11 @@ struct CameraView: View {
         }, label: {
             Circle()
                 .foregroundColor(.white)
-                .frame(width: 80, height: 80, alignment: .center)
+                .frame(width: 78, height: 78, alignment: .center)
                 .overlay(
                     Circle()
                         .stroke(Color.black.opacity(0.8), lineWidth: 2)
-                        .frame(width: 65, height: 65, alignment: .center)
+                        .frame(width: 70, height: 70, alignment: .center)
                 )
         })
     }
@@ -100,14 +100,14 @@ struct CameraView: View {
                 Image(uiImage: model.photo.image!)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 54, height: 54)
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    
+                
                 
             } else {
                 RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 60, height: 60, alignment: .center)
-                    .foregroundColor(.black)
+                    .frame(width: 54, height: 54, alignment: .center)
+                    .foregroundColor(.gray)
             }
         }
     }
@@ -118,7 +118,7 @@ struct CameraView: View {
         }, label: {
             Circle()
                 .foregroundColor(Color.gray.opacity(0.2))
-                .frame(width: 45, height: 45, alignment: .center)
+                .frame(width: 54, height: 54, alignment: .center)
                 .overlay(
                     Image(systemName: "camera.rotate.fill")
                         .foregroundColor(.white))
@@ -130,51 +130,52 @@ struct CameraView: View {
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
                 
-                VStack {
+                VStack(spacing: 20.0) {
                     Button(action: {
                         model.switchFlash()
                     }, label: {
                         Image(systemName: model.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
                             .font(.system(size: 20, weight: .medium, design: .default))
                     })
-                    .accentColor(model.isFlashOn ? .yellow : .white)
+                        .accentColor(model.isFlashOn ? .yellow : .white)
                     
-                    CameraPreview(session: model.session)
-                        .gesture(
-                            DragGesture().onChanged({ (val) in
-                                //  Only accept vertical drag
-                                if abs(val.translation.height) > abs(val.translation.width) {
-                                    //  Get the percentage of vertical screen space covered by drag
-                                    let percentage: CGFloat = -(val.translation.height / reader.size.height)
-                                    //  Calculate new zoom factor
-                                    let calc = currentZoomFactor + percentage
-                                    //  Limit zoom factor to a maximum of 5x and a minimum of 1x
-                                    let zoomFactor: CGFloat = min(max(calc, 1), 5)
-                                    //  Store the newly calculated zoom factor
-                                    currentZoomFactor = zoomFactor
-                                    //  Sets the zoom factor to the capture device session
-                                    model.zoom(with: zoomFactor)
-                                }
-                            })
-                        )
-                        .onAppear {
-                            model.configure()
-                        }
-                        .alert(isPresented: $model.showAlertError, content: {
-                            Alert(title: Text(model.alertError.title), message: Text(model.alertError.message), dismissButton: .default(Text(model.alertError.primaryButtonTitle), action: {
-                                model.alertError.primaryAction?()
-                            }))
-                        })
-                        .overlay(
-                            Group {
-                                if model.willCapturePhoto {
-                                    Color.black
-                                }
+                    if selectedTab == .camera {
+                        CameraPreview(session: model.session)
+                            .gesture(
+                                DragGesture().onChanged({ (val) in
+                                    //  Only accept vertical drag
+                                    if abs(val.translation.height) > abs(val.translation.width) {
+                                        //  Get the percentage of vertical screen space covered by drag
+                                        let percentage: CGFloat = -(val.translation.height / reader.size.height)
+                                        //  Calculate new zoom factor
+                                        let calc = currentZoomFactor + percentage
+                                        //  Limit zoom factor to a maximum of 5x and a minimum of 1x
+                                        let zoomFactor: CGFloat = min(max(calc, 1), 5)
+                                        //  Store the newly calculated zoom factor
+                                        currentZoomFactor = zoomFactor
+                                        //  Sets the zoom factor to the capture device session
+                                        model.zoom(with: zoomFactor)
+                                    }
+                                })
+                            )
+                            .onAppear {
+                                model.configure()
                             }
-                        )
-                        .animation(.easeInOut)
-                    
-                    
+                            .alert(isPresented: $model.showAlertError, content: {
+                                Alert(title: Text(model.alertError.title), message: Text(model.alertError.message), dismissButton: .default(Text(model.alertError.primaryButtonTitle), action: {
+                                    model.alertError.primaryAction?()
+                                }))
+                            })
+                            .overlay(
+                                Group {
+                                    if model.willCapturePhoto {
+                                        Color.black
+                                    }
+                                }
+                            )
+                            .animation(Animation.easeInOut, value: currentZoomFactor)
+                        
+                    }
                     HStack {
                         capturedPhotoThumbnail
                         
@@ -188,14 +189,17 @@ struct CameraView: View {
                         
                     }
                     .padding(.horizontal, 20)
+                    
+                    Spacer()
                 }
             }
+            .statusBar(hidden: true)
         }
     }
 }
 
-struct CameraView_Previews: PreviewProvider {
-    static var previews: some View {
-        CameraView()
-    }
-}
+//struct CameraView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CameraView()
+//    }
+//}

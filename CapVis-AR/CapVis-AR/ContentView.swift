@@ -16,9 +16,14 @@ struct ContentView: View {
         case ar
     }
     
+    init() {
+        UITabBar.appearance().barTintColor = .systemBackground
+        UITabBar.appearance().unselectedItemTintColor = UIColor(named: "TabBarUnselected")
+    }
+    
     var body: some View {
         TabView(selection: $selectedTab) {
-            CameraView()
+            CameraView(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Camera", systemImage: "camera")
                 }
@@ -29,7 +34,7 @@ struct ContentView: View {
                     Label("Home", systemImage: "map")
                 }
                 .tag(Tab.home)
-            AR()
+            AR(selectedTab: $selectedTab)
                 .tabItem {
                     Label("AR", systemImage: "arkit")
                 }
