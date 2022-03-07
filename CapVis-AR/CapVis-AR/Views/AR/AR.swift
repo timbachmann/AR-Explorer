@@ -10,11 +10,18 @@ import ARKit
 
 struct AR: View {
     
+    @Binding var selectedTab: ContentView.Tab
     @ObservedObject var arDelegate = ARDelegate()
+    
     
     var body: some View {
         ZStack {
-            ARViewRepresentable(arDelegate: arDelegate)
+            if selectedTab == .ar {
+                ARViewRepresentable(arDelegate: arDelegate)
+            } else {
+                Color.black
+            }
+            
             VStack {
                 Spacer()
                 Text(arDelegate.message)
@@ -26,11 +33,11 @@ struct AR: View {
     }
 }
 
-struct AR_Previews: PreviewProvider {
-    static var previews: some View {
-        AR()
-    }
-}
+//struct AR_Previews: PreviewProvider {
+//    static var previews: some View {
+//
+//    }
+//}
 
 
 

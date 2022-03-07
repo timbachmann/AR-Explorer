@@ -45,18 +45,12 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
         default:
             ()
         }
-
     }
     
     @objc func tapOnARView(sender: UITapGestureRecognizer) {
-        guard let arView = arView else { return }
-        let location = sender.location(in: arView)
-        if let node = nodeAtLocation(location) {
-            removeCircle(node: node)
-        }
-        else if let result = raycastResult(fromLocation: location) {
-            addCircle(raycastResult: result)
-        }
+        //guard let arView = arView else { return }
+        //let location = sender.location(in: arView)
+        placeImage()
     }
     
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
@@ -72,28 +66,18 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
     }
     
     // MARK: - Private
-
     private var arView: ARSCNView?
-    private var circles:[SCNNode] = []
+    private var images:[SCNNode] = []
     private var trackedNode:SCNNode?
     
-    
-    private func addCircle(raycastResult: ARRaycastResult) {
-        let circleNode = GeometryUtils.createCircle(fromRaycastResult: raycastResult)
-        if circles.count >= 2 {
-            for circle in circles {
-                circle.removeFromParentNode()
-            }
-            circles.removeAll()
-        }
+    private func placeImage() {
+        let imageNode = createImageNode()
         
-        arView?.scene.rootNode.addChildNode(circleNode)
-        circles.append(circleNode)
+        arView?.scene.rootNode.addChildNode(imageNode)
+        images.append(imageNode)
         
         nodesUpdated()
     }
-    
-    
     
     private func moveNode(_ node:SCNNode, raycastResult:ARRaycastResult) {
         node.simdWorldTransform = raycastResult.worldTransform
@@ -107,13 +91,11 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
     }
     
     private func nodesUpdated() {
-        if circles.count == 2 {
-            let distance = GeometryUtils.calculateDistance(firstNode: circles[0], secondNode: circles[1])
-            print("distance = \(distance)")
-            message = "distance " + String(format: "%.2f cm", distance)
+        if images.count >= 1 {
+            message = "AR image(s) placed"
         }
         else {
-            message = "add second point"
+            message = "Image not placed"
         }
     }
     
@@ -126,8 +108,23 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
         return results.first
     }
     
-    func removeCircle(node:SCNNode) {
+    func removeImage(node:SCNNode) {
         node.removeFromParentNode()
-        circles.removeAll(where: { $0 == node })
+        images.removeAll(where: { $0 == node })
+    }
+    
+    func createImageNode() -> SCNNode {
+        let image = UIImage(named: "santorini")
+        let width = image?.size.width ?? 1
+        let height = image?.size.height ?? 0.2
+        
+        let scnPlane = SCNPlane(width: width*0.0005, height: height*0.0005)
+        
+        let circleNode = SCNNode(geometry: scnPlane)
+        circleNode.geometry?.firstMaterial?.diffuse.contents = image
+        circleNode.worldPosition = SCNVector3(0,0,-2)
+        // circleNode.simdWorldTransform = result.worldTransform
+        
+        return circleNode
     }
 }

@@ -13,6 +13,7 @@ struct ARViewRepresentable: UIViewRepresentable {
     
     func makeUIView(context: Context) -> some UIView {
         let arView = ARSCNView(frame: .zero)
+        arView.showsStatistics = true
         arDelegate.setARView(arView)
         return arView
     }
