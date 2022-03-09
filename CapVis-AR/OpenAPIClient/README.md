@@ -25,13 +25,17 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultAPI* | [**getImages**](docs/DefaultAPI.md#getimages) | **GET** /images | Get images
-*DefaultAPI* | [**postImages**](docs/DefaultAPI.md#postimages) | **POST** /images | Post images
+*ImageAPI* | [**createImage**](docs/ImageAPI.md#createimage) | **POST** /images | Create new image
+*ImageAPI* | [**getAllImages**](docs/ImageAPI.md#getallimages) | **GET** /images | Get all images
+*ImageAPI* | [**getImageById**](docs/ImageAPI.md#getimagebyid) | **GET** /images/{imageId} | Get image by id
 
 
 ## Documentation For Models
 
+ - [ApiImage](docs/ApiImage.md)
+ - [ImageListResponse](docs/ImageListResponse.md)
  - [ModelErrorResponse](docs/ModelErrorResponse.md)
+ - [NewImageRequest](docs/NewImageRequest.md)
 
 
 ## Documentation For Authorization
