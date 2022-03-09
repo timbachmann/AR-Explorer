@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2213A27527B6890C00497182 /* MapViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213A27427B6890C00497182 /* MapViewRepresentable.swift */; };
-		2227E9F227B5450B00E545D4 /* CapVisImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2227E9F127B5450B00E545D4 /* CapVisImage.swift */; };
 		2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2227E9F327B54CF200E545D4 /* ImageData.swift */; };
 		2227E9F727B54D7400E545D4 /* imageData.json in Resources */ = {isa = PBXBuildFile; fileRef = 2227E9F627B54D7400E545D4 /* imageData.json */; };
 		222F3C4B27B3C59200EEF17B /* CapVis_ARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */; };
@@ -32,6 +31,7 @@
 		2285093927B3DF3F00E9FB26 /* GeometryUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092A27B3DF3F00E9FB26 /* GeometryUtils.swift */; };
 		2285093A27B3DF3F00E9FB26 /* AR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092B27B3DF3F00E9FB26 /* AR.swift */; };
 		228D292E27D12ACB00F6EA9F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228D292D27D12ACB00F6EA9F /* Launch Screen.storyboard */; };
+		22A4702E27D8AAF600FF1692 /* OpenAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 22A4702D27D8AAF600FF1692 /* OpenAPIClient */; };
 		22B671E927CEADB0002BF145 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B671E827CEADB0002BF145 /* UIImage+Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,7 +54,6 @@
 
 /* Begin PBXFileReference section */
 		2213A27427B6890C00497182 /* MapViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewRepresentable.swift; sourceTree = "<group>"; };
-		2227E9F127B5450B00E545D4 /* CapVisImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CapVisImage.swift; path = "CapVis-AR/Model/CapVisImage.swift"; sourceTree = SOURCE_ROOT; };
 		2227E9F327B54CF200E545D4 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
 		2227E9F627B54D7400E545D4 /* imageData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = imageData.json; sourceTree = "<group>"; };
 		222F3C4727B3C59200EEF17B /* CapVis-AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CapVis-AR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,7 +66,6 @@
 		222F3C6127B3C59400EEF17B /* CapVis-ARUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CapVis-ARUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		222F3C6527B3C59400EEF17B /* CapVis_ARUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITests.swift; sourceTree = "<group>"; };
 		222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		2243ABDD27D62ADF00B9052C /* OpenAPIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OpenAPIClient; sourceTree = "<group>"; };
 		227CCA4827CE82620049C4B8 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		2285091D27B3DF3F00E9FB26 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		2285091F27B3DF3F00E9FB26 /* CaptureOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureOrientation.swift; sourceTree = "<group>"; };
@@ -83,6 +81,7 @@
 		2285092B27B3DF3F00E9FB26 /* AR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AR.swift; sourceTree = "<group>"; };
 		228D292C27D12A0200F6EA9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		228D292D27D12ACB00F6EA9F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		22A4702C27D8AA5B00FF1692 /* OpenAPIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OpenAPIClient; sourceTree = "<group>"; };
 		22B671E827CEADB0002BF145 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22A4702E27D8AAF600FF1692 /* OpenAPIClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,11 +122,12 @@
 		222F3C3E27B3C59200EEF17B = {
 			isa = PBXGroup;
 			children = (
-				22624EE327D0EE4D001B534B /* Packages */,
+				2243ABE027D648DB00B9052C /* Packages */,
 				222F3C4927B3C59200EEF17B /* CapVis-AR */,
 				222F3C5A27B3C59400EEF17B /* CapVis-ARTests */,
 				222F3C6427B3C59400EEF17B /* CapVis-ARUITests */,
 				222F3C4827B3C59200EEF17B /* Products */,
+				2243ABE327D64AD500B9052C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -182,12 +183,19 @@
 			path = "CapVis-ARUITests";
 			sourceTree = "<group>";
 		};
-		22624EE327D0EE4D001B534B /* Packages */ = {
+		2243ABE027D648DB00B9052C /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				2243ABDD27D62ADF00B9052C /* OpenAPIClient */,
+				22A4702C27D8AA5B00FF1692 /* OpenAPIClient */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		2243ABE327D64AD500B9052C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		227CCA4527CE7ABF0049C4B8 /* Utils */ = {
@@ -203,7 +211,6 @@
 		2285091927B3DF3F00E9FB26 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				2227E9F127B5450B00E545D4 /* CapVisImage.swift */,
 				2227E9F327B54CF200E545D4 /* ImageData.swift */,
 			);
 			path = Model;
@@ -268,6 +275,9 @@
 			dependencies = (
 			);
 			name = "CapVis-AR";
+			packageProductDependencies = (
+				22A4702D27D8AAF600FF1692 /* OpenAPIClient */,
+			);
 			productName = "CapVis-AR";
 			productReference = 222F3C4727B3C59200EEF17B /* CapVis-AR.app */;
 			productType = "com.apple.product-type.application";
@@ -391,7 +401,6 @@
 				2213A27527B6890C00497182 /* MapViewRepresentable.swift in Sources */,
 				2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */,
 				2285092E27B3DF3F00E9FB26 /* Home.swift in Sources */,
-				2227E9F227B5450B00E545D4 /* CapVisImage.swift in Sources */,
 				2285093627B3DF3F00E9FB26 /* CameraService.swift in Sources */,
 				2285093027B3DF3F00E9FB26 /* CameraPreview.swift in Sources */,
 				2285093A27B3DF3F00E9FB26 /* AR.swift in Sources */,
@@ -745,6 +754,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		22A4702D27D8AAF600FF1692 /* OpenAPIClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OpenAPIClient;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 222F3C3F27B3C59200EEF17B /* Project object */;
 }

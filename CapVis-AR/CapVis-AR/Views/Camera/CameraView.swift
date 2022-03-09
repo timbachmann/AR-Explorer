@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 import AVFoundation
+import OpenAPIClient
 
 final class CameraModel: ObservableObject {
     private let service = CameraService()
@@ -78,10 +79,13 @@ struct CameraView: View {
     @StateObject var model = CameraModel()
     @Binding var selectedTab: ContentView.Tab
     @State var currentZoomFactor: CGFloat = 1.0
+    @EnvironmentObject var imageData: ImageData
+    @State var isLoading: Bool = false
     
     var captureButton: some View {
         Button(action: {
             model.capturePhoto()
+            isLoading = true
         }, label: {
             Circle()
                 .foregroundColor(.white)
@@ -97,12 +101,22 @@ struct CameraView: View {
     var capturedPhotoThumbnail: some View {
         Group {
             if model.photo != nil {
-                Image(uiImage: model.photo.image!)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 54, height: 54)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                
+                if !$isLoading.wrappedValue {
+                    Image(uiImage: model.photo.image!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 54, height: 54)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        
+                } else {
+                    ProgressView()
+                        .padding()
+                        .frame(width: 54, height: 54)
+                        .foregroundColor(Color.accentColor)
+                        .onAppear(perform: {
+                            savePhotoToList()
+                        })
+                }
                 
             } else {
                 RoundedRectangle(cornerRadius: 10)
@@ -188,12 +202,50 @@ struct CameraView: View {
                         flipCameraButton
                         
                     }
+                    .onChange(of: model.photo, perform: { newPhoto in
+                        savePhotoToList()
+                    })
                     .padding(.horizontal, 20)
                     
                     Spacer()
                 }
             }
             .statusBar(hidden: true)
+        }
+    }
+}
+
+extension CameraView {
+    
+    func savePhotoToList() {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        
+        let imageToSaveDirectly = ApiImage(id: model.photo.id , data: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: 30)
+        
+        if !imageData.capVisImages.contains(imageToSaveDirectly) {
+            imageData.capVisImages.append(imageToSaveDirectly)
+            
+            let imageToUpload = NewImageRequest(id: model.photo.id, data: model.photo.originalData, lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: 30)
+            
+            dump(imageToUpload)
+            
+            ImageAPI.createImage(newImageRequest: imageToUpload) { (response, error) in
+                guard error == nil else {
+                    print(error ?? "error")
+                    isLoading = false
+                    return
+                }
+                
+                if (response != nil) {
+                    isLoading = false
+                    dump(response)
+                }
+            }
         }
     }
 }
