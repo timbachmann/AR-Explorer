@@ -8,25 +8,28 @@
 import Foundation
 import UIKit
 import CoreLocation
+import OpenAPIClient
+import SwiftUI
 
 public struct Photo: Identifiable, Equatable {
-//    The ID of the captured photo
-    public var id: String
-//    Data representation of the captured photo
-    public var originalData: Data
     
+    public var id: String
+    public var originalData: Data
     var coordinates: Coordinates
+    let locationManager: CLLocationManager = CLLocationManager()
     
     public init(id: String = UUID().uuidString, originalData: Data) {
         self.id = id
         self.originalData = originalData
-        let latitude = CLLocationManager().location?.coordinate.latitude
-        let longitude = CLLocationManager().location?.coordinate.longitude
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        let latitude = locationManager.location?.coordinate.latitude
+        let longitude = locationManager.location?.coordinate.longitude
         self.coordinates = Coordinates(latitude: latitude ?? 0.0, longitude: longitude ?? 0.0)
     }
 }
 
 extension Photo {
+    
     public var compressedData: Data? {
         ImageResizer(targetWidth: 800).resize(data: originalData)?.jpegData(compressionQuality: 0.5)
     }
