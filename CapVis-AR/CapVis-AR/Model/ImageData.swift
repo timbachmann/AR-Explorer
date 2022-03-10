@@ -10,34 +10,27 @@ import Combine
 import OpenAPIClient
 
 final class ImageData: ObservableObject {
-    @Published var capVisImages: [ApiImage] = load("imageData.json")
+    @Published var capVisImages: [ApiImage] = load()
 }
 
-func load<T: Decodable>(_ filename: String) -> T {
+func load() -> [ApiImage] {
     let data: Data
-
-    guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
-        else {
-            fatalError("Couldn't find \(filename) in main bundle.")
-    }
-
+    let path = getCacheDirectoryPath().appendingPathComponent("imageData.json")
+    
     do {
-        data = try Data(contentsOf: file)
+        data = try Data(contentsOf: path)
     } catch {
-        fatalError("Couldn't load \(filename) from main bundle:\n\(error)")
+        return []
     }
-
+    
     do {
         let decoder = JSONDecoder()
-        return try decoder.decode(T.self, from: data)
+        return try decoder.decode([ApiImage].self, from: data)
     } catch {
-        fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
+        fatalError("Couldn't parse \(path.path) as \([ApiImage].self):\n\(error)")
     }
 }
 
-func json(from object: Any) -> String? {
-    guard let data = try? JSONSerialization.data(withJSONObject: object, options: []) else {
-        return nil
-    }
-    return String(data: data, encoding: String.Encoding.utf8)
+func getCacheDirectoryPath() -> URL {
+    return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
 }

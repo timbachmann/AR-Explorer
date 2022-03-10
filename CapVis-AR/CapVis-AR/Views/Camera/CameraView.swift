@@ -230,6 +230,8 @@ extension CameraView {
         if !imageData.capVisImages.contains(imageToSaveDirectly) {
             imageData.capVisImages.append(imageToSaveDirectly)
             
+            saveImagesToFile(images: imageData.capVisImages)
+            
             let imageToUpload = NewImageRequest(id: model.photo.id, data: model.photo.originalData, lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: 30)
             
             dump(imageToUpload)
@@ -246,6 +248,21 @@ extension CameraView {
                     dump(response)
                 }
             }
+        }
+    }
+    
+    func getCacheDirectoryPath() -> URL {
+        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+    }
+    
+    func saveImagesToFile(images: [ApiImage]) {
+        let path = getCacheDirectoryPath().appendingPathComponent("imageData.json")
+        
+        do {
+            let jsonData = try JSONEncoder().encode(images)
+            try jsonData.write(to: path)
+        } catch {
+            print("Error writing to JSON file: \(error)")
         }
     }
 }
