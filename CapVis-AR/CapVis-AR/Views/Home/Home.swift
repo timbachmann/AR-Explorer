@@ -1,6 +1,6 @@
 //
 //  Home.swift
-//  CapVis
+//  CapVis-AR
 //
 //  Created by Tim Bachmann on 27.01.22.
 //
@@ -18,13 +18,13 @@ struct Home: View {
     @State private var isLoading: Bool = false
     @State private var detailId: String = ""
     @State private var showGallery: Bool = false
-    private let buttonSize: CGFloat = 42.0
+    private let buttonSize: CGFloat = 48.0
     private let buttonOpacity: CGFloat = 0.95
+    @State private var showFilter: Bool = false
     @State private var locationManager = CLLocationManager()
     @State private var trackingMode: MKUserTrackingMode = .follow
     @State private var mapType: MKMapType = .standard
     @State private var showDetail: Bool = false
-    @State private var cl = CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 34.011_286, longitude: CLLocationManager().location?.coordinate.longitude ?? -116.166_868)
     @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 34.011_286, longitude: CLLocationManager().location?.coordinate.longitude ?? -116.166_868), span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
     private var filteredImages: [ApiImage] {
         imageData.capVisImages.filter { capVisImage in
@@ -34,7 +34,7 @@ struct Home: View {
     
     var body: some View {
         ZStack {
-            MapViewRepresentable(mapMarkerImages: $imageData.capVisImages,showDetail: $showDetail, detailId: $detailId, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
+            MapView(mapMarkerImages: $imageData.capVisImages,showDetail: $showDetail, detailId: $detailId, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
                 .edgesIgnoringSafeArea(.top)
             
             HStack {
@@ -87,20 +87,7 @@ struct Home: View {
                             .background(Color.white.opacity(buttonOpacity))
                         
                         Button(action: {
-                            isLoading = true
-                            ImageAPI.getAllImages() { (response, error) in
-                                guard error == nil else {
-                                    print(error ?? "error")
-                                    return
-                                }
-                                
-                                if (response != nil) {
-                                    imageData.capVisImages = response?.apiImages ?? imageData.capVisImages
-                                    dump(response?.apiImages)
-                                    isLoading = false
-                                    saveImagesToFile(images: imageData.capVisImages)
-                                }
-                            }
+                            $showFilter.wrappedValue.toggle()
                         }, label: {
                             if $isLoading.wrappedValue {
                                 ProgressView()
@@ -123,10 +110,17 @@ struct Home: View {
             }
             
             if $showGallery.wrappedValue {
-                NavigationView{
+                NavigationView {
                     NavigationLink(destination: GalleryView(images: $imageData.capVisImages, showSelf: $showGallery), isActive: $showGallery) {}
                 }
             }
+            
+            if $showDetail.wrappedValue {
+                NavigationView {
+                    NavigationLink(destination: DetailView(image: imageData.capVisImages[imageData.capVisImages.firstIndex(where: {$0.id == detailId})!], showSelf: $showDetail), isActive: $showDetail) {}
+                }
+            }
+            
             if $mapStyleSheetVisible.wrappedValue {
                 ZStack {
                     Color.white
@@ -150,10 +144,10 @@ struct Home: View {
                 .cornerRadius(20).shadow(radius: 20)
             }
             
-            if $showDetail.wrappedValue {
-                NavigationView{
-                    NavigationLink(destination: DetailView(image: imageData.capVisImages[imageData.capVisImages.firstIndex(where: {$0.id == detailId})!], showSelf: $showDetail), isActive: $showDetail) {}
-                }
+            if $showFilter.wrappedValue {
+                FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading)
+                .frame(width: 350, height: 600)
+                .cornerRadius(20).shadow(radius: 20)
             }
         }
     }

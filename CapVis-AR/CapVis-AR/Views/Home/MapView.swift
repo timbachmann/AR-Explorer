@@ -10,7 +10,7 @@ import MapKit
 import OpenAPIClient
 
 
-struct MapViewRepresentable: UIViewRepresentable {
+struct MapView: UIViewRepresentable {
     typealias UIViewType = MKMapView
     
     var locationManager = CLLocationManager()
@@ -28,12 +28,14 @@ struct MapViewRepresentable: UIViewRepresentable {
     let showsUserLocation: Bool
     let userTrackingMode: MKUserTrackingMode
     let identifier = "Annotation"
+    let clusterIdentifier = "Cluster"
     let mapView = MKMapView()
     
-    func makeUIView(context: UIViewRepresentableContext<MapViewRepresentable>) -> MKMapView {
+    func makeUIView(context: UIViewRepresentableContext<MapView>) -> MKMapView {
         setupManager()
         mapView.delegate = context.coordinator
         mapView.register(ImageAnnotationView.self, forAnnotationViewWithReuseIdentifier: identifier)
+        mapView.register(ClusterAnnotationView.self, forAnnotationViewWithReuseIdentifier: clusterIdentifier)
         mapView.setRegion(region, animated: true)
         mapView.mapType = mapType
         mapView.showsUserLocation = showsUserLocation
@@ -42,14 +44,14 @@ struct MapViewRepresentable: UIViewRepresentable {
         return mapView
     }
     
-    func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapViewRepresentable>) {
+    func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
         uiView.mapType = mapType
         uiView.setRegion(region, animated: true)
         uiView.removeAnnotations(uiView.annotations)
         addAnnotations(to: uiView)
     }
     
-    func makeCoordinator() -> MapViewRepresentable.Coordinator {
+    func makeCoordinator() -> MapView.Coordinator {
         Coordinator(self)
     }
     
@@ -62,40 +64,39 @@ struct MapViewRepresentable: UIViewRepresentable {
     }
     
     class Coordinator: NSObject, MKMapViewDelegate {
-        private let mapView: MapViewRepresentable
+        
+        private let mapView: MapView
         let identifier = "Annotation"
-        private let maxZoomLevel = 13
+        let clusterIdentifier = "Cluster"
+        private let maxZoomLevel = 11
         private var previousZoomLevel: Int?
         private var currentZoomLevel: Int?  {
-            willSet {
-                self.previousZoomLevel = self.currentZoomLevel
-            }
-            didSet {
-                guard let currentZoomLevel = self.currentZoomLevel else { return }
-                guard let previousZoomLevel = self.previousZoomLevel else { return }
-                var refreshRequired = false
-                if currentZoomLevel > self.maxZoomLevel && previousZoomLevel <= self.maxZoomLevel {
-                    refreshRequired = true
-                }
-                if currentZoomLevel <= self.maxZoomLevel && previousZoomLevel > self.maxZoomLevel {
-                    refreshRequired = true
-                }
-                if refreshRequired {
-                    let annotations = self.mapView.mapView.annotations
-                    self.mapView.mapView.removeAnnotations(annotations)
-                    self.mapView.mapView.addAnnotations(annotations)
-                }
-            }
+            willSet { self.previousZoomLevel = self.currentZoomLevel }
+            didSet { checkZoomLevel() }
         }
         private var shouldCluster: Bool {
-            if let zoomLevel = self.currentZoomLevel, zoomLevel <= maxZoomLevel {
-                return false
-            }
+            if let zoomLevel = self.currentZoomLevel, zoomLevel <= maxZoomLevel { return false }
             return true
         }
         
+        private func checkZoomLevel() {
+            guard let currentZoomLevel = self.currentZoomLevel else { return }
+            guard let previousZoomLevel = self.previousZoomLevel else { return }
+            var refreshRequired = false
+            if currentZoomLevel > self.maxZoomLevel && previousZoomLevel <= self.maxZoomLevel {
+                refreshRequired = true
+            }
+            if currentZoomLevel <= self.maxZoomLevel && previousZoomLevel > self.maxZoomLevel {
+                refreshRequired = true
+            }
+            if refreshRequired {
+                let annotations = self.mapView.mapView.annotations
+                self.mapView.mapView.removeAnnotations(annotations)
+                self.mapView.mapView.addAnnotations(annotations)
+            }
+        }
         
-        init(_ mapView: MapViewRepresentable) {
+        init(_ mapView: MapView) {
             self.mapView = mapView
         }
         
@@ -106,25 +107,22 @@ struct MapViewRepresentable: UIViewRepresentable {
         }
         
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            guard annotation is ImageAnnotation else { return nil }
             
-            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as! ImageAnnotationView
-            
-            annotationView.canShowCallout = true
-            annotationView.annotation = annotation
-            
-            if self.shouldCluster {
-                annotationView.clusteringIdentifier = identifier
+            if annotation is ImageAnnotation {
+                let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as! ImageAnnotationView
+                annotationView.canShowCallout = true
+                annotationView.annotation = annotation
+                annotationView.clusteringIdentifier = self.shouldCluster ? identifier : nil
+                return annotationView
+                
+            } else if annotation is MKClusterAnnotation {
+                let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: clusterIdentifier, for: annotation) as! ClusterAnnotationView
+                annotationView.canShowCallout = true
+                annotationView.annotation = annotation
+                return annotationView
             } else {
-                annotationView.clusteringIdentifier = nil
+                return nil
             }
-            
-            
-            if let observationAnnotation = annotation as? ImageAnnotation {
-                annotationView.image = observationAnnotation.image
-            }
-            
-            return annotationView
         }
         
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -139,9 +137,7 @@ struct MapViewRepresentable: UIViewRepresentable {
                 self.mapView.setDetailId(value: imageAnnotation.id!)
                 self.mapView.setShowDetail(value: true)
             }
-            print("annotation is tapped")
         }
-        
     }
     
     func addAnnotations(to mapView: MKMapView) {
@@ -171,22 +167,6 @@ struct MapViewRepresentable: UIViewRepresentable {
     }
 }
 
-final class ImageAnnotation: NSObject, MKAnnotation {
-    
-    let coordinate: CLLocationCoordinate2D
-    let title: String?
-    let subtitle: String?
-    var image: UIImage?
-    var id: String?
-    
-    init(coordinate: CLLocationCoordinate2D, title: String, image: UIImage, subtitle: String, id: String) {
-        self.coordinate = coordinate
-        self.title = title
-        self.subtitle = subtitle
-        self.image = image
-        self.id = id
-    }
-}
 
-class ImageAnnotationView: MKAnnotationView {
-}
+
+
