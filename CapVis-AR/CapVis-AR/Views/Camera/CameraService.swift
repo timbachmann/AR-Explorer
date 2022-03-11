@@ -1,6 +1,6 @@
 //
 //  CameraService.swift
-//  SwiftCamera
+//  CapVis-AR
 //
 //  Created by Tim Bachmann on 28.01.22.
 //
@@ -10,6 +10,7 @@ import Combine
 import AVFoundation
 import Photos
 import UIKit
+import SwiftUI
 
 //  MARK: Class Camera Service, handles setup of AVFoundation needed for a basic camera app.
 
@@ -50,7 +51,8 @@ public class CameraService {
 //    8.
     @Published public var photo: Photo?
     
-
+    @EnvironmentObject var locationManagerModel: LocationManagerModel
+    
 //    MARK: Alert properties
     public var alertError: AlertError = AlertError()
     
@@ -382,6 +384,8 @@ public class CameraService {
         if self.setupResult != .configurationFailed {
             self.isCameraButtonDisabled = true
             
+            let heading = locationManagerModel.heading
+            
             sessionQueue.async {
                 if let photoOutputConnection = self.photoOutput.connection(with: .video) {
                     photoOutputConnection.videoOrientation = .portrait
@@ -420,7 +424,7 @@ public class CameraService {
                 }, completionHandler: { [weak self] (photoCaptureProcessor) in
                     // When the capture is complete, remove a reference to the photo capture delegate so it can be deallocated.
                     if let data = photoCaptureProcessor.photoData {
-                        self?.photo = Photo(originalData: data)
+                        self?.photo = Photo(originalData: data, heading: heading)
                         print("passing photo")
                     } else {
                         print("No photo data")

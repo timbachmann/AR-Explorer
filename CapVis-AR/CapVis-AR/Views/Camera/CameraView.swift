@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  SwiftCamera
+//  CapVis-AR
 //
 //  Created by Tim Bachmann on 28.01.22.
 //
@@ -225,14 +225,14 @@ extension CameraView {
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         
-        let imageToSaveDirectly = ApiImage(id: model.photo.id , data: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: 30)
+        let imageToSaveDirectly = ApiImage(id: model.photo.id , data: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: Int(model.photo.heading.trueHeading))
         
         if !imageData.capVisImages.contains(imageToSaveDirectly) {
             imageData.capVisImages.append(imageToSaveDirectly)
             
             saveImagesToFile(images: imageData.capVisImages)
             
-            let imageToUpload = NewImageRequest(id: model.photo.id, data: model.photo.originalData, lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: 30)
+            let imageToUpload = NewImageRequest(id: model.photo.id, data: model.photo.originalData, lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: Int(model.photo.heading.trueHeading))
             
             dump(imageToUpload)
             
