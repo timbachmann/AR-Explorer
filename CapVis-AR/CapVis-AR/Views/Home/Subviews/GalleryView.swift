@@ -33,13 +33,12 @@ struct GalleryView: View {
                             .scaledToFill()
                             .frame(minWidth: 0, maxWidth: .infinity)
                             .aspectRatio(1, contentMode: .fill)
-                            .clipped() //Alternatively you can use cornerRadius for the same effect
-                        //.cornerRadius(10)
+                            .cornerRadius(4)
                     }
                 }
             }.padding()
         }
-        .navigationTitle(Text("Gallery"))
+        .navigationTitle(Text("Photos"))
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: Button(action : {
             self.mode.wrappedValue.dismiss()
