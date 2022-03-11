@@ -1,6 +1,6 @@
 //
 //  PhotoCaptureProcessor.swift
-//  abseil
+//  CapVis-AR
 //
 //  Created by Tim Bachmann on 28.01.22.
 //

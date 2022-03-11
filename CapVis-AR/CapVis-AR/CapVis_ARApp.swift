@@ -10,11 +10,13 @@ import SwiftUI
 @main
 struct CapVis_ARApp: App {
     @StateObject private var imageData = ImageData()
+    @StateObject private var locationManagerModel = LocationManagerModel()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(imageData)
+                .environmentObject(locationManagerModel)
         }
     }
 }

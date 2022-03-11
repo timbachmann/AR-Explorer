@@ -10,21 +10,24 @@ import UIKit
 import CoreLocation
 import OpenAPIClient
 import SwiftUI
+import CoreLocation
 
 public struct Photo: Identifiable, Equatable {
     
     public var id: String
     public var originalData: Data
     var coordinates: Coordinates
+    var heading: CLHeading
     let locationManager: CLLocationManager = CLLocationManager()
     
-    public init(id: String = UUID().uuidString, originalData: Data) {
+    public init(id: String = UUID().uuidString, originalData: Data, heading: CLHeading) {
         self.id = id
         self.originalData = originalData
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         let latitude = locationManager.location?.coordinate.latitude
         let longitude = locationManager.location?.coordinate.longitude
         self.coordinates = Coordinates(latitude: latitude ?? 0.0, longitude: longitude ?? 0.0)
+        self.heading = heading
     }
 }
 
