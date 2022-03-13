@@ -51,8 +51,6 @@ public class CameraService {
 //    8.
     @Published public var photo: Photo?
     
-    @EnvironmentObject var locationManagerModel: LocationManagerModel
-    
 //    MARK: Alert properties
     public var alertError: AlertError = AlertError()
     
@@ -380,11 +378,9 @@ public class CameraService {
     //    MARK: Capture Photo
     
     /// - Tag: CapturePhoto
-    public func capturePhoto() {
+    public func capturePhoto(heading: CLHeading) {
         if self.setupResult != .configurationFailed {
             self.isCameraButtonDisabled = true
-            
-            let heading = locationManagerModel.heading
             
             sessionQueue.async {
                 if let photoOutputConnection = self.photoOutput.connection(with: .video) {

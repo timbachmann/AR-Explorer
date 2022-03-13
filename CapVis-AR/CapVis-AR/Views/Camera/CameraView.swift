@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import CoreLocation
 import AVFoundation
 import OpenAPIClient
 
@@ -58,8 +59,8 @@ final class CameraModel: ObservableObject {
         service.configure()
     }
     
-    func capturePhoto() {
-        service.capturePhoto()
+    func capturePhoto(heading: CLHeading) {
+        service.capturePhoto(heading: heading)
     }
     
     func flipCamera() {
@@ -80,11 +81,12 @@ struct CameraView: View {
     @Binding var selectedTab: ContentView.Tab
     @State var currentZoomFactor: CGFloat = 1.0
     @EnvironmentObject var imageData: ImageData
+    @EnvironmentObject var locationManagerModel: LocationManagerModel
     @State var isLoading: Bool = false
     
     var captureButton: some View {
         Button(action: {
-            model.capturePhoto()
+            model.capturePhoto(heading: locationManagerModel.heading)
             isLoading = true
         }, label: {
             Circle()

@@ -24,6 +24,7 @@ class LocationManagerModel: NSObject, ObservableObject, CLLocationManagerDelegat
         super.init()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingHeading()
         locationManager.startUpdatingLocation()
     }
     
