@@ -1,6 +1,6 @@
 //
 //  GeometryUtils.swift
-//  CapVis
+//  CapVis-AR
 //
 //  Created by Tim Bachmann on 28.01.22.
 //
@@ -12,21 +12,39 @@ import UIKit
 
 class GeometryUtils {
     
-    static func calculateDistance(first: SCNVector3, second: SCNVector3) -> Float {
-        var distance:Float = sqrt(
-            pow(second.x - first.x, 2) +
-            pow(second.y - first.y, 2) +
-            pow(second.z - first.z, 2)
-        )
-        
-        distance *= 100 // convert in cm
-        return abs(distance)
+    static func transformMatrix(_ matrix:simd_float4x4,_ originLocation:CLLocation, _ waypointLocation: CLLocation) -> simd_float4x4 {
+        let bearing = bearingBetweenLocations(originLocation, waypointLocation)
+        let rotationMatrix = rotateAroundY(matrix_identity_float4x4, Float(bearing))
+        let distance = originLocation.distance(from: waypointLocation)
+        let position = vector_float4(0.0, 0.0, Float(distance), 0.0)
+        let translationMatrix = getTranslationMatrix(matrix_identity_float4x4, position)
+        let transformMatrix = simd_mul(rotationMatrix, translationMatrix)
+        return simd_mul(matrix, transformMatrix)
     }
     
-    static func calculateDistance(firstNode: SCNNode, secondNode:SCNNode) -> Float {
-        return calculateDistance(first: firstNode.position, second: secondNode.position)
+    func bearingBetweenLocations(_ originLocation: CLLocation, _ waypointLocation: CLLocation) -> Double {
+        let lat1 = GLKMathDegreesToRadians(Float(originLocation.coordinate.latitude))
+        let lon1 = GLKMathDegreesToRadians(Float(originLocation.coordinate.longitude))
+        let lat2 = GLKMathDegreesToRadians(Float(waypointLocation.coordinate.latitude))
+        let lon2 = GLKMathDegreesToRadians(Float(waypointLocation.coordinate.longitude))
+        let longitudeDiff = lon2 - lon1
+        let y = sin(longitudeDiff) * cos(lat2);
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(longitudeDiff);
+        return Double(atan2(y, x))
     }
     
+    func rotateAroundY(_ matrix: simd_float4x4, _ degrees: Float) -> simd_float4x4 {
+        var matrix = matrix
+        matrix.columns.0.x = cos(degrees)
+        matrix.columns.0.z = -sin(degrees)
+        matrix.columns.2.x = sin(degrees)
+        matrix.columns.2.z = cos(degrees)
+        return matrix.inverse
+    }
     
-    
+    func getTranslationMatrix(_ matrix:simd_float4x4, _ translation:vector_float4)->simd_float4x4 {
+        var matrix = matrix
+        matrix.columns.3 = translation
+        return matrix
+    }
 }
