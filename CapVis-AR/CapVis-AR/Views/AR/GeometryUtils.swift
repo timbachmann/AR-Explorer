@@ -13,27 +13,27 @@ import UIKit
 class GeometryUtils {
     
     static func transformMatrix(_ matrix:simd_float4x4,_ originLocation:CLLocation, _ waypointLocation: CLLocation) -> simd_float4x4 {
-        let bearing = bearingBetweenLocations(originLocation, waypointLocation)
-        let rotationMatrix = rotateAroundY(matrix_identity_float4x4, Float(bearing))
-        let distance = originLocation.distance(from: waypointLocation)
-        let position = vector_float4(0.0, 0.0, Float(distance), 0.0)
-        let translationMatrix = getTranslationMatrix(matrix_identity_float4x4, position)
-        let transformMatrix = simd_mul(rotationMatrix, translationMatrix)
+        let bearing: Double = bearingBetweenLocations(originLocation, waypointLocation)
+        let rotationMatrix: simd_float4x4 = rotateAroundY(matrix_identity_float4x4, Float(bearing))
+        let distance: CLLocationDistance = originLocation.distance(from: waypointLocation)
+        let position: simd_float4 = vector_float4(0.0, 0.0, Float(distance), 0.0)
+        let translationMatrix: simd_float4x4 = getTranslationMatrix(matrix_identity_float4x4, position)
+        let transformMatrix: simd_float4x4 = simd_mul(rotationMatrix, translationMatrix)
         return simd_mul(matrix, transformMatrix)
     }
     
-    func bearingBetweenLocations(_ originLocation: CLLocation, _ waypointLocation: CLLocation) -> Double {
-        let lat1 = GLKMathDegreesToRadians(Float(originLocation.coordinate.latitude))
-        let lon1 = GLKMathDegreesToRadians(Float(originLocation.coordinate.longitude))
-        let lat2 = GLKMathDegreesToRadians(Float(waypointLocation.coordinate.latitude))
-        let lon2 = GLKMathDegreesToRadians(Float(waypointLocation.coordinate.longitude))
-        let longitudeDiff = lon2 - lon1
-        let y = sin(longitudeDiff) * cos(lat2);
-        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(longitudeDiff);
+    static func bearingBetweenLocations(_ originLocation: CLLocation, _ waypointLocation: CLLocation) -> Double {
+        let lat1: Float = GLKMathDegreesToRadians(Float(originLocation.coordinate.latitude))
+        let lon1: Float = GLKMathDegreesToRadians(Float(originLocation.coordinate.longitude))
+        let lat2: Float = GLKMathDegreesToRadians(Float(waypointLocation.coordinate.latitude))
+        let lon2: Float = GLKMathDegreesToRadians(Float(waypointLocation.coordinate.longitude))
+        let longitudeDiff: Float = lon2 - lon1
+        let y: Float = sin(longitudeDiff) * cos(lat2);
+        let x: Float = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(longitudeDiff);
         return Double(atan2(y, x))
     }
     
-    func rotateAroundY(_ matrix: simd_float4x4, _ degrees: Float) -> simd_float4x4 {
+    static func rotateAroundY(_ matrix: simd_float4x4, _ degrees: Float) -> simd_float4x4 {
         var matrix = matrix
         matrix.columns.0.x = cos(degrees)
         matrix.columns.0.z = -sin(degrees)
@@ -42,7 +42,7 @@ class GeometryUtils {
         return matrix.inverse
     }
     
-    func getTranslationMatrix(_ matrix:simd_float4x4, _ translation:vector_float4)->simd_float4x4 {
+    static func getTranslationMatrix(_ matrix:simd_float4x4, _ translation:vector_float4) -> simd_float4x4 {
         var matrix = matrix
         matrix.columns.3 = translation
         return matrix
