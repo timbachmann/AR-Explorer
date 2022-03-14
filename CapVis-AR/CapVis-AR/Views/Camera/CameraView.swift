@@ -115,9 +115,6 @@ struct CameraView: View {
                         .padding()
                         .frame(width: 54, height: 54)
                         .foregroundColor(Color.accentColor)
-                        .onAppear(perform: {
-                            savePhotoToList()
-                        })
                 }
                 
             } else {
@@ -220,6 +217,7 @@ struct CameraView: View {
 extension CameraView {
     
     func savePhotoToList() {
+        print("Saving photo...")
         let date = Date()
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
