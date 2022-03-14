@@ -49,12 +49,12 @@ struct Home: View {
                                 .foregroundColor(Color.accentColor)
                         })
                             .frame(width: buttonSize, height: buttonSize)
-                            .background(Color.white.opacity(buttonOpacity))
+                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                             .cornerRadius(10.0, corners: [.topLeft, .topRight])
                         
                         Divider()
                             .frame(width: buttonSize)
-                            .background(Color.white.opacity(buttonOpacity))
+                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                         
                         Button(action: {
                             zoomOnLocation()
@@ -65,11 +65,11 @@ struct Home: View {
                         })
                             .clipShape(Rectangle())
                             .frame(width: buttonSize, height: buttonSize)
-                            .background(Color.white.opacity(buttonOpacity))
+                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                         
                         Divider()
                             .frame(width: buttonSize)
-                            .background(Color.white.opacity(buttonOpacity))
+                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                         
                         Button(action: {
                             $showGallery.wrappedValue.toggle()
@@ -80,11 +80,11 @@ struct Home: View {
                         })
                             .clipShape(Rectangle())
                             .frame(width: buttonSize, height: buttonSize)
-                            .background(Color.white.opacity(buttonOpacity))
+                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                         
                         Divider()
                             .frame(width: buttonSize)
-                            .background(Color.white.opacity(buttonOpacity))
+                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                         
                         Button(action: {
                             $showFilter.wrappedValue.toggle()
@@ -100,7 +100,7 @@ struct Home: View {
                             }
                         })
                             .frame(width: buttonSize, height: buttonSize)
-                            .background(Color.white.opacity(buttonOpacity))
+                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                             .cornerRadius(10.0, corners: [.bottomLeft, .bottomRight])
                     }
                     .padding(.top, 56)
@@ -123,7 +123,7 @@ struct Home: View {
             
             if $mapStyleSheetVisible.wrappedValue {
                 ZStack {
-                    Color.white
+                    Color(UIColor.systemBackground)
                     VStack {
                         Text("Map Style")
                         Spacer()
@@ -213,5 +213,16 @@ extension MKCoordinateRegion: Equatable {
         } else {
             return false
         }
+    }
+}
+
+extension UINavigationController: UIGestureRecognizerDelegate {
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
     }
 }
