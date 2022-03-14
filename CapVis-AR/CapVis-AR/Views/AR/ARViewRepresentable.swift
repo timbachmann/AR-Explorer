@@ -35,13 +35,14 @@ struct ARViewRepresentable: UIViewRepresentable {
             if distance < 50 {
                 
                 let image = UIImage(data: apiImage.data, scale: CGFloat(1.0))!
-                let width = image.size.width
-                let height = image.size.height
+                let width = image.size.height
+                let height = image.size.width
                 
                 let scnPlane = SCNPlane(width: width*0.0008, height: height*0.0008)
                 
                 let imageNode = SCNNode(geometry: scnPlane)
                 imageNode.geometry?.firstMaterial?.diffuse.contents = image
+                imageNode.geometry?.firstMaterial?.isDoubleSided = true
                 imageNode.rotation = SCNVector4Make(0, 0, 1, .pi / -2)
                 
                 print(distance)
