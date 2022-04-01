@@ -14,7 +14,8 @@ struct DetailView: View {
     @State private var detailDate: Text?
     @State private var detailSource: Text?
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
-    var image: ApiImage
+    @State var image: ApiImage
+    @Binding var images: [ApiImage]
     @Binding var showSelf: Bool
     
     var body: some View {
@@ -39,14 +40,36 @@ struct DetailView: View {
                 Image(systemName: "chevron.backward")
                 Text("Back")
             }
-            
         })
     }
 }
 extension DetailView {
     
     func loadImage(){
-        
+        print(image.data)
+        if image.data == Data() {
+            print(image.data)
+            ImageAPI.getImageById(imageId: image.id) { (response, error) in
+                guard error == nil else {
+                    print(error ?? "Unknown Error")
+                    return
+                }
+
+                if (response != nil) {
+                    var currImage = images.remove(at: images.firstIndex{$0.id == image.id}!)
+                    currImage.data = response!.data
+                    images.append(currImage)
+                    image = currImage
+                    setImage()
+                    dump(response)
+                }
+            }
+        } else {
+            setImage()
+        }
+    }
+    
+    func setImage() {
         let uiImage = UIImage(data: image.data)
         detailImage = Image(uiImage: uiImage!)
         
@@ -60,7 +83,6 @@ extension DetailView {
         
         detailDate = Text(formatter.string(from: date))
         detailSource = Text(image.source)
-        
     }
 }
 

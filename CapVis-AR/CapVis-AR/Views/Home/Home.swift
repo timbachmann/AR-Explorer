@@ -35,163 +35,164 @@ struct Home: View {
     @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: 0.0051, longitudeDelta: 0.0051))
     
     var body: some View {
-        ZStack {
-            MapView(mapMarkerImages: $imageData.capVisImages,showDetail: $showDetail, detailId: $detailId, zoomOnLocation: $zoomOnLocation, changeMapType: $changeMapType, applyAnnotations: $applyAnnotations, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
-                .edgesIgnoringSafeArea(.top)
-                .onChange(of: imageData.capVisImages) { tag in
-                    applyAnnotations = true
-                }
-            
-            VStack {
-                HStack {
-                    Spacer()
-                    VStack(alignment: .leading) {
-                        VStack(spacing: 0) {
-                            Button(action: {
-                                mapStyleSheetVisible = !mapStyleSheetVisible
-                            }, label: {
-                                Image(systemName: "map")
-                                    .padding()
-                                    .foregroundColor(Color.accentColor)
-                            })
-                            .frame(width: buttonSize, height: buttonSize)
-                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            .cornerRadius(10.0, corners: [.topLeft, .topRight])
-                            
-                            Divider()
-                                .frame(width: buttonSize)
-                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            
-                            Button(action: {
-                                requestZoomOnLocation()
-                            }, label: {
-                                Image(systemName: "location")
-                                    .padding()
-                                    .foregroundColor(Color.accentColor)
-                            })
-                            .clipShape(Rectangle())
-                            .frame(width: buttonSize, height: buttonSize)
-                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            
-                            Divider()
-                                .frame(width: buttonSize)
-                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            
-                            Button(action: {
-                                $showGallery.wrappedValue.toggle()
-                            }, label: {
-                                Image(systemName: "square.grid.2x2")
-                                    .padding()
-                                    .foregroundColor(Color.accentColor)
-                            })
-                            .clipShape(Rectangle())
-                            .frame(width: buttonSize, height: buttonSize)
-                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            
-                            Divider()
-                                .frame(width: buttonSize)
-                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            
-                            Button(action: {
-                                if !$imageData.localFilesSynced.wrappedValue {
-                                    syncLocalFiles()
-                                }
-                            }, label: {
-                                if $imageData.localFilesSynced.wrappedValue {
-                                    Image(systemName: "checkmark.icloud")
-                                        .padding()
-                                        .foregroundColor(Color.accentColor)
-                                } else {
-                                    Image(systemName: "arrow.counterclockwise.icloud")
-                                        .padding()
-                                        .foregroundColor(Color.accentColor)
-                                }
-                            })
-                            .clipShape(Rectangle())
-                            .frame(width: buttonSize, height: buttonSize)
-                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            
-                            Divider()
-                                .frame(width: buttonSize)
-                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            
-                            Button(action: {
-                                $showFilter.wrappedValue.toggle()
-                            }, label: {
-                                if $isLoading.wrappedValue {
-                                    ProgressView()
-                                        .padding()
-                                        .foregroundColor(Color.accentColor)
-                                } else {
-                                    Image(systemName: "text.magnifyingglass")
-                                        .padding()
-                                        .foregroundColor(Color.accentColor)
-                                }
-                            })
-                            .frame(width: buttonSize, height: buttonSize)
-                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                            .cornerRadius(10.0, corners: [.bottomLeft, .bottomRight])
-                        }
-                        .padding(.top, 56)
-                        Spacer()
+        NavigationView {
+            ZStack {
+                MapView(mapMarkerImages: $imageData.capVisImages,showDetail: $showDetail, detailId: $detailId, zoomOnLocation: $zoomOnLocation, changeMapType: $changeMapType, applyAnnotations: $applyAnnotations, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
+                    .edgesIgnoringSafeArea(.top)
+                    .onChange(of: imageData.capVisImages) { tag in
+                        applyAnnotations = true
                     }
-                    .padding(8.0)
+                
+                VStack {
+                    HStack {
+                        Spacer()
+                        VStack(alignment: .leading) {
+                            VStack(spacing: 0) {
+                                Button(action: {
+                                    mapStyleSheetVisible = !mapStyleSheetVisible
+                                }, label: {
+                                    Image(systemName: "map")
+                                        .padding()
+                                        .foregroundColor(Color.accentColor)
+                                })
+                                .frame(width: buttonSize, height: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                .cornerRadius(10.0, corners: [.topLeft, .topRight])
+                                
+                                Divider()
+                                    .frame(width: buttonSize)
+                                    .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                
+                                Button(action: {
+                                    requestZoomOnLocation()
+                                }, label: {
+                                    Image(systemName: "location")
+                                        .padding()
+                                        .foregroundColor(Color.accentColor)
+                                })
+                                .clipShape(Rectangle())
+                                .frame(width: buttonSize, height: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                
+                                Divider()
+                                    .frame(width: buttonSize)
+                                    .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                
+                                NavigationLink(destination: GalleryView(images: $imageData.capVisImages, showSelf: $showGallery), isActive: $showGallery) {
+                                    EmptyView()
+                                }
+                                
+                                Button(action: {
+                                    $showGallery.wrappedValue.toggle()
+                                }, label: {
+                                    Image(systemName: "square.grid.2x2")
+                                        .padding()
+                                        .foregroundColor(Color.accentColor)
+                                })
+                                .clipShape(Rectangle())
+                                .frame(width: buttonSize, height: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                
+                                Divider()
+                                    .frame(width: buttonSize)
+                                    .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                
+                                Button(action: {
+                                    if !$imageData.localFilesSynced.wrappedValue {
+                                        syncLocalFiles()
+                                    }
+                                }, label: {
+                                    if $imageData.localFilesSynced.wrappedValue {
+                                        Image(systemName: "checkmark.icloud")
+                                            .padding()
+                                            .foregroundColor(Color.accentColor)
+                                    } else {
+                                        Image(systemName: "arrow.counterclockwise.icloud")
+                                            .padding()
+                                            .foregroundColor(Color.accentColor)
+                                    }
+                                })
+                                .clipShape(Rectangle())
+                                .frame(width: buttonSize, height: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                
+                                Divider()
+                                    .frame(width: buttonSize)
+                                    .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                
+                                Button(action: {
+                                    $showFilter.wrappedValue.toggle()
+                                }, label: {
+                                    if $isLoading.wrappedValue {
+                                        ProgressView()
+                                            .padding()
+                                            .foregroundColor(Color.accentColor)
+                                    } else {
+                                        Image(systemName: "text.magnifyingglass")
+                                            .padding()
+                                            .foregroundColor(Color.accentColor)
+                                    }
+                                })
+                                .frame(width: buttonSize, height: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                                .cornerRadius(10.0, corners: [.bottomLeft, .bottomRight])
+                            }
+                            Spacer()
+                        }
+                        .padding(8.0)
+                    }
+                    if $showUploadProgress.wrappedValue {
+                        ZStack {
+                            Color(UIColor.systemBackground)
+                            HStack {
+                                ProgressView(value: uploadProgress)
+                                    .padding()
+                                Image(systemName: "icloud.and.arrow.up")
+                            }
+                            .padding()
+                        }
+                        .frame(height: 32)
+                    }
                 }
-                if $showUploadProgress.wrappedValue {
+                
+                if $showDetail.wrappedValue {
+                    NavigationLink(destination: DetailView(image: imageData.capVisImages[imageData.capVisImages.firstIndex(where: {$0.id == detailId})!], images: $imageData.capVisImages, showSelf: $showDetail), isActive: $showDetail) {
+                        EmptyView()
+                    }
+                }
+                
+                if $mapStyleSheetVisible.wrappedValue {
                     ZStack {
                         Color(UIColor.systemBackground)
-                        HStack {
-                            ProgressView(value: uploadProgress)
-                                .padding()
-                            Image(systemName: "icloud.and.arrow.up")
-                        }
-                        .padding()
+                        VStack {
+                            Text("Map Style")
+                            Spacer()
+                            Picker("", selection: $mapType) {
+                                Text("Standard").tag(MKMapType.standard)
+                                Text("Satellite").tag(MKMapType.satellite)
+                                Text("Flyover").tag(MKMapType.hybridFlyover)
+                                Text("Hybrid").tag(MKMapType.hybrid)
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .font(.largeTitle)
+                            .onChange(of: mapType) { tag in
+                                applyMapTypeChange()
+                            }
+                        }.padding()
                     }
-                    .frame(height: 32)
-                }
-            }
-            
-            if $showGallery.wrappedValue {
-                NavigationView {
-                    NavigationLink(destination: GalleryView(images: $imageData.capVisImages, showSelf: $showGallery), isActive: $showGallery) {}
-                }
-            }
-            
-            if $showDetail.wrappedValue {
-                NavigationView {
-                    NavigationLink(destination: DetailView(image: imageData.capVisImages[imageData.capVisImages.firstIndex(where: {$0.id == detailId})!], images: $imageData.capVisImages, showSelf: $showDetail), isActive: $showDetail) {}
-                }
-            }
-            
-            if $mapStyleSheetVisible.wrappedValue {
-                ZStack {
-                    Color(UIColor.systemBackground)
-                    VStack {
-                        Text("Map Style")
-                        Spacer()
-                        Picker("", selection: $mapType) {
-                            Text("Standard").tag(MKMapType.standard)
-                            Text("Satellite").tag(MKMapType.satellite)
-                            Text("Flyover").tag(MKMapType.hybridFlyover)
-                            Text("Hybrid").tag(MKMapType.hybrid)
-                        }
-                        .pickerStyle(SegmentedPickerStyle())
-                        .font(.largeTitle)
-                        .onChange(of: mapType) { tag in
-                            applyMapTypeChange()
-                        }
-                    }.padding()
-                }
-                .frame(width: 300, height: 100)
-                .cornerRadius(20).shadow(radius: 20)
-            }
-            
-            if $showFilter.wrappedValue {
-                FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading, locationManager: locationManagerModel)
-                    .frame(width: 350, height: 600)
+                    .frame(width: 300, height: 100)
                     .cornerRadius(20).shadow(radius: 20)
+                }
+                
+                if $showFilter.wrappedValue {
+                    FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading, locationManager: locationManagerModel)
+                        .frame(width: 350, height: 600)
+                        .cornerRadius(20).shadow(radius: 20)
+                }
             }
         }
+        .navigationBarHidden(true)
+        .edgesIgnoringSafeArea(.top)
     }
 }
 
@@ -276,7 +277,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
     }
-
+    
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1
     }
