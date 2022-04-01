@@ -16,7 +16,7 @@ class GeometryUtils {
         let bearing: Double = bearingBetweenLocations(originLocation, waypointLocation)
         let rotationMatrix: simd_float4x4 = rotateAroundY(matrix_identity_float4x4, Float(bearing))
         let distance: CLLocationDistance = originLocation.distance(from: waypointLocation)
-        let position: simd_float4 = vector_float4(0.0, 0.0, Float(distance), 0.0)
+        let position: simd_float4 = vector_float4(0.0, 0.0, Float(-distance), 0.0)
         let translationMatrix: simd_float4x4 = getTranslationMatrix(matrix_identity_float4x4, position)
         let transformMatrix: simd_float4x4 = simd_mul(rotationMatrix, translationMatrix)
         return simd_mul(matrix, transformMatrix)

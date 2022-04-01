@@ -19,7 +19,7 @@ struct ARViewRepresentable: UIViewRepresentable {
         arView.showsStatistics = true
         arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
         arDelegate.setARView(arView)
-        createImageNodes()
+        loadImageNodes()
         return arView
     }
     
@@ -27,14 +27,33 @@ struct ARViewRepresentable: UIViewRepresentable {
         
     }
     
-    func createImageNodes() {
-        for apiImage in imageData.capVisImages {
-            let nodeLocation = CLLocation(latitude: apiImage.lat, longitude: apiImage.lng)
+    func loadImageNodes() {
+        for var apiImage in imageData.capVisImages {
+            if apiImage.data == Data() {
+                ImageAPI.getImageById(imageId: apiImage.id) { (response, error) in
+                    guard error == nil else {
+                        print(error ?? "Unknown Error")
+                        return
+                    }
+
+                    if (response != nil) {
+                        apiImage.data = response!.data
+                        createImageNode(image: apiImage)
+                        dump(response)
+                    }
+                }
+            } else {
+                createImageNode(image: apiImage)
+            }
+        }
+    }
+    
+    func createImageNode(image: ApiImage) {
+            let nodeLocation = CLLocation(latitude: image.lat, longitude: image.lng)
             let distance = locationManagerModel.location.distance(from: nodeLocation)
             
             if distance < 50 {
-                
-                let image = UIImage(data: apiImage.data, scale: CGFloat(1.0))!
+                let image = UIImage(data: image.data, scale: CGFloat(1.0))!
                 let width = image.size.height
                 let height = image.size.width
                 
@@ -44,16 +63,10 @@ struct ARViewRepresentable: UIViewRepresentable {
                 imageNode.geometry?.firstMaterial?.diffuse.contents = image
                 imageNode.geometry?.firstMaterial?.isDoubleSided = true
                 imageNode.rotation = SCNVector4Make(0, 0, 1, .pi / -2)
-                
-                print(distance)
-                let pos = translateNode(nodeLocation)
-                print(pos)
-                imageNode.worldPosition = pos
-                // circleNode.simdWorldTransform = result.worldTransform
+                imageNode.worldPosition = translateNode(nodeLocation)
                 
                 arDelegate.placeImage(imageNode: imageNode)
             }
-        }
     }
     
     func translateNode (_ location: CLLocation) -> SCNVector3 {

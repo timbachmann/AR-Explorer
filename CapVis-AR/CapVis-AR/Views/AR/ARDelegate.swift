@@ -76,6 +76,7 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
     
     private func moveNode(_ node:SCNNode, raycastResult:ARRaycastResult) {
         node.simdWorldTransform = raycastResult.worldTransform
+        node.rotation = SCNVector4Make(0, 0, 1, .pi / -2)
         nodesUpdated()
     }
     
