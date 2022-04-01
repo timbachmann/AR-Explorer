@@ -218,6 +218,7 @@ extension CameraView {
     
     func savePhotoToList() {
         print("Saving photo...")
+        
         let date = Date()
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -225,50 +226,20 @@ extension CameraView {
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         
-        let imageToSaveDirectly = ApiImage(id: model.photo.id , data: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: Int(model.photo.heading.trueHeading))
+        let imageToSaveLocally = ApiImage(id: model.photo.id , data: model.photo.originalData, thumbnail: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: Int(model.photo.heading.trueHeading))
         
-        if !imageData.capVisImages.contains(imageToSaveDirectly) {
-            imageData.capVisImages.append(imageToSaveDirectly)
-            
-            saveImagesToFile(images: imageData.capVisImages)
-            
-            let imageToUpload = NewImageRequest(id: model.photo.id, data: model.photo.originalData, lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: Int(model.photo.heading.trueHeading))
-            
-            dump(imageToUpload)
-            
-            ImageAPI.createImage(newImageRequest: imageToUpload) { (response, error) in
-                guard error == nil else {
-                    print(error ?? "error")
-                    isLoading = false
-                    return
-                }
-                
-                if (response != nil) {
-                    isLoading = false
-                    dump(response)
-                }
-            }
+        if !imageData.capVisImages.contains(imageToSaveLocally) && !imageData.imagesToUpload.contains(imageToSaveLocally){
+            imageData.capVisImages.append(imageToSaveLocally)
+            imageData.imagesToUpload.append(imageToSaveLocally)
+            imageData.saveImagesToFile()
         }
-    }
-    
-    func getCacheDirectoryPath() -> URL {
-        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-    }
-    
-    func saveImagesToFile(images: [ApiImage]) {
-        let path = getCacheDirectoryPath().appendingPathComponent("imageData.json")
         
-        do {
-            let jsonData = try JSONEncoder().encode(images)
-            try jsonData.write(to: path)
-        } catch {
-            print("Error writing to JSON file: \(error)")
-        }
+        isLoading = false
     }
 }
 
-//struct CameraView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CameraView()
-//    }
-//}
+struct CameraView_Previews: PreviewProvider {
+    static var previews: some View {
+        CameraView(selectedTab: .constant(ContentView.Tab.camera))
+    }
+}

@@ -390,7 +390,7 @@ public class CameraService {
                 
                 // Capture HEIF photos when supported. Enable according to user settings and high-resolution photos.
                 if  self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
-                    photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+                    photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
                 }
                 
                 // Sets the flash option for this capture.
