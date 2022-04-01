@@ -11,102 +11,138 @@ import ARKit
 import OpenAPIClient
 
 struct Home: View {
+    
+    private let buttonSize: CGFloat = 48.0
+    private let buttonOpacity: CGFloat = 0.95
     @EnvironmentObject var imageData: ImageData
+    @EnvironmentObject var locationManagerModel: LocationManagerModel
     @State private var showFavoritesOnly = false
     @State private var mapStyleSheetVisible: Bool = false
     @State private var locationButtonCount: Int = 0
     @State private var isLoading: Bool = false
     @State private var detailId: String = ""
     @State private var showGallery: Bool = false
-    private let buttonSize: CGFloat = 48.0
-    private let buttonOpacity: CGFloat = 0.95
     @State private var showFilter: Bool = false
     @State private var locationManager = CLLocationManager()
     @State private var trackingMode: MKUserTrackingMode = .follow
     @State private var mapType: MKMapType = .standard
     @State private var showDetail: Bool = false
-    @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 34.011_286, longitude: CLLocationManager().location?.coordinate.longitude ?? -116.166_868), span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
-    private var filteredImages: [ApiImage] {
-        imageData.capVisImages.filter { capVisImage in
-            (!showFavoritesOnly)
-        }
-    }
+    @State private var uploadProgress = 0.0
+    @State private var showUploadProgress: Bool = false
+    @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: 0.0051, longitudeDelta: 0.0051))
     
     var body: some View {
         ZStack {
             MapView(mapMarkerImages: $imageData.capVisImages,showDetail: $showDetail, detailId: $detailId, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
                 .edgesIgnoringSafeArea(.top)
             
-            HStack {
-                Spacer()
-                VStack(alignment: .leading) {
-                    VStack(spacing: 0) {
-                        Button(action: {
-                            mapStyleSheetVisible = !mapStyleSheetVisible
-                        }, label: {
-                            Image(systemName: "map")
-                                .padding()
-                                .foregroundColor(Color.accentColor)
-                        })
+            VStack {
+                HStack {
+                    Spacer()
+                    VStack(alignment: .leading) {
+                        VStack(spacing: 0) {
+                            Button(action: {
+                                mapStyleSheetVisible = !mapStyleSheetVisible
+                            }, label: {
+                                Image(systemName: "map")
+                                    .padding()
+                                    .foregroundColor(Color.accentColor)
+                            })
                             .frame(width: buttonSize, height: buttonSize)
                             .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                             .cornerRadius(10.0, corners: [.topLeft, .topRight])
-                        
-                        Divider()
-                            .frame(width: buttonSize)
-                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                        
-                        Button(action: {
-                            zoomOnLocation()
-                        }, label: {
-                            Image(systemName: "location")
-                                .padding()
-                                .foregroundColor(Color.accentColor)
-                        })
+                            
+                            Divider()
+                                .frame(width: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                            
+                            Button(action: {
+                                zoomOnLocation()
+                            }, label: {
+                                Image(systemName: "location")
+                                    .padding()
+                                    .foregroundColor(Color.accentColor)
+                            })
                             .clipShape(Rectangle())
                             .frame(width: buttonSize, height: buttonSize)
                             .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                        
-                        Divider()
-                            .frame(width: buttonSize)
-                            .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                        
-                        Button(action: {
-                            $showGallery.wrappedValue.toggle()
-                        }, label: {
-                            Image(systemName: "square.grid.2x2")
-                                .padding()
-                                .foregroundColor(Color.accentColor)
-                        })
+                            
+                            Divider()
+                                .frame(width: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                            
+                            Button(action: {
+                                $showGallery.wrappedValue.toggle()
+                            }, label: {
+                                Image(systemName: "square.grid.2x2")
+                                    .padding()
+                                    .foregroundColor(Color.accentColor)
+                            })
                             .clipShape(Rectangle())
                             .frame(width: buttonSize, height: buttonSize)
                             .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                        
-                        Divider()
-                            .frame(width: buttonSize)
+                            
+                            Divider()
+                                .frame(width: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                            
+                            Button(action: {
+                                if !$imageData.localFilesSynced.wrappedValue {
+                                    syncLocalFiles()
+                                }
+                            }, label: {
+                                if $imageData.localFilesSynced.wrappedValue {
+                                    Image(systemName: "checkmark.icloud")
+                                        .padding()
+                                        .foregroundColor(Color.accentColor)
+                                } else {
+                                    Image(systemName: "arrow.counterclockwise.icloud")
+                                        .padding()
+                                        .foregroundColor(Color.accentColor)
+                                }
+                            })
+                            .clipShape(Rectangle())
+                            .frame(width: buttonSize, height: buttonSize)
                             .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
-                        
-                        Button(action: {
-                            $showFilter.wrappedValue.toggle()
-                        }, label: {
-                            if $isLoading.wrappedValue {
-                                ProgressView()
-                                    .padding()
-                                    .foregroundColor(Color.accentColor)
-                            } else {
-                                Image(systemName: "text.magnifyingglass")
-                                    .padding()
-                                    .foregroundColor(Color.accentColor)
-                            }
-                        })
+                            
+                            Divider()
+                                .frame(width: buttonSize)
+                                .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
+                            
+                            Button(action: {
+                                $showFilter.wrappedValue.toggle()
+                            }, label: {
+                                if $isLoading.wrappedValue {
+                                    ProgressView()
+                                        .padding()
+                                        .foregroundColor(Color.accentColor)
+                                } else {
+                                    Image(systemName: "text.magnifyingglass")
+                                        .padding()
+                                        .foregroundColor(Color.accentColor)
+                                }
+                            })
                             .frame(width: buttonSize, height: buttonSize)
                             .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                             .cornerRadius(10.0, corners: [.bottomLeft, .bottomRight])
+                        }
+                        .padding(.top, 56)
+                        Spacer()
                     }
-                    .padding(.top, 56)
-                    Spacer()
+                    .padding(8.0)
                 }
-                .padding(8.0)
+                if $showUploadProgress.wrappedValue {
+                    ZStack {
+                        Color(UIColor.systemBackground)
+                        HStack {
+                            ProgressView(value: uploadProgress)
+                                .padding()
+                            Image(systemName: "icloud.and.arrow.up")
+                        }
+                        .padding()
+                    }
+                    .frame(height: 32)
+                }
             }
             
             if $showGallery.wrappedValue {
@@ -117,7 +153,7 @@ struct Home: View {
             
             if $showDetail.wrappedValue {
                 NavigationView {
-                    NavigationLink(destination: DetailView(image: imageData.capVisImages[imageData.capVisImages.firstIndex(where: {$0.id == detailId})!], showSelf: $showDetail), isActive: $showDetail) {}
+                    NavigationLink(destination: DetailView(image: imageData.capVisImages[imageData.capVisImages.firstIndex(where: {$0.id == detailId})!], images: $imageData.capVisImages, showSelf: $showDetail), isActive: $showDetail) {}
                 }
             }
             
@@ -145,9 +181,9 @@ struct Home: View {
             }
             
             if $showFilter.wrappedValue {
-                FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading)
-                .frame(width: 350, height: 600)
-                .cornerRadius(20).shadow(radius: 20)
+                FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading, locationManager: locationManagerModel)
+                    .frame(width: 350, height: 600)
+                    .cornerRadius(20).shadow(radius: 20)
             }
         }
     }
@@ -161,23 +197,34 @@ extension Home {
     }
     
     func zoomOnLocation() {
-        let span: Double = locationButtonCount % 2 == 0 ? 0.01 : 0.011
-        coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 34.011_286, longitude: CLLocationManager().location?.coordinate.longitude ?? -116.166_868), span: MKCoordinateSpan(latitudeDelta: span, longitudeDelta: span))
+        let span: Double = locationButtonCount % 2 == 0 ? 0.005001 : 0.005002
+        coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: span, longitudeDelta: span))
         locationButtonCount += 1
     }
     
-    func getCacheDirectoryPath() -> URL {
-        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-    }
-    
-    func saveImagesToFile(images: [ApiImage]) {
-        let path = getCacheDirectoryPath().appendingPathComponent("imageData.json")
+    func syncLocalFiles() {
+        let progFrac: Double = (1.0/Double(imageData.imagesToUpload.count))
+        showUploadProgress = true
         
-        do {
-            let jsonData = try JSONEncoder().encode(images)
-            try jsonData.write(to: path)
-        } catch {
-            print("Error writing to JSON file: \(error)")
+        for newImage in imageData.imagesToUpload {
+            
+            let newImageRequest = NewImageRequest(id: newImage.id, data: newImage.data, lat: newImage.lat, lng: newImage.lng, date: newImage.date, source: newImage.source, bearing: newImage.bearing)
+            
+            ImageAPI.createImage(newImageRequest: newImageRequest) { (response, error) in
+                guard error == nil else {
+                    print(error ?? "error")
+                    return
+                }
+                
+                if (response != nil) {
+                    dump(response)
+                    imageData.imagesToUpload.remove(at: imageData.imagesToUpload.firstIndex(of: newImage)!)
+                    uploadProgress += progFrac
+                    imageData.localFilesSynced = imageData.imagesToUpload.isEmpty
+                    showUploadProgress = !imageData.imagesToUpload.isEmpty
+                    imageData.saveImagesToFile()
+                }
+            }
         }
     }
 }

@@ -52,19 +52,14 @@ struct MapView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> MapView.Coordinator {
-        Coordinator(self)
-    }
-    
-    func setShowDetail(value: Bool) {
-        showDetail = value
-    }
-    
-    func setDetailId(value: String) {
-        detailId = value
+        Coordinator(self, mapImages: $mapMarkerImages, detailId: $detailId, showDetail: $showDetail)
     }
     
     class Coordinator: NSObject, MKMapViewDelegate {
         
+        @Binding var mapImages: [ApiImage]
+        @Binding var showDetail: Bool
+        @Binding var detailId: String
         private let mapView: MapView
         let identifier = "Annotation"
         let clusterIdentifier = "Cluster"
@@ -96,8 +91,11 @@ struct MapView: UIViewRepresentable {
             }
         }
         
-        init(_ mapView: MapView) {
+        init(_ mapView: MapView, mapImages: Binding<[ApiImage]>, detailId: Binding<String>, showDetail: Binding<Bool>) {
             self.mapView = mapView
+            _mapImages = mapImages
+            _detailId = detailId
+            _showDetail = showDetail
         }
         
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -134,16 +132,26 @@ struct MapView: UIViewRepresentable {
         func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
             guard view is ImageAnnotationView else { return }
             if let imageAnnotation = view.annotation as? ImageAnnotation {
-                self.mapView.setDetailId(value: imageAnnotation.id!)
-                self.mapView.setShowDetail(value: true)
+                detailId = imageAnnotation.id!
+                showDetail = true
             }
+        }
+        
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            guard let circleOverlay = overlay as? MKCircle else {
+                return MKOverlayRenderer()
+            }
+            let circleRenderer = MKCircleRenderer(overlay: circleOverlay)
+            circleRenderer.fillColor = .blue
+            circleRenderer.alpha = 0.1
+            return circleRenderer
         }
     }
     
     func addAnnotations(to mapView: MKMapView) {
         for image in mapMarkerImages {
             
-            var finalImage: UIImage = UIImage(data: image.data)!
+            var finalImage: UIImage = UIImage(data: image.thumbnail)!
             finalImage = finalImage.scalePreservingAspectRatio(targetSize: CGSize(width: 48.0, height: 48.0))
             
             let formatter = DateFormatter()
@@ -164,6 +172,18 @@ struct MapView: UIViewRepresentable {
             
             mapView.addAnnotation(annotation)
         }
+    }
+    
+    func addCircle(to view: MKMapView) {
+        
+        let radius: Double = 50
+        if !view.overlays.isEmpty { view.removeOverlays(view.overlays) }
+        
+        let aCircle = MKCircle(center: view.centerCoordinate, radius: radius)
+        let mapRect = aCircle.boundingMapRect
+        
+        view.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
+        view.addOverlay(aCircle)
     }
 }
 

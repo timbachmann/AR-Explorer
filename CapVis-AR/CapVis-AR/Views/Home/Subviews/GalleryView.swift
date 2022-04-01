@@ -26,9 +26,9 @@ struct GalleryView: View {
             LazyVGrid(columns: threeColumnGrid, spacing: 20) {
                 ForEach(images) { item in
                     
-                    NavigationLink(destination: DetailView(image: item, showSelf: $showDetail)) {
+                    NavigationLink(destination: DetailView(image: item, images: $images, showSelf: $showDetail)) {
                         
-                        Image(uiImage: UIImage(data: item.data)!)
+                        Image(uiImage: UIImage(data: item.thumbnail)!)
                             .resizable()
                             .scaledToFill()
                             .frame(minWidth: 0, maxWidth: .infinity)
