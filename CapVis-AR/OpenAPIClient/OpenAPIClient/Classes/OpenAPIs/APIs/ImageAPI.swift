@@ -56,14 +56,15 @@ open class ImageAPI {
     }
 
     /**
-     Get all images
+     Delete image by id
      
+     - parameter imageId: (path) id to search for 
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getAllImages(apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ImageListResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getAllImagesWithRequestBuilder().execute(apiResponseQueue) { result in
+    open class func deleteImageById(imageId: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ApiImage?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteImageByIdWithRequestBuilder(imageId: imageId).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -74,16 +75,78 @@ open class ImageAPI {
     }
 
     /**
-     Get all images
-     - GET /images
-     - returns: RequestBuilder<ImageListResponse> 
+     Delete image by id
+     - DELETE /images/{imageId}
+     - parameter imageId: (path) id to search for 
+     - returns: RequestBuilder<ApiImage> 
      */
-    open class func getAllImagesWithRequestBuilder() -> RequestBuilder<ImageListResponse> {
-        let localVariablePath = "/images"
+    open class func deleteImageByIdWithRequestBuilder(imageId: String) -> RequestBuilder<ApiImage> {
+        var localVariablePath = "/images/{imageId}"
+        let imageIdPreEscape = "\(APIHelper.mapValueToPathItem(imageId))"
+        let imageIdPostEscape = imageIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{imageId}", with: imageIdPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ApiImage>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+
+    /**
+     Get all images with filter
+     
+     - parameter startDate: (query) start date for temporal filter 
+     - parameter endDate: (query) end date for temporal filter 
+     - parameter lat: (query) latitude for spatial filter 
+     - parameter lng: (query) longitude for spatial filter 
+     - parameter radius: (query) radius for spatial filter 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func getAllImagesWithFilter(startDate: String, endDate: String, lat: String, lng: String, radius: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ImageListResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAllImagesWithFilterWithRequestBuilder(startDate: startDate, endDate: endDate, lat: lat, lng: lng, radius: radius).execute(apiResponseQueue) { result in
+            switch result {
+            case let .success(response):
+                completion(response.body, nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Get all images with filter
+     - GET /images
+     - parameter startDate: (query) start date for temporal filter 
+     - parameter endDate: (query) end date for temporal filter 
+     - parameter lat: (query) latitude for spatial filter 
+     - parameter lng: (query) longitude for spatial filter 
+     - parameter radius: (query) radius for spatial filter 
+     - returns: RequestBuilder<ImageListResponse> 
+     */
+    open class func getAllImagesWithFilterWithRequestBuilder(startDate: String, endDate: String, lat: String, lng: String, radius: String) -> RequestBuilder<ImageListResponse> {
+        let localVariablePath = "/images"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "startDate": startDate,
+            "endDate": endDate,
+            "lat": lat,
+            "lng": lng,
+            "radius": radius,
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             :

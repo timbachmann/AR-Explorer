@@ -26,7 +26,8 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *ImageAPI* | [**createImage**](docs/ImageAPI.md#createimage) | **POST** /images | Create new image
-*ImageAPI* | [**getAllImages**](docs/ImageAPI.md#getallimages) | **GET** /images | Get all images
+*ImageAPI* | [**deleteImageById**](docs/ImageAPI.md#deleteimagebyid) | **DELETE** /images/{imageId} | Delete image by id
+*ImageAPI* | [**getAllImagesWithFilter**](docs/ImageAPI.md#getallimageswithfilter) | **GET** /images | Get all images with filter
 *ImageAPI* | [**getImageById**](docs/ImageAPI.md#getimagebyid) | **GET** /images/{imageId} | Get image by id
 
 

@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | 
 **data** | **[Data]** |  | 
+**thumbnail** | **[Data]** |  | 
 **lat** | **Double** |  | 
 **lng** | **Double** |  | 
 **date** | **String** |  | 
