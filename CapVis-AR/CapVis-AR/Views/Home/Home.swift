@@ -29,12 +29,18 @@ struct Home: View {
     @State private var showDetail: Bool = false
     @State private var uploadProgress = 0.0
     @State private var showUploadProgress: Bool = false
+    @State private var zoomOnLocation: Bool = false
+    @State private var changeMapType: Bool = false
+    @State private var applyAnnotations: Bool = false
     @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: 0.0051, longitudeDelta: 0.0051))
     
     var body: some View {
         ZStack {
-            MapView(mapMarkerImages: $imageData.capVisImages,showDetail: $showDetail, detailId: $detailId, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
+            MapView(mapMarkerImages: $imageData.capVisImages,showDetail: $showDetail, detailId: $detailId, zoomOnLocation: $zoomOnLocation, changeMapType: $changeMapType, applyAnnotations: $applyAnnotations, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
                 .edgesIgnoringSafeArea(.top)
+                .onChange(of: imageData.capVisImages) { tag in
+                    applyAnnotations = true
+                }
             
             VStack {
                 HStack {
@@ -57,7 +63,7 @@ struct Home: View {
                                 .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                             
                             Button(action: {
-                                zoomOnLocation()
+                                requestZoomOnLocation()
                             }, label: {
                                 Image(systemName: "location")
                                     .padding()
@@ -192,11 +198,13 @@ struct Home: View {
 extension Home {
     
     func applyMapTypeChange() {
+        changeMapType = true
         mapStyleSheetVisible = false
         MKMapView.appearance().mapType = mapType
     }
     
-    func zoomOnLocation() {
+    func requestZoomOnLocation() {
+        zoomOnLocation = true
         let span: Double = locationButtonCount % 2 == 0 ? 0.005001 : 0.005002
         coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: span, longitudeDelta: span))
         locationButtonCount += 1

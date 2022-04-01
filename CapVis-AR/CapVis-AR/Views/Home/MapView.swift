@@ -23,6 +23,9 @@ struct MapView: UIViewRepresentable {
     @Binding var mapMarkerImages: [ApiImage]
     @Binding var showDetail: Bool
     @Binding var detailId: String
+    @Binding var zoomOnLocation: Bool
+    @Binding var changeMapType: Bool
+    @Binding var applyAnnotations: Bool
     let region: MKCoordinateRegion
     let mapType: MKMapType
     let showsUserLocation: Bool
@@ -45,10 +48,18 @@ struct MapView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<MapView>) {
-        uiView.mapType = mapType
-        uiView.setRegion(region, animated: true)
-        uiView.removeAnnotations(uiView.annotations)
-        addAnnotations(to: uiView)
+        if changeMapType {
+            uiView.mapType = mapType
+        }
+        if zoomOnLocation {
+            uiView.setRegion(region, animated: true)
+            zoomOnLocation = false
+        }
+        if applyAnnotations {
+            uiView.removeAnnotations(uiView.annotations)
+            addAnnotations(to: uiView)
+            applyAnnotations = false
+        }
     }
     
     func makeCoordinator() -> MapView.Coordinator {
