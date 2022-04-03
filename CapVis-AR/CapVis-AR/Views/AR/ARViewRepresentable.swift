@@ -11,20 +11,24 @@ import OpenAPIClient
 
 struct ARViewRepresentable: UIViewRepresentable {
     let arDelegate:ARDelegate
+    @Binding var redrawImages: Bool
     @EnvironmentObject var imageData: ImageData
     @EnvironmentObject var locationManagerModel: LocationManagerModel
+    @State var nodes: [SCNNode] = []
     
     func makeUIView(context: Context) -> some UIView {
         let arView = ARSCNView(frame: .zero)
-        arView.showsStatistics = true
-        arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
+        //arView.showsStatistics = true
+        //arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
         arDelegate.setARView(arView)
         loadImageNodes()
         return arView
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
-        
+        if redrawImages {
+            refreshImages()
+        }
     }
     
     func loadImageNodes() {
@@ -35,7 +39,7 @@ struct ARViewRepresentable: UIViewRepresentable {
                         print(error ?? "Unknown Error")
                         return
                     }
-
+                    
                     if (response != nil) {
                         apiImage.data = response!.data
                         createImageNode(image: apiImage)
@@ -49,34 +53,44 @@ struct ARViewRepresentable: UIViewRepresentable {
     }
     
     func createImageNode(image: ApiImage) {
-            let nodeLocation = CLLocation(latitude: image.lat, longitude: image.lng)
-            let distance = locationManagerModel.location.distance(from: nodeLocation)
+        let nodeLocation = CLLocation(latitude: image.lat, longitude: image.lng)
+        let distance = locationManagerModel.location.distance(from: nodeLocation)
+        
+        if distance < 50 {
+            let image = UIImage(data: image.data, scale: CGFloat(1.0))!
+            let width = image.size.height
+            let height = image.size.width
             
-            if distance < 50 {
-                let image = UIImage(data: image.data, scale: CGFloat(1.0))!
-                let width = image.size.height
-                let height = image.size.width
-                
-                let scnPlane = SCNPlane(width: width*0.0008, height: height*0.0008)
-                
-                let imageNode = SCNNode(geometry: scnPlane)
-                imageNode.geometry?.firstMaterial?.diffuse.contents = image
-                imageNode.geometry?.firstMaterial?.isDoubleSided = true
-                imageNode.rotation = SCNVector4Make(0, 0, 1, .pi / -2)
-                imageNode.worldPosition = translateNode(nodeLocation)
-                
-                arDelegate.placeImage(imageNode: imageNode)
-            }
+            let scnPlane = SCNPlane(width: width*0.0008, height: height*0.0008)
+            
+            let imageNode = SCNNode(geometry: scnPlane)
+            imageNode.geometry?.firstMaterial?.diffuse.contents = image
+            imageNode.geometry?.firstMaterial?.isDoubleSided = true
+            imageNode.rotation = SCNVector4Make(0, 0, 1, .pi / -2)
+            imageNode.worldPosition = translateNode(nodeLocation)
+            
+            nodes.append(imageNode)
+            arDelegate.placeImage(imageNode: imageNode)
+        }
     }
     
     func translateNode (_ location: CLLocation) -> SCNVector3 {
         let locationTransform = GeometryUtils.transformMatrix(matrix_identity_float4x4, locationManagerModel.location, location)
         return SCNVector3Make(locationTransform.columns.3.x, locationTransform.columns.3.y, locationTransform.columns.3.z)
     }
+    
+    func refreshImages() {
+        for node in nodes {
+            arDelegate.removeImage(node: node)
+            nodes.remove(at: nodes.firstIndex(of: node)!)
+        }
+        loadImageNodes()
+        redrawImages.toggle()
+    }
 }
 
 struct ARViewRepresentable_Previews: PreviewProvider {
     static var previews: some View {
-        ARViewRepresentable(arDelegate: ARDelegate())
+        ARViewRepresentable(arDelegate: ARDelegate(), redrawImages: .constant(false))
     }
 }

@@ -12,13 +12,13 @@ struct AR: View {
     
     @Binding var selectedTab: ContentView.Tab
     @ObservedObject var arDelegate = ARDelegate()
-    
+    @State var redrawImages: Bool = false
     
     var body: some View {
         ZStack {
             Color.black
             if selectedTab == .ar {
-                ARViewRepresentable(arDelegate: arDelegate)
+                ARViewRepresentable(arDelegate: arDelegate, redrawImages: $redrawImages)
             } else {
                 Image(systemName: "arrow.triangle.2.circlepath")
                     .padding()
@@ -26,10 +26,16 @@ struct AR: View {
             }
             
             VStack {
-                HStack {
+                Spacer()
+                HStack (alignment: .center){
+                    Spacer()
+                    Text(arDelegate.message)
+                        .foregroundColor(Color.primary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, 20)
                     Spacer()
                     Button(action: {
-                        
+                        $redrawImages.wrappedValue.toggle()
                     }, label: {
                         Image(systemName: "arrow.triangle.2.circlepath")
                             .padding()
@@ -39,13 +45,8 @@ struct AR: View {
                     .background(Color(UIColor.systemBackground).opacity(0.95))
                     .cornerRadius(10.0, corners: [.bottomLeft, .bottomRight, .topLeft, .topRight])
                 }
-                .padding()
-                Spacer()
-                Text(arDelegate.message)
-                    .foregroundColor(Color.primary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.bottom, 20)
             }
+            .padding()
         }
         .edgesIgnoringSafeArea(.top)
     }

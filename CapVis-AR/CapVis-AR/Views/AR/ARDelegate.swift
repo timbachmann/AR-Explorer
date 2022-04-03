@@ -94,7 +94,7 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
     
     func nodesUpdated() {
         if images.count >= 1 {
-            message = "AR image(s) placed"
+            message = "\(images.count) AR images placed"
         }
         else {
             message = "Image not placed"
