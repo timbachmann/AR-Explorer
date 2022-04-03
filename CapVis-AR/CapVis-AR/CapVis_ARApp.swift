@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct CapVis_ARApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var imageData = ImageData()
     @StateObject private var locationManagerModel = LocationManagerModel()
     

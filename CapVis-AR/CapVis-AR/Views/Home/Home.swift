@@ -32,6 +32,7 @@ struct Home: View {
     @State private var zoomOnLocation: Bool = false
     @State private var changeMapType: Bool = false
     @State private var applyAnnotations: Bool = false
+    @State private var showCamera: Bool = false
     @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: 0.0051, longitudeDelta: 0.0051))
     
     var body: some View {
@@ -41,6 +42,7 @@ struct Home: View {
                     .edgesIgnoringSafeArea(.top)
                     .onChange(of: imageData.capVisImages) { tag in
                         applyAnnotations = true
+                        createNotifications()
                     }
                 
                 VStack {
@@ -78,7 +80,7 @@ struct Home: View {
                                     .frame(width: buttonSize)
                                     .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                                 
-                                NavigationLink(destination: GalleryView(images: $imageData.capVisImages, showSelf: $showGallery), isActive: $showGallery) {
+                                NavigationLink(destination: GalleryView(), isActive: $showGallery) {
                                     EmptyView()
                                 }
                                 
@@ -138,6 +140,18 @@ struct Home: View {
                                 .cornerRadius(10.0, corners: [.bottomLeft, .bottomRight])
                             }
                             Spacer()
+                                .frame(height: 24)
+                            Button(action: {
+                                $showCamera.wrappedValue.toggle()
+                            }, label: {
+                                Image(systemName: "camera")
+                                    .padding()
+                                    .foregroundColor(Color.accentColor)
+                            })
+                            .frame(width: 48.0, height: 48.0)
+                            .background(Color(UIColor.systemBackground).opacity(0.95))
+                            .cornerRadius(10.0, corners: [.bottomLeft, .bottomRight, .topLeft, .topRight])
+                            Spacer()
                         }
                         .padding(8.0)
                     }
@@ -155,11 +169,14 @@ struct Home: View {
                     }
                 }
                 
-                if $showDetail.wrappedValue {
-                    NavigationLink(destination: DetailView(image: imageData.capVisImages[imageData.capVisImages.firstIndex(where: {$0.id == detailId})!], images: $imageData.capVisImages, showSelf: $showDetail), isActive: $showDetail) {
-                        EmptyView()
-                    }
+                NavigationLink(destination: CameraView(), isActive: $showCamera) {
+                    EmptyView()
                 }
+                
+                NavigationLink(destination: DetailView(imageIndex: imageData.capVisImages.firstIndex(where: {$0.id == detailId})), isActive: $showDetail) {
+                    EmptyView()
+                }
+                
                 
                 if $mapStyleSheetVisible.wrappedValue {
                     ZStack {
@@ -186,13 +203,19 @@ struct Home: View {
                 
                 if $showFilter.wrappedValue {
                     FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading, locationManager: locationManagerModel)
-                        .frame(width: 350, height: 600)
+                        .frame(width: 350, height: 400)
                         .cornerRadius(20).shadow(radius: 20)
+                        .edgesIgnoringSafeArea(.top)
                 }
+                
             }
         }
         .navigationBarHidden(true)
+        .navigationViewStyle(.stack)
         .edgesIgnoringSafeArea(.top)
+        .onAppear(perform: {
+            requestNotificationAuthorization()
+        })
     }
 }
 
@@ -219,6 +242,8 @@ extension Home {
             
             let newImageRequest = NewImageRequest(id: newImage.id, data: newImage.data, lat: newImage.lat, lng: newImage.lng, date: newImage.date, source: newImage.source, bearing: newImage.bearing)
             
+            uploadProgress += progFrac/2
+            
             ImageAPI.createImage(newImageRequest: newImageRequest) { (response, error) in
                 guard error == nil else {
                     print(error ?? "error")
@@ -228,12 +253,64 @@ extension Home {
                 if (response != nil) {
                     dump(response)
                     imageData.imagesToUpload.remove(at: imageData.imagesToUpload.firstIndex(of: newImage)!)
-                    uploadProgress += progFrac
+                    uploadProgress += progFrac/2
                     imageData.localFilesSynced = imageData.imagesToUpload.isEmpty
                     showUploadProgress = !imageData.imagesToUpload.isEmpty
                     imageData.saveImagesToFile()
                 }
             }
+        }
+    }
+    
+    func createNotifications() {
+        
+        for image in imageData.capVisImages {
+            let notificationIdentifier = image.id + "_" + "capvisar"
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notificationIdentifier])
+            
+            let location = CLLocation(latitude: image.lat, longitude: image.lng)
+            let distance = CLLocationManager().location?.distance(from: location)
+            
+            
+            let content = UNMutableNotificationContent()
+            content.title = "New Photo in Range"
+            content.body = String(format: "%.1f m", distance ?? 0.0)
+            content.sound = UNNotificationSound.default
+            content.badge = 1
+            content.categoryIdentifier = "capVisAR"
+            content.userInfo = ["customDataKey": "cusom_data_value"]
+            
+            // 2. Create Trigger and Configure the desired behaviour - Location
+            let region = CLCircularRegion(center: location.coordinate, radius: 5, identifier: UUID().uuidString)
+            let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
+            //let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+            let request = UNNotificationRequest(identifier: notificationIdentifier, content: content, trigger: trigger)
+            let attachment = try! UNNotificationAttachment(identifier: "image" + image.id, url: getCacheDirectoryPath().appendingPathComponent(image.id).appendingPathComponent("\(image.id)-thumb.jpg"))
+            content.attachments = [attachment]
+            
+            // 3. Create the Request
+            UNUserNotificationCenter.current().add(request) { error in
+                
+                guard error == nil else { return }
+                
+                print("Notification scheduled! — ID = \(image.id)")
+            }
+            
+        }
+    }
+    
+    func getCacheDirectoryPath() -> URL {
+        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+    }
+    
+    func requestNotificationAuthorization() {
+        
+        let nc = UNUserNotificationCenter.current()
+        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+        
+        nc.requestAuthorization(options: options) { granted, _ in
+            print("\(#function) Permission granted: \(granted)")
+            guard granted else { return }
         }
     }
 }

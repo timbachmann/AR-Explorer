@@ -12,7 +12,6 @@ struct ContentView: View {
     
     enum Tab {
         case home
-        case camera
         case ar
     }
     
@@ -23,12 +22,6 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            CameraView(selectedTab: $selectedTab)
-                .tabItem {
-                    Label("Camera", systemImage: "camera")
-                }
-                .tag(Tab.camera)
-            
             Home()
                 .tabItem {
                     Label("Home", systemImage: "map")
