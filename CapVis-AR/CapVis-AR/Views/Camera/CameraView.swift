@@ -77,8 +77,8 @@ final class CameraModel: ObservableObject {
 }
 
 struct CameraView: View {
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @StateObject var model = CameraModel()
-    @Binding var selectedTab: ContentView.Tab
     @State var currentZoomFactor: CGFloat = 1.0
     @EnvironmentObject var imageData: ImageData
     @EnvironmentObject var locationManagerModel: LocationManagerModel
@@ -109,6 +109,9 @@ struct CameraView: View {
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 54, height: 54)
                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .onAppear(perform: {
+                            dismiss()
+                        })
                         
                 } else {
                     ProgressView()
@@ -118,11 +121,17 @@ struct CameraView: View {
                 }
                 
             } else {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(width: 54, height: 54, alignment: .center)
-                    .foregroundColor(.gray)
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    HStack {
+                        Image(systemName: "chevron.backward")
+                        Text("Back")
+                    }
+                })
             }
         }
+        
     }
     
     var flipCameraButton: some View {
@@ -150,45 +159,45 @@ struct CameraView: View {
                         Image(systemName: model.isFlashOn ? "bolt.fill" : "bolt.slash.fill")
                             .font(.system(size: 20, weight: .medium, design: .default))
                     })
-                        .accentColor(model.isFlashOn ? .yellow : .white)
+                    .accentColor(model.isFlashOn ? .yellow : .white)
                     
-                    if selectedTab == .camera {
-                        CameraPreview(session: model.session)
-                            .gesture(
-                                DragGesture().onChanged({ (val) in
-                                    //  Only accept vertical drag
-                                    if abs(val.translation.height) > abs(val.translation.width) {
-                                        //  Get the percentage of vertical screen space covered by drag
-                                        let percentage: CGFloat = -(val.translation.height / reader.size.height)
-                                        //  Calculate new zoom factor
-                                        let calc = currentZoomFactor + percentage
-                                        //  Limit zoom factor to a maximum of 5x and a minimum of 1x
-                                        let zoomFactor: CGFloat = min(max(calc, 1), 5)
-                                        //  Store the newly calculated zoom factor
-                                        currentZoomFactor = zoomFactor
-                                        //  Sets the zoom factor to the capture device session
-                                        model.zoom(with: zoomFactor)
-                                    }
-                                })
-                            )
-                            .onAppear {
-                                model.configure()
-                            }
-                            .alert(isPresented: $model.showAlertError, content: {
-                                Alert(title: Text(model.alertError.title), message: Text(model.alertError.message), dismissButton: .default(Text(model.alertError.primaryButtonTitle), action: {
-                                    model.alertError.primaryAction?()
-                                }))
-                            })
-                            .overlay(
-                                Group {
-                                    if model.willCapturePhoto {
-                                        Color.black
-                                    }
+                    
+                    CameraPreview(session: model.session)
+                        .gesture(
+                            DragGesture().onChanged({ (val) in
+                                //  Only accept vertical drag
+                                if abs(val.translation.height) > abs(val.translation.width) {
+                                    //  Get the percentage of vertical screen space covered by drag
+                                    let percentage: CGFloat = -(val.translation.height / reader.size.height)
+                                    //  Calculate new zoom factor
+                                    let calc = currentZoomFactor + percentage
+                                    //  Limit zoom factor to a maximum of 5x and a minimum of 1x
+                                    let zoomFactor: CGFloat = min(max(calc, 1), 5)
+                                    //  Store the newly calculated zoom factor
+                                    currentZoomFactor = zoomFactor
+                                    //  Sets the zoom factor to the capture device session
+                                    model.zoom(with: zoomFactor)
                                 }
-                            )
-                            .animation(Animation.easeInOut, value: currentZoomFactor)
-                        
-                    }
+                            })
+                        )
+                        .onAppear {
+                            model.configure()
+                        }
+                        .alert(isPresented: $model.showAlertError, content: {
+                            Alert(title: Text(model.alertError.title), message: Text(model.alertError.message), dismissButton: .default(Text(model.alertError.primaryButtonTitle), action: {
+                                model.alertError.primaryAction?()
+                            }))
+                        })
+                        .overlay(
+                            Group {
+                                if model.willCapturePhoto {
+                                    Color.black
+                                }
+                            }
+                        )
+                        .animation(Animation.easeInOut, value: currentZoomFactor)
+                    
+                    
                     HStack {
                         capturedPhotoThumbnail
                         
@@ -210,11 +219,17 @@ struct CameraView: View {
                 }
             }
             .statusBar(hidden: true)
+            .navigationBarHidden(true)
         }
     }
 }
 
 extension CameraView {
+    
+    func dismiss() {
+        self.model.session.stopRunning()
+        self.mode.wrappedValue.dismiss()
+    }
     
     func savePhotoToList() {
         print("Saving photo...")
@@ -222,9 +237,9 @@ extension CameraView {
         let date = Date()
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        formatter.locale = .current
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
         let imageToSaveLocally = ApiImage(id: model.photo.id , data: model.photo.originalData, thumbnail: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: "iPhone", bearing: Int(model.photo.heading.trueHeading))
         
@@ -240,6 +255,6 @@ extension CameraView {
 
 struct CameraView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraView(selectedTab: .constant(ContentView.Tab.camera))
+        CameraView()
     }
 }

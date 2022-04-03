@@ -167,9 +167,9 @@ struct MapView: UIViewRepresentable {
             
             let formatter = DateFormatter()
             formatter.calendar = Calendar(identifier: .iso8601)
-            formatter.locale = Locale(identifier: "en_US_POSIX")
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+            formatter.locale = .current
+            formatter.timeZone = .current
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             let date: Date = formatter.date(from: image.date)!
             formatter.dateFormat = "dd.MM.yyyy"
             
