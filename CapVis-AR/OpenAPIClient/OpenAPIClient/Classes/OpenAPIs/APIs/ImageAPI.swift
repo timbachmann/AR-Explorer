@@ -63,11 +63,11 @@ open class ImageAPI {
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func deleteImageById(imageId: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ApiImage?, _ error: Error?) -> Void)) -> RequestTask {
+    open class func deleteImageById(imageId: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
         return deleteImageByIdWithRequestBuilder(imageId: imageId).execute(apiResponseQueue) { result in
             switch result {
-            case let .success(response):
-                completion(response.body, nil)
+            case .success:
+                completion((), nil)
             case let .failure(error):
                 completion(nil, error)
             }
@@ -78,9 +78,9 @@ open class ImageAPI {
      Delete image by id
      - DELETE /images/{imageId}
      - parameter imageId: (path) id to search for 
-     - returns: RequestBuilder<ApiImage> 
+     - returns: RequestBuilder<Void> 
      */
-    open class func deleteImageByIdWithRequestBuilder(imageId: String) -> RequestBuilder<ApiImage> {
+    open class func deleteImageByIdWithRequestBuilder(imageId: String) -> RequestBuilder<Void> {
         var localVariablePath = "/images/{imageId}"
         let imageIdPreEscape = "\(APIHelper.mapValueToPathItem(imageId))"
         let imageIdPostEscape = imageIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -96,7 +96,7 @@ open class ImageAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ApiImage>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
 
         return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }

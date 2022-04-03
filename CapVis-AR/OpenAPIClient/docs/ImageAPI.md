@@ -60,7 +60,7 @@ No authorization required
 
 # **deleteImageById**
 ```swift
-    open class func deleteImageById(imageId: String, completion: @escaping (_ data: ApiImage?, _ error: Error?) -> Void)
+    open class func deleteImageById(imageId: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete image by id
@@ -93,7 +93,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ApiImage**](ApiImage.md)
+Void (empty response body)
 
 ### Authorization
 

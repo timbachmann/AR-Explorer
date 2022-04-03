@@ -20,6 +20,17 @@ public struct ApiImage: Codable, JSONEncodable, Hashable, Identifiable {
     public var date: String
     public var source: String
     public var bearing: Int
+    
+    public init() {
+        self.id = String()
+        self.data = Data()
+        self.thumbnail = Data()
+        self.lat = Double()
+        self.lng = Double()
+        self.date = String()
+        self.source = String()
+        self.bearing = Int()
+    }
 
     public init(id: String, data: Data, thumbnail: Data, lat: Double, lng: Double, date: String, source: String, bearing: Int) {
         self.id = id
