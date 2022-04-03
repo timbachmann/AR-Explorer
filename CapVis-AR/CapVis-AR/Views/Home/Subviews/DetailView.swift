@@ -13,42 +13,82 @@ struct DetailView: View {
     @State private var detailImage: Image?
     @State private var detailDate: Text?
     @State private var detailSource: Text?
+    var imageIndex: Int?
+    @State var image: ApiImage = ApiImage()
+    @State var index: Int? = nil
+    @State var isLoading: Bool = true
+    @State private var showingOptions = false
+    @EnvironmentObject var imageData: ImageData
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
-    @State var image: ApiImage
-    @Binding var images: [ApiImage]
-    @Binding var showSelf: Bool
     
     var body: some View {
         VStack {
-            detailImage?
-                .resizable()
-                .scaledToFit()
-            Spacer()
-            detailDate?
-                .fontWeight(Font.Weight.heavy)
-            detailSource?
-                .fontWeight(Font.Weight.regular)
+            if $isLoading.wrappedValue {
+                ProgressView()
+            } else {
+                detailImage?
+                    .resizable()
+                    .scaledToFit()
+            }
         }
+        .navigationBarTitleDisplayMode(.inline)
         .padding()
         .onAppear { loadImage() }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: Button(action : {
-            self.mode.wrappedValue.dismiss()
-            showSelf = false
-        }){
-            HStack {
-                Image(systemName: "chevron.backward")
-                Text("Back")
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                            VStack {
+                                detailDate ?? Text("").font(.headline)
+                                detailSource ?? Text("").font(.subheadline)
+                            }
+                        }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    showingOptions = true
+                }, label: {
+                    Image(systemName: "trash.circle")
+                        .padding()
+                        .foregroundColor(Color.accentColor)
+                })
+                .actionSheet(isPresented: $showingOptions) {
+                    return ActionSheet(title: Text("Delete image?"), buttons: [
+                        .destructive(Text("Delete")){
+                            ImageAPI.deleteImageById(imageId: image.id) { (response, error) in
+                                guard error == nil else {
+                                    print(error ?? "Could not delete image!")
+                                    return
+                                }
+
+                                if (response != nil) {
+                                    imageData.capVisImages.remove(at: imageIndex!)
+                                    self.mode.wrappedValue.dismiss()
+                                    dump(response)
+                                }
+                            }
+                        },
+                        .cancel()
+                    ])
+                }
             }
-        })
+        }
     }
 }
 extension DetailView {
     
-    func loadImage(){
-        print(image.data)
+    func loadImage() {
+        image = imageData.capVisImages[imageIndex ?? 0]
+        
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = .current
+        formatter.timeZone = .current
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let date: Date = formatter.date(from: image.date)!
+        formatter.dateFormat = "dd.MM.yyyy - HH:mm:ss"
+        
+        detailDate = Text(formatter.string(from: date))
+        detailSource = Text(image.source)
+        
         if image.data == Data() {
-            print(image.data)
             ImageAPI.getImageById(imageId: image.id) { (response, error) in
                 guard error == nil else {
                     print(error ?? "Unknown Error")
@@ -56,10 +96,9 @@ extension DetailView {
                 }
 
                 if (response != nil) {
-                    var currImage = images.remove(at: images.firstIndex{$0.id == image.id}!)
-                    currImage.data = response!.data
-                    images.append(currImage)
-                    image = currImage
+                    index = imageData.capVisImages.firstIndex{$0.id == image.id}!
+                    imageData.capVisImages[index!].data = response!.data
+                    image = imageData.capVisImages[index!]
                     setImage()
                     dump(response)
                 }
@@ -72,17 +111,7 @@ extension DetailView {
     func setImage() {
         let uiImage = UIImage(data: image.data)
         detailImage = Image(uiImage: uiImage!)
-        
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        let date: Date = formatter.date(from: image.date)!
-        formatter.dateFormat = "dd.MM.yyyy - HH:mm:ss"
-        
-        detailDate = Text(formatter.string(from: date))
-        detailSource = Text(image.source)
+        isLoading = false
     }
 }
 
