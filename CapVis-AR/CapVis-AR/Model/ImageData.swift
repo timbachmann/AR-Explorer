@@ -36,24 +36,52 @@ class ImageData: ObservableObject {
     }
     
     func loadAllImages(completion: @escaping (_ data: [ApiImage]?, _ error: String?) -> ())  {
-        var images: [ApiImage]?
+        var images: [ApiImage] = []
         var receivedError: String?
         
-        DispatchQueue.global(qos: .background).async{
-            let data: Data
-            let path = self.getCacheDirectoryPath().appendingPathComponent("imageData.json")
+        DispatchQueue.global(qos: .background).async {
+            let cachePath = self.getCacheDirectoryPath().appendingPathComponent("images")
+            let fileManager: FileManager = FileManager.default
+            
             
             do {
-                data = try Data(contentsOf: path)
+                let imageFolders: [URL] = try fileManager.contentsOfDirectory(at: cachePath, includingPropertiesForKeys: nil)
+                
+                for imageFolder in imageFolders {
+                    var metaData: MetaData
+                    let metaPath = imageFolder.appendingPathComponent("\(imageFolder.lastPathComponent).json")
+                    
+                    do {
+                        let rawMetaData = try Data(contentsOf: metaPath)
+                        let decoder = JSONDecoder()
+                        metaData = try decoder.decode(MetaData.self, from: rawMetaData)
+                        
+                        var imageData: Data
+                        let fullImagePath = imageFolder.appendingPathComponent("\(imageFolder.lastPathComponent).jpg")
+                        
+                        do {
+                            imageData = try Data(contentsOf: fullImagePath)
+                        } catch {
+                            imageData = Data()
+                        }
+                        
+                        var thumbData: Data
+                        let thumbPath = imageFolder.appendingPathComponent("\(imageFolder.lastPathComponent)-thumb.jpg")
+                        
+                        do {
+                            thumbData = try Data(contentsOf: thumbPath)
+                        } catch {
+                            thumbData = Data()
+                        }
+                        
+                        images.append(ApiImage(id: metaData.id, data: imageData, thumbnail: thumbData, lat: metaData.lat, lng: metaData.lng, date: metaData.date, source: metaData.source, bearing: metaData.bearing))
+                        
+                    } catch {
+                        receivedError = "Couldn't parse \(metaPath.path) as \(MetaData.self):\n\(error)"
+                    }
+                }
             } catch {
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                images = try decoder.decode([ApiImage].self, from: data)
-            } catch {
-                receivedError = "Couldn't parse \(path.path) as \([ApiImage].self):\n\(error)"
+                receivedError = "Couldn't iterate cache directory!"
             }
             
             DispatchQueue.main.async {
@@ -90,13 +118,47 @@ class ImageData: ObservableObject {
     }
     
     func saveImagesToFile() {
-        let path = getCacheDirectoryPath().appendingPathComponent("imageData.json")
-        
+        let path = getCacheDirectoryPath().appendingPathComponent("images")
         do {
-            let jsonData = try JSONEncoder().encode(self.capVisImages)
-            try jsonData.write(to: path)
-        } catch {
-            print("Error writing to JSON file: \(error)")
+            try FileManager.default.removeItem(atPath: path.path)
+        } catch let error as NSError {
+            print("Unable to delete directory \(error.debugDescription)")
+        }
+        
+        for image in self.capVisImages {
+            let folderPath = getCacheDirectoryPath().appendingPathComponent("images").appendingPathComponent(image.id)
+            do {
+                try FileManager.default.createDirectory(atPath: folderPath.path, withIntermediateDirectories: true, attributes: nil)
+            } catch let error as NSError {
+                print("Unable to create directory \(error.debugDescription)")
+            }
+            let meta = MetaData(id: image.id, lat: image.lat, lng: image.lng, date: image.date, source: image.source, bearing: image.bearing)
+            
+            let metaPath = folderPath.appendingPathComponent("\(image.id).json")
+            do {
+                let jsonDataLocal = try JSONEncoder().encode(meta)
+                try jsonDataLocal.write(to: metaPath)
+            } catch {
+                print("Error writing metadata file: \(error)")
+            }
+            
+            if image.data != Data() {
+                let imagePath = folderPath.appendingPathComponent("\(image.id).jpg")
+                do {
+                    try image.data.write(to: imagePath)
+                } catch {
+                    print("Error writing full image file: \(error)")
+                }
+            }
+            
+            if image.thumbnail != Data() {
+                let thumbPath = folderPath.appendingPathComponent("\(image.id)-thumb.jpg")
+                do {
+                    try image.thumbnail.write(to: thumbPath)
+                } catch {
+                    print("Error writing thumbnail file: \(error)")
+                }
+            }
         }
         
         let pathLocal = getCacheDirectoryPath().appendingPathComponent("newImages.json")
