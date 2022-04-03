@@ -10,10 +10,9 @@ import OpenAPIClient
 
 struct GalleryView: View {
     
-    @Binding var images: [ApiImage]
-    @Binding var showSelf: Bool
-    @State var showDetail: Bool = true
-    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    @EnvironmentObject var imageData: ImageData
+    @State private var showingOptions = false
+    @State private var selection = "None"
     
     private let threeColumnGrid = [
         GridItem(.flexible(minimum: 40)),
@@ -24,10 +23,8 @@ struct GalleryView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: threeColumnGrid, spacing: 20) {
-                ForEach(images) { item in
-                    
-                    NavigationLink(destination: DetailView(image: item, images: $images, showSelf: $showDetail)) {
-                        
+                ForEach(imageData.capVisImages) { item in
+                    NavigationLink(destination: DetailView(imageIndex: imageData.capVisImages.firstIndex(of: item)!)) {
                         Image(uiImage: UIImage(data: item.thumbnail)!)
                             .resizable()
                             .scaledToFill()
@@ -36,21 +33,40 @@ struct GalleryView: View {
                             .cornerRadius(4)
                     }
                 }
-            }.padding()
+            }
+            .padding()
+            .onChange(of: selection) { newSelection in
+                switch newSelection {
+                case "Date":
+                    imageData.capVisImages.sort(by: { $0.date < $1.date })
+                case "Radius":
+                    //imageData.capVisImages.sort(by: { $0.date > $1.date })
+                    print("Not implemented")
+                default:
+                    print("No sorting option selected")
+                }
+                
+            }
         }
         .navigationTitle(Text("Photos"))
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: Button(action : {
-            self.mode.wrappedValue.dismiss()
-            showSelf = false
-        }){
-            HStack {
-                Image(systemName: "chevron.backward")
-                Text("Back")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    showingOptions = true
+                }, label: {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                        .padding()
+                        .foregroundColor(Color.accentColor)
+                })
+                .confirmationDialog("Sort list by", isPresented: $showingOptions, titleVisibility: .visible) {
+                    ForEach(["Date", "Radius"], id: \.self) { sortOption in
+                        Button(sortOption) {
+                            selection = sortOption
+                        }
+                    }
+                }
             }
-            
-        })
-        
+        }
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220A0B5127F86F8E0088FB45 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220A0B5027F86F8E0088FB45 /* AppDelegate.swift */; };
 		2213A27527B6890C00497182 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213A27427B6890C00497182 /* MapView.swift */; };
 		2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2227E9F327B54CF200E545D4 /* ImageData.swift */; };
 		222F3C4B27B3C59200EEF17B /* CapVis_ARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */; };
@@ -31,7 +32,7 @@
 		2285093927B3DF3F00E9FB26 /* GeometryUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092A27B3DF3F00E9FB26 /* GeometryUtils.swift */; };
 		2285093A27B3DF3F00E9FB26 /* AR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092B27B3DF3F00E9FB26 /* AR.swift */; };
 		228D292E27D12ACB00F6EA9F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228D292D27D12ACB00F6EA9F /* Launch Screen.storyboard */; };
-		22A6456527F5D9C70028B06D /* OpenAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 22A6456427F5D9C70028B06D /* OpenAPIClient */; };
+		22AF0BA727F915DF00AA1E69 /* OpenAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 22AF0BA627F915DF00AA1E69 /* OpenAPIClient */; };
 		22B671E927CEADB0002BF145 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B671E827CEADB0002BF145 /* UIImage+Extension.swift */; };
 		22CFC77327DB90B300E4BD26 /* ImageAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFC77227DB90B300E4BD26 /* ImageAnnotationView.swift */; };
 		22CFC77527DB90F700E4BD26 /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFC77427DB90F700E4BD26 /* ClusterAnnotationView.swift */; };
@@ -59,6 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		220A0B5027F86F8E0088FB45 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2213A27427B6890C00497182 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		2227E9F327B54CF200E545D4 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
 		222F3C4727B3C59200EEF17B /* CapVis-AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CapVis-AR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,7 +89,7 @@
 		2285092B27B3DF3F00E9FB26 /* AR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AR.swift; sourceTree = "<group>"; };
 		228D292C27D12A0200F6EA9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		228D292D27D12ACB00F6EA9F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		22A6456327F5D9BE0028B06D /* OpenAPIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OpenAPIClient; sourceTree = "<group>"; };
+		22AF0BA527F915D200AA1E69 /* OpenAPIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OpenAPIClient; sourceTree = "<group>"; };
 		22B671E827CEADB0002BF145 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		22CFC77227DB90B300E4BD26 /* ImageAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAnnotationView.swift; sourceTree = "<group>"; };
 		22CFC77427DB90F700E4BD26 /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
@@ -102,7 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22A6456527F5D9C70028B06D /* OpenAPIClient in Frameworks */,
+				22AF0BA727F915DF00AA1E69 /* OpenAPIClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +153,7 @@
 				228D292C27D12A0200F6EA9F /* Info.plist */,
 				222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */,
 				222F3C4C27B3C59200EEF17B /* ContentView.swift */,
+				220A0B5027F86F8E0088FB45 /* AppDelegate.swift */,
 				2285091927B3DF3F00E9FB26 /* Model */,
 				227CCA4527CE7ABF0049C4B8 /* Utils */,
 				2285091A27B3DF3F00E9FB26 /* Views */,
@@ -189,7 +192,7 @@
 		2243ABE027D648DB00B9052C /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				22A6456327F5D9BE0028B06D /* OpenAPIClient */,
+				22AF0BA527F915D200AA1E69 /* OpenAPIClient */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -302,7 +305,7 @@
 			);
 			name = "CapVis-AR";
 			packageProductDependencies = (
-				22A6456427F5D9C70028B06D /* OpenAPIClient */,
+				22AF0BA627F915DF00AA1E69 /* OpenAPIClient */,
 			);
 			productName = "CapVis-AR";
 			productReference = 222F3C4727B3C59200EEF17B /* CapVis-AR.app */;
@@ -427,6 +430,7 @@
 				2213A27527B6890C00497182 /* MapView.swift in Sources */,
 				2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */,
 				2285092E27B3DF3F00E9FB26 /* Home.swift in Sources */,
+				220A0B5127F86F8E0088FB45 /* AppDelegate.swift in Sources */,
 				2285093627B3DF3F00E9FB26 /* CameraService.swift in Sources */,
 				2285093027B3DF3F00E9FB26 /* CameraPreview.swift in Sources */,
 				22371D8927DA4F7D00E9B07C /* LocationManagerModel.swift in Sources */,
@@ -603,7 +607,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"CapVis-AR/Preview Content\"";
 				DEVELOPMENT_TEAM = 883GXF926S;
 				ENABLE_PREVIEWS = YES;
@@ -641,7 +645,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"CapVis-AR/Preview Content\"";
 				DEVELOPMENT_TEAM = 883GXF926S;
 				ENABLE_PREVIEWS = YES;
@@ -790,7 +794,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		22A6456427F5D9C70028B06D /* OpenAPIClient */ = {
+		22AF0BA627F915DF00AA1E69 /* OpenAPIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenAPIClient;
 		};
