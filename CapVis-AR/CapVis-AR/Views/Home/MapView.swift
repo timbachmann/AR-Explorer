@@ -72,6 +72,7 @@ struct MapView: UIViewRepresentable {
         @Binding var showDetail: Bool
         @Binding var detailId: String
         private let mapView: MapView
+        private var route: MKRoute? = nil
         let identifier = "Annotation"
         let clusterIdentifier = "Cluster"
         private let maxZoomLevel = 11
@@ -136,26 +137,94 @@ struct MapView: UIViewRepresentable {
         
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             guard view is ImageAnnotationView else { return }
-            view.canShowCallout = true
-            view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            if let imageAnnotation = view.annotation as? ImageAnnotation {
+                view.canShowCallout = true
+                view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+                let directionsButton: UIButton = UIButton(type: .detailDisclosure)
+                directionsButton.tag = 123
+                if imageAnnotation.route == nil {
+                    directionsButton.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.diamond"), for: .normal)
+                } else {
+                    directionsButton.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+                }
+                view.leftCalloutAccessoryView = directionsButton
+            }
         }
         
         func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
             guard view is ImageAnnotationView else { return }
+            
             if let imageAnnotation = view.annotation as? ImageAnnotation {
                 detailId = imageAnnotation.id!
-                showDetail = true
+                
+                if let controlDetail = control as? UIButton {
+                    if controlDetail.tag == 123 {
+                        let request = MKDirections.Request()
+                        request.transportType = .walking
+                        request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationManager().location!.coordinate))
+                        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: imageAnnotation.coordinate))
+                        
+                        let directions = MKDirections(request: request)
+                        directions.calculate { response, error in
+                            guard let mapRoute = response?.routes.first else {
+                                return
+                            }
+                            
+                            let padding: CGFloat = 8
+                            if self.route != nil {
+                                mapView.removeOverlay(self.route!.polyline)
+                                if imageAnnotation.route == nil {
+                                    mapView.addOverlay(mapRoute.polyline)
+                                    self.route = mapRoute
+                                    imageAnnotation.route = mapRoute
+                                    controlDetail.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+                                } else {
+                                    imageAnnotation.route = nil
+                                    controlDetail.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.diamond"), for: .normal)
+                                }
+                            } else {
+                                mapView.addOverlay(mapRoute.polyline)
+                                self.route = mapRoute
+                                imageAnnotation.route = mapRoute
+                                controlDetail.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+                            }
+                            mapView.setVisibleMapRect(
+                                mapView.visibleMapRect.union(
+                                    mapRoute.polyline.boundingMapRect
+                                ),
+                                edgePadding: UIEdgeInsets(
+                                    top: 0,
+                                    left: padding,
+                                    bottom: padding,
+                                    right: padding
+                                ),
+                                animated: true
+                            )
+                        }
+                    } else {
+                        showDetail = true
+                    }
+                }
             }
         }
         
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-            guard let circleOverlay = overlay as? MKCircle else {
+            if let polyOverlay = overlay as? MKPolyline {
+                let renderer = MKPolylineRenderer(overlay: polyOverlay)
+                renderer.strokeColor = .systemBlue
+                renderer.lineWidth = 3
+                return renderer
+                
+            } else if let circleOverlay = overlay as? MKCircle {
+                let circleRenderer = MKCircleRenderer(overlay: circleOverlay)
+                circleRenderer.fillColor = .blue
+                circleRenderer.alpha = 0.1
+                return circleRenderer
+                
+            } else {
                 return MKOverlayRenderer()
             }
-            let circleRenderer = MKCircleRenderer(overlay: circleOverlay)
-            circleRenderer.fillColor = .blue
-            circleRenderer.alpha = 0.1
-            return circleRenderer
+            
         }
     }
     
