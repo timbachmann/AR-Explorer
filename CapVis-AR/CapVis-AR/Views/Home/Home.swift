@@ -33,6 +33,9 @@ struct Home: View {
     @State private var changeMapType: Bool = false
     @State private var applyAnnotations: Bool = false
     @State private var showCamera: Bool = false
+    @State private var radius: Double = 2.0
+    @State var startDate: Date = Date(timeIntervalSince1970: 0.0)
+    @State var endDate: Date = Date()
     @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: 0.0051, longitudeDelta: 0.0051))
     
     var body: some View {
@@ -202,12 +205,11 @@ struct Home: View {
                 }
                 
                 if $showFilter.wrappedValue {
-                    FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading, locationManager: locationManagerModel)
+                    FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading, locationManager: locationManagerModel, startDate: $startDate, endDate: $endDate, radius: $radius)
                         .frame(width: 350, height: 400)
                         .cornerRadius(20).shadow(radius: 20)
                         .edgesIgnoringSafeArea(.top)
                 }
-                
             }
         }
         .navigationBarHidden(true)
@@ -269,12 +271,12 @@ extension Home {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notificationIdentifier])
             
             let location = CLLocation(latitude: image.lat, longitude: image.lng)
-            let distance = CLLocationManager().location?.distance(from: location)
+//            let distance = CLLocationManager().location?.distance(from: location)
             
             
             let content = UNMutableNotificationContent()
             content.title = "New Photo in Range"
-            content.body = String(format: "%.1f m", distance ?? 0.0)
+            content.body = String(format: "<5m")
             content.sound = UNNotificationSound.default
             content.badge = 1
             content.categoryIdentifier = "capVisAR"

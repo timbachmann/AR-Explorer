@@ -24,7 +24,6 @@ struct RadarView: UIViewRepresentable {
     
     @Binding var mapMarkerImages: [ApiImage]
     @Binding var applyAnnotations: Bool
-    let region: MKCoordinateRegion
     let identifier = "Annotation"
     let mapView = MKMapView()
     
@@ -32,7 +31,7 @@ struct RadarView: UIViewRepresentable {
         setupManager()
         mapView.delegate = context.coordinator
         mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: identifier)
-        mapView.cameraZoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 30.0)
+        mapView.cameraZoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 60.0)
         mapView.mapType = .hybrid
         mapView.camera.pitch = 0.0
         mapView.userTrackingMode = .followWithHeading
