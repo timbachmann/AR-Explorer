@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2203DAEF27FAF152006D093F /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2203DAEE27FAF152006D093F /* RadarView.swift */; };
 		220A0B5127F86F8E0088FB45 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220A0B5027F86F8E0088FB45 /* AppDelegate.swift */; };
 		2213A27527B6890C00497182 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213A27427B6890C00497182 /* MapView.swift */; };
 		2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2227E9F327B54CF200E545D4 /* ImageData.swift */; };
@@ -60,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2203DAEE27FAF152006D093F /* RadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarView.swift; sourceTree = "<group>"; };
 		220A0B5027F86F8E0088FB45 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2213A27427B6890C00497182 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		2227E9F327B54CF200E545D4 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 				2285092A27B3DF3F00E9FB26 /* GeometryUtils.swift */,
 				2285092B27B3DF3F00E9FB26 /* AR.swift */,
 				22B671E827CEADB0002BF145 /* UIImage+Extension.swift */,
+				2203DAEE27FAF152006D093F /* RadarView.swift */,
 			);
 			path = AR;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				2285093927B3DF3F00E9FB26 /* GeometryUtils.swift in Sources */,
 				2285092F27B3DF3F00E9FB26 /* CaptureOrientation.swift in Sources */,
 				22B671E927CEADB0002BF145 /* UIImage+Extension.swift in Sources */,
+				2203DAEF27FAF152006D093F /* RadarView.swift in Sources */,
 				22E69AB027D9E04900803960 /* GalleryView.swift in Sources */,
 				2285093427B3DF3F00E9FB26 /* ImageResizer.swift in Sources */,
 				22CFC77527DB90F700E4BD26 /* ClusterAnnotationView.swift in Sources */,

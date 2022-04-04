@@ -7,12 +7,16 @@
 
 import SwiftUI
 import ARKit
+import MapKit
 
 struct AR: View {
     
+    @EnvironmentObject var imageData: ImageData
     @Binding var selectedTab: ContentView.Tab
     @ObservedObject var arDelegate = ARDelegate()
     @State var redrawImages: Bool = false
+    @State private var applyAnnotations: Bool = true
+    @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: 0.0051, longitudeDelta: 0.0051))
     
     var body: some View {
         ZStack {
@@ -26,6 +30,20 @@ struct AR: View {
             }
             
             VStack {
+                HStack {
+                    Spacer()
+                    RadarView(mapMarkerImages: $imageData.capVisImages, applyAnnotations: $applyAnnotations, region: coordinateRegion)
+                        .frame(width: 96.0, height: 96.0)
+                        .clipShape(
+                            Circle()
+                                .size(width: 120.0, height: 96.0)
+                                .offset(x: -12.0, y: 0)
+                            )
+                        .onChange(of: imageData.capVisImages) { tag in
+                            applyAnnotations = true
+                        }
+                        .offset(x: 0.0, y: 40)
+                }
                 Spacer()
                 HStack (alignment: .center){
                     Spacer()
@@ -47,6 +65,7 @@ struct AR: View {
                 }
             }
             .padding()
+                    
         }
         .edgesIgnoringSafeArea(.top)
     }

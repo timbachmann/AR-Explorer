@@ -18,6 +18,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         application.applicationIconBadgeNumber = 0
         return true
     }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        print("Test")
+        application.applicationIconBadgeNumber = 0
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        print("Test")
+        application.applicationIconBadgeNumber = 0
+    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
