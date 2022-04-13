@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ContentView: View {
     @State private var selectedTab: Tab = .home
+    let pub = NotificationCenter.default.publisher(for: Notification.Name("capVisAR"))
     
     enum Tab {
         case home
@@ -32,6 +34,11 @@ struct ContentView: View {
                     Label("AR", systemImage: "arkit")
                 }
                 .tag(Tab.ar)
+        }
+        .onReceive(pub) { data in
+             if data.object is UNNotificationContent {
+                 selectedTab = .ar
+             }
         }
     }
 }

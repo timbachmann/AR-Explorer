@@ -33,7 +33,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        print("Notification received with identifier \(notification.request.identifier)")
+        let notiName = Notification.Name("capVisAR")
+        NotificationCenter.default.post(name:notiName , object: notification.request.content)
         completionHandler([.banner, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        let notiName = Notification.Name("capVisAR")
+        NotificationCenter.default.post(name:notiName , object: response.notification.request.content)
+        completionHandler()
     }
 }
