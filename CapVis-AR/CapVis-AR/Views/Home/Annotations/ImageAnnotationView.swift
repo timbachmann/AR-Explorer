@@ -55,33 +55,3 @@ final class ImageAnnotationView: MKAnnotationView {
         layer.cornerRadius = image == nil ? 5.0 : 0
     }
 }
-
-//Callout Config
-//private extension ImageAnnotationView {
-//    func configure() {
-//        canShowCallout = true
-//        setupView()
-//        configureDetailView()
-//    }
-//
-//    func configureDetailView() {
-//        guard let annotation = annotation else { return }
-//
-//        if let observationAnnotation = annotation as? ImageAnnotation {
-//
-//            // Callout
-//            let rect = CGRect(origin: .zero, size: CGSize(width: 200, height: 200))
-//            let snapshotView = UIView()
-//
-//            let imageView = UIImageView(frame: rect)
-//            imageView.image = observationAnnotation.image
-//            snapshotView.addSubview(imageView)
-//
-//            detailCalloutAccessoryView = snapshotView
-//            NSLayoutConstraint.activate([
-//                snapshotView.widthAnchor.constraint(equalToConstant: rect.width),
-//                snapshotView.heightAnchor.constraint(equalToConstant: rect.height)
-//            ])
-//        }
-//    }
-//}

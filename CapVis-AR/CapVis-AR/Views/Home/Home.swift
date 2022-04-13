@@ -33,8 +33,9 @@ struct Home: View {
     @State private var changeMapType: Bool = false
     @State private var applyAnnotations: Bool = false
     @State private var showCamera: Bool = false
+    @State private var includePublic: Bool = false
     @State private var radius: Double = 2.0
-    @State var startDate: Date = Date(timeIntervalSince1970: 0.0)
+    @State var startDate: Date = Date(timeIntervalSince1970: -3155673600.0)
     @State var endDate: Date = Date()
     @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: 0.0051, longitudeDelta: 0.0051))
     
@@ -205,8 +206,8 @@ struct Home: View {
                 }
                 
                 if $showFilter.wrappedValue {
-                    FilterView(images: $imageData.capVisImages, showSelf: $showFilter, isLoading: $isLoading, locationManager: locationManagerModel, startDate: $startDate, endDate: $endDate, radius: $radius)
-                        .frame(width: 350, height: 400)
+                    FilterView(showSelf: $showFilter, isLoading: $isLoading, startDate: $startDate, endDate: $endDate, radius: $radius, includePublic: $includePublic)
+                        .frame(width: 350, height: 450)
                         .cornerRadius(20).shadow(radius: 20)
                         .edgesIgnoringSafeArea(.top)
                 }
@@ -242,7 +243,7 @@ extension Home {
         
         for newImage in imageData.imagesToUpload {
             
-            let newImageRequest = NewImageRequest(id: newImage.id, data: newImage.data, lat: newImage.lat, lng: newImage.lng, date: newImage.date, source: newImage.source, bearing: newImage.bearing)
+            let newImageRequest = NewImageRequest(userID: UIDevice.current.identifierForVendor!.uuidString, id: newImage.id, data: newImage.data, lat: newImage.lat, lng: newImage.lng, date: newImage.date, source: newImage.source, bearing: newImage.bearing, yaw: newImage.yaw, pitch: newImage.pitch)
             
             uploadProgress += progFrac/2
             
@@ -259,6 +260,9 @@ extension Home {
                     imageData.localFilesSynced = imageData.imagesToUpload.isEmpty
                     showUploadProgress = !imageData.imagesToUpload.isEmpty
                     imageData.saveImagesToFile()
+                    if (imageData.localFilesSynced) {
+                        uploadProgress = 0.0
+                    }
                 }
             }
         }
@@ -275,17 +279,19 @@ extension Home {
             
             
             let content = UNMutableNotificationContent()
-            content.title = "New Photo in Range"
-            content.body = String(format: "<5m")
+            content.title = "Photo in Range"
+            content.subtitle = "Click to view in AR"
+            content.body = String(format: "10m")
             content.sound = UNNotificationSound.default
             content.badge = 1
             content.categoryIdentifier = "capVisAR"
             content.userInfo = ["customDataKey": "cusom_data_value"]
             
             // 2. Create Trigger and Configure the desired behaviour - Location
-            let region = CLCircularRegion(center: location.coordinate, radius: 5, identifier: UUID().uuidString)
+            let region = CLCircularRegion(center: location.coordinate, radius: 10.0, identifier: UUID().uuidString)
+            region.notifyOnEntry = true
+            region.notifyOnExit = false
             let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
-            //let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
             let request = UNNotificationRequest(identifier: notificationIdentifier, content: content, trigger: trigger)
             let attachment = try! UNNotificationAttachment(identifier: "image" + image.id, url: getCacheDirectoryPath().appendingPathComponent(image.id).appendingPathComponent("\(image.id)-thumb.jpg"))
             content.attachments = [attachment]
