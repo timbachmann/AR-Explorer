@@ -12,6 +12,7 @@ import AnyCodable
 
 public struct NewImageRequest: Codable, JSONEncodable, Hashable {
 
+    public var userID: String
     public var id: String
     public var data: Data
     public var lat: Double
@@ -19,8 +20,11 @@ public struct NewImageRequest: Codable, JSONEncodable, Hashable {
     public var date: String
     public var source: String
     public var bearing: Int
+    public var yaw: Float
+    public var pitch: Float
 
-    public init(id: String, data: Data, lat: Double, lng: Double, date: String, source: String, bearing: Int) {
+    public init(userID: String, id: String, data: Data, lat: Double, lng: Double, date: String, source: String, bearing: Int, yaw: Float, pitch: Float) {
+        self.userID = userID
         self.id = id
         self.data = data
         self.lat = lat
@@ -28,9 +32,12 @@ public struct NewImageRequest: Codable, JSONEncodable, Hashable {
         self.date = date
         self.source = source
         self.bearing = bearing
+        self.yaw = yaw
+        self.pitch = pitch
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case userID
         case id
         case data
         case lat
@@ -38,12 +45,15 @@ public struct NewImageRequest: Codable, JSONEncodable, Hashable {
         case date
         case source
         case bearing
+        case yaw
+        case pitch
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(userID, forKey: .userID)
         try container.encode(id, forKey: .id)
         try container.encode(data, forKey: .data)
         try container.encode(lat, forKey: .lat)
@@ -51,6 +61,8 @@ public struct NewImageRequest: Codable, JSONEncodable, Hashable {
         try container.encode(date, forKey: .date)
         try container.encode(source, forKey: .source)
         try container.encode(bearing, forKey: .bearing)
+        try container.encode(yaw, forKey: .yaw)
+        try container.encode(pitch, forKey: .pitch)
     }
 }
 

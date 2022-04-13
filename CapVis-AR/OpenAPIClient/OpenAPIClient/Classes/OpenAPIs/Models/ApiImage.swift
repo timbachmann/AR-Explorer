@@ -20,6 +20,8 @@ public struct ApiImage: Codable, JSONEncodable, Hashable, Identifiable {
     public var date: String
     public var source: String
     public var bearing: Int
+    public var yaw: Float
+    public var pitch: Float
     
     public init() {
         self.id = String()
@@ -30,9 +32,11 @@ public struct ApiImage: Codable, JSONEncodable, Hashable, Identifiable {
         self.date = String()
         self.source = String()
         self.bearing = Int()
+        self.yaw = Float()
+        self.pitch = Float()
     }
 
-    public init(id: String, data: Data, thumbnail: Data, lat: Double, lng: Double, date: String, source: String, bearing: Int) {
+    public init(id: String, data: Data, thumbnail: Data, lat: Double, lng: Double, date: String, source: String, bearing: Int, yaw: Float, pitch: Float) {
         self.id = id
         self.data = data
         self.thumbnail = thumbnail
@@ -41,6 +45,8 @@ public struct ApiImage: Codable, JSONEncodable, Hashable, Identifiable {
         self.date = date
         self.source = source
         self.bearing = bearing
+        self.yaw = yaw
+        self.pitch = pitch
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -52,6 +58,8 @@ public struct ApiImage: Codable, JSONEncodable, Hashable, Identifiable {
         case date
         case source
         case bearing
+        case yaw
+        case pitch
     }
 
     // Encodable protocol methods
@@ -66,6 +74,8 @@ public struct ApiImage: Codable, JSONEncodable, Hashable, Identifiable {
         try container.encode(date, forKey: .date)
         try container.encode(source, forKey: .source)
         try container.encode(bearing, forKey: .bearing)
+        try container.encode(yaw, forKey: .yaw)
+        try container.encode(pitch, forKey: .pitch)
     }
 }
 

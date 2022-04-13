@@ -58,13 +58,14 @@ open class ImageAPI {
     /**
      Delete image by id
      
+     - parameter userID: (path) user ID 
      - parameter imageId: (path) id to search for 
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func deleteImageById(imageId: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
-        return deleteImageByIdWithRequestBuilder(imageId: imageId).execute(apiResponseQueue) { result in
+    open class func deleteImageById(userID: String, imageId: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
+        return deleteImageByIdWithRequestBuilder(userID: userID, imageId: imageId).execute(apiResponseQueue) { result in
             switch result {
             case .success:
                 completion((), nil)
@@ -76,12 +77,16 @@ open class ImageAPI {
 
     /**
      Delete image by id
-     - DELETE /images/{imageId}
+     - DELETE /images/{userID}/{imageId}
+     - parameter userID: (path) user ID 
      - parameter imageId: (path) id to search for 
      - returns: RequestBuilder<Void> 
      */
-    open class func deleteImageByIdWithRequestBuilder(imageId: String) -> RequestBuilder<Void> {
-        var localVariablePath = "/images/{imageId}"
+    open class func deleteImageByIdWithRequestBuilder(userID: String, imageId: String) -> RequestBuilder<Void> {
+        var localVariablePath = "/images/{userID}/{imageId}"
+        let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
+        let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{userID}", with: userIDPostEscape, options: .literal, range: nil)
         let imageIdPreEscape = "\(APIHelper.mapValueToPathItem(imageId))"
         let imageIdPostEscape = imageIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{imageId}", with: imageIdPostEscape, options: .literal, range: nil)
@@ -104,17 +109,19 @@ open class ImageAPI {
     /**
      Get all images with filter
      
+     - parameter userID: (query) user ID 
      - parameter startDate: (query) start date for temporal filter 
      - parameter endDate: (query) end date for temporal filter 
      - parameter lat: (query) latitude for spatial filter 
      - parameter lng: (query) longitude for spatial filter 
      - parameter radius: (query) radius for spatial filter 
+     - parameter includePublic: (query) include public images or not 
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getAllImagesWithFilter(startDate: String, endDate: String, lat: String, lng: String, radius: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ImageListResponse?, _ error: Error?) -> Void)) -> RequestTask {
-        return getAllImagesWithFilterWithRequestBuilder(startDate: startDate, endDate: endDate, lat: lat, lng: lng, radius: radius).execute(apiResponseQueue) { result in
+    open class func getAllImagesWithFilter(userID: String, startDate: String, endDate: String, lat: String, lng: String, radius: String, includePublic: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ImageListResponse?, _ error: Error?) -> Void)) -> RequestTask {
+        return getAllImagesWithFilterWithRequestBuilder(userID: userID, startDate: startDate, endDate: endDate, lat: lat, lng: lng, radius: radius, includePublic: includePublic).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -127,25 +134,29 @@ open class ImageAPI {
     /**
      Get all images with filter
      - GET /images
+     - parameter userID: (query) user ID 
      - parameter startDate: (query) start date for temporal filter 
      - parameter endDate: (query) end date for temporal filter 
      - parameter lat: (query) latitude for spatial filter 
      - parameter lng: (query) longitude for spatial filter 
      - parameter radius: (query) radius for spatial filter 
+     - parameter includePublic: (query) include public images or not 
      - returns: RequestBuilder<ImageListResponse> 
      */
-    open class func getAllImagesWithFilterWithRequestBuilder(startDate: String, endDate: String, lat: String, lng: String, radius: String) -> RequestBuilder<ImageListResponse> {
+    open class func getAllImagesWithFilterWithRequestBuilder(userID: String, startDate: String, endDate: String, lat: String, lng: String, radius: String, includePublic: String) -> RequestBuilder<ImageListResponse> {
         let localVariablePath = "/images"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "userID": userID,
             "startDate": startDate,
             "endDate": endDate,
             "lat": lat,
             "lng": lng,
             "radius": radius,
+            "includePublic": includePublic,
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -162,13 +173,14 @@ open class ImageAPI {
     /**
      Get image by id
      
+     - parameter userID: (path) user ID 
      - parameter imageId: (path) id to search for 
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
     @discardableResult
-    open class func getImageById(imageId: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ApiImage?, _ error: Error?) -> Void)) -> RequestTask {
-        return getImageByIdWithRequestBuilder(imageId: imageId).execute(apiResponseQueue) { result in
+    open class func getImageById(userID: String, imageId: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: ApiImage?, _ error: Error?) -> Void)) -> RequestTask {
+        return getImageByIdWithRequestBuilder(userID: userID, imageId: imageId).execute(apiResponseQueue) { result in
             switch result {
             case let .success(response):
                 completion(response.body, nil)
@@ -180,12 +192,16 @@ open class ImageAPI {
 
     /**
      Get image by id
-     - GET /images/{imageId}
+     - GET /images/{userID}/{imageId}
+     - parameter userID: (path) user ID 
      - parameter imageId: (path) id to search for 
      - returns: RequestBuilder<ApiImage> 
      */
-    open class func getImageByIdWithRequestBuilder(imageId: String) -> RequestBuilder<ApiImage> {
-        var localVariablePath = "/images/{imageId}"
+    open class func getImageByIdWithRequestBuilder(userID: String, imageId: String) -> RequestBuilder<ApiImage> {
+        var localVariablePath = "/images/{userID}/{imageId}"
+        let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
+        let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{userID}", with: userIDPostEscape, options: .literal, range: nil)
         let imageIdPreEscape = "\(APIHelper.mapValueToPathItem(imageId))"
         let imageIdPostEscape = imageIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{imageId}", with: imageIdPostEscape, options: .literal, range: nil)

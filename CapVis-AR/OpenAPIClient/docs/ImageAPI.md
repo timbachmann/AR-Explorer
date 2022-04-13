@@ -5,9 +5,9 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createImage**](ImageAPI.md#createimage) | **POST** /images | Create new image
-[**deleteImageById**](ImageAPI.md#deleteimagebyid) | **DELETE** /images/{imageId} | Delete image by id
+[**deleteImageById**](ImageAPI.md#deleteimagebyid) | **DELETE** /images/{userID}/{imageId} | Delete image by id
 [**getAllImagesWithFilter**](ImageAPI.md#getallimageswithfilter) | **GET** /images | Get all images with filter
-[**getImageById**](ImageAPI.md#getimagebyid) | **GET** /images/{imageId} | Get image by id
+[**getImageById**](ImageAPI.md#getimagebyid) | **GET** /images/{userID}/{imageId} | Get image by id
 
 
 # **createImage**
@@ -22,7 +22,7 @@ Create new image
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let newImageRequest = NewImageRequest(id: "id_example", data: [123], lat: 123, lng: 123, date: "date_example", source: "source_example", bearing: 123) // NewImageRequest |  (optional)
+let newImageRequest = NewImageRequest(userID: "userID_example", id: "id_example", data: [123], lat: 123, lng: 123, date: "date_example", source: "source_example", bearing: 123, yaw: 123, pitch: 123) // NewImageRequest |  (optional)
 
 // Create new image
 ImageAPI.createImage(newImageRequest: newImageRequest) { (response, error) in
@@ -60,7 +60,7 @@ No authorization required
 
 # **deleteImageById**
 ```swift
-    open class func deleteImageById(imageId: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+    open class func deleteImageById(userID: String, imageId: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
 ```
 
 Delete image by id
@@ -70,10 +70,11 @@ Delete image by id
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let userID = "userID_example" // String | user ID
 let imageId = "imageId_example" // String | id to search for
 
 // Delete image by id
-ImageAPI.deleteImageById(imageId: imageId) { (response, error) in
+ImageAPI.deleteImageById(userID: userID, imageId: imageId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -89,6 +90,7 @@ ImageAPI.deleteImageById(imageId: imageId) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **userID** | **String** | user ID | 
  **imageId** | **String** | id to search for | 
 
 ### Return type
@@ -108,7 +110,7 @@ No authorization required
 
 # **getAllImagesWithFilter**
 ```swift
-    open class func getAllImagesWithFilter(startDate: String, endDate: String, lat: String, lng: String, radius: String, completion: @escaping (_ data: ImageListResponse?, _ error: Error?) -> Void)
+    open class func getAllImagesWithFilter(userID: String, startDate: String, endDate: String, lat: String, lng: String, radius: String, includePublic: String, completion: @escaping (_ data: ImageListResponse?, _ error: Error?) -> Void)
 ```
 
 Get all images with filter
@@ -118,14 +120,16 @@ Get all images with filter
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let userID = "userID_example" // String | user ID
 let startDate = "startDate_example" // String | start date for temporal filter
 let endDate = "endDate_example" // String | end date for temporal filter
 let lat = "lat_example" // String | latitude for spatial filter
 let lng = "lng_example" // String | longitude for spatial filter
 let radius = "radius_example" // String | radius for spatial filter
+let includePublic = "includePublic_example" // String | include public images or not
 
 // Get all images with filter
-ImageAPI.getAllImagesWithFilter(startDate: startDate, endDate: endDate, lat: lat, lng: lng, radius: radius) { (response, error) in
+ImageAPI.getAllImagesWithFilter(userID: userID, startDate: startDate, endDate: endDate, lat: lat, lng: lng, radius: radius, includePublic: includePublic) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -141,11 +145,13 @@ ImageAPI.getAllImagesWithFilter(startDate: startDate, endDate: endDate, lat: lat
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **userID** | **String** | user ID | 
  **startDate** | **String** | start date for temporal filter | 
  **endDate** | **String** | end date for temporal filter | 
  **lat** | **String** | latitude for spatial filter | 
  **lng** | **String** | longitude for spatial filter | 
  **radius** | **String** | radius for spatial filter | 
+ **includePublic** | **String** | include public images or not | 
 
 ### Return type
 
@@ -164,7 +170,7 @@ No authorization required
 
 # **getImageById**
 ```swift
-    open class func getImageById(imageId: String, completion: @escaping (_ data: ApiImage?, _ error: Error?) -> Void)
+    open class func getImageById(userID: String, imageId: String, completion: @escaping (_ data: ApiImage?, _ error: Error?) -> Void)
 ```
 
 Get image by id
@@ -174,10 +180,11 @@ Get image by id
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let userID = "userID_example" // String | user ID
 let imageId = "imageId_example" // String | id to search for
 
 // Get image by id
-ImageAPI.getImageById(imageId: imageId) { (response, error) in
+ImageAPI.getImageById(userID: userID, imageId: imageId) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -193,6 +200,7 @@ ImageAPI.getImageById(imageId: imageId) { (response, error) in
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **userID** | **String** | user ID | 
  **imageId** | **String** | id to search for | 
 
 ### Return type
