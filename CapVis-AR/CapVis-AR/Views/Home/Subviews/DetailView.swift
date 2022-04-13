@@ -12,6 +12,7 @@ struct DetailView: View {
     
     @State private var detailImage: Image?
     @State private var detailDate: Text?
+    @State private var detailYaw: Text?
     @State private var detailSource: Text?
     var imageIndex: Int?
     @State var image: ApiImage = ApiImage()
@@ -26,9 +27,12 @@ struct DetailView: View {
             if $isLoading.wrappedValue {
                 ProgressView()
             } else {
-                detailImage?
-                    .resizable()
-                    .scaledToFit()
+                VStack {
+                    detailImage?
+                        .resizable()
+                        .scaledToFit()
+                    detailYaw ?? Text("").font(.headline)
+                }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -52,7 +56,12 @@ struct DetailView: View {
                 .actionSheet(isPresented: $showingOptions) {
                     return ActionSheet(title: Text("Delete image?"), buttons: [
                         .destructive(Text("Delete")){
-                            ImageAPI.deleteImageById(imageId: image.id) { (response, error) in
+                            
+                            let localIndex = imageData.imagesToUpload.firstIndex{$0.id == image.id}
+                            if (localIndex != nil) {
+                                imageData.imagesToUpload.remove(at: localIndex!)
+                            }
+                            ImageAPI.deleteImageById(userID: UIDevice.current.identifierForVendor!.uuidString, imageId: image.id) { (response, error) in
                                 guard error == nil else {
                                     print(error ?? "Could not delete image!")
                                     return
@@ -60,6 +69,7 @@ struct DetailView: View {
 
                                 if (response != nil) {
                                     imageData.capVisImages.remove(at: imageIndex!)
+                                    imageData.saveImagesToFile()
                                     self.mode.wrappedValue.dismiss()
                                     dump(response)
                                 }
@@ -87,9 +97,10 @@ extension DetailView {
         
         detailDate = Text(formatter.string(from: date))
         detailSource = Text(image.source)
+        detailYaw = Text("Yaw: " + String(image.yaw))
         
         if image.data == Data() {
-            ImageAPI.getImageById(imageId: image.id) { (response, error) in
+            ImageAPI.getImageById(userID: UIDevice.current.identifierForVendor!.uuidString, imageId: image.id) { (response, error) in
                 guard error == nil else {
                     print(error ?? "Unknown Error")
                     return
