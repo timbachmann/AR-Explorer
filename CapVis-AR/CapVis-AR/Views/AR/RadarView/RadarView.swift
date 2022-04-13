@@ -24,15 +24,15 @@ struct RadarView: UIViewRepresentable {
     
     @Binding var mapMarkerImages: [ApiImage]
     @Binding var applyAnnotations: Bool
-    let identifier = "Annotation"
+    let identifier = "radar"
     let mapView = MKMapView()
     
     func makeUIView(context: UIViewRepresentableContext<RadarView>) -> MKMapView {
         setupManager()
         mapView.delegate = context.coordinator
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: identifier)
-        mapView.cameraZoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 60.0)
-        mapView.mapType = .hybrid
+        mapView.register(RadarAnnotationView.self, forAnnotationViewWithReuseIdentifier: identifier)
+        mapView.cameraZoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 100.0)
+        mapView.mapType = .satellite
         mapView.camera.pitch = 0.0
         mapView.userTrackingMode = .followWithHeading
         mapView.showsUserLocation = true
@@ -62,25 +62,25 @@ struct RadarView: UIViewRepresentable {
         @Binding var mapImages: [ApiImage]
         private let mapView: RadarView
         private var route: MKRoute? = nil
-        let identifier = "Annotation"
+        let identifier = "radar"
         
         init(_ mapView: RadarView, mapImages: Binding<[ApiImage]>) {
             self.mapView = mapView
             _mapImages = mapImages
         }
-    }
-    
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
-        if annotation is ImageAnnotation {
-            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as! MKMarkerAnnotationView
-            annotationView.sizeThatFits(CGSize.init(width: 4, height: 4))
-            annotationView.canShowCallout = false
-            annotationView.annotation = annotation
-            return annotationView
-            
-        } else {
-            return nil
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            print("vewrvvrvw")
+            if annotation is PointAnnotation {
+                print("test")
+                let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as! RadarAnnotationView
+                annotationView.canShowCallout = false
+                annotationView.annotation = annotation
+                return annotationView
+                
+            } else {
+                return nil
+            }
         }
     }
     

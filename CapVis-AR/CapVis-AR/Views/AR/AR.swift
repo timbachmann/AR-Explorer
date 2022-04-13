@@ -12,6 +12,7 @@ import MapKit
 struct AR: View {
     
     @EnvironmentObject var imageData: ImageData
+    @EnvironmentObject var locationManagerModel: LocationManagerModel
     @Binding var selectedTab: ContentView.Tab
     @ObservedObject var arDelegate = ARDelegate()
     @State var redrawImages: Bool = false
@@ -71,6 +72,11 @@ struct AR: View {
                     
         }
         .edgesIgnoringSafeArea(.top)
+        .onChange(of: locationManagerModel.location, perform: { [old = locationManagerModel.location] new in
+            if new.distance(from: old) > 5.0 {
+                $redrawImages.wrappedValue.toggle()
+            }
+        })
     }
 }
 
@@ -80,6 +86,3 @@ struct AR_Previews: PreviewProvider {
             .environmentObject(ImageData())
     }
 }
-
-
-

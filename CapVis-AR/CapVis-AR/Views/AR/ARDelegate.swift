@@ -115,5 +115,9 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
         images.removeAll(where: { $0 == node })
     }
     
-    
+    func removeAllNodes() {
+        for node in images {
+            removeImage(node: node)
+        }
+    }
 }
