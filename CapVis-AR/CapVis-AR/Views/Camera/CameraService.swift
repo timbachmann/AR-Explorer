@@ -11,108 +11,67 @@ import AVFoundation
 import Photos
 import UIKit
 import SwiftUI
+import CoreMotion
+import GLKit
 
-//  MARK: Class Camera Service, handles setup of AVFoundation needed for a basic camera app.
-
-public struct AlertError {
-    public var title: String = ""
-    public var message: String = ""
-    public var primaryButtonTitle = "Accept"
-    public var secondaryButtonTitle: String?
-    public var primaryAction: (() -> ())?
-    public var secondaryAction: (() -> ())?
-    
-    public init(title: String = "", message: String = "", primaryButtonTitle: String = "Accept", secondaryButtonTitle: String? = nil, primaryAction: (() -> ())? = nil, secondaryAction: (() -> ())? = nil) {
-        self.title = title
-        self.message = message
-        self.primaryAction = primaryAction
-        self.primaryButtonTitle = primaryButtonTitle
-        self.secondaryAction = secondaryAction
-    }
-}
-
+/**
+ Class Camera Service, handles setup of AVFoundation needed for camera view
+ */
 public class CameraService {
     typealias PhotoCaptureSessionID = String
     
-//    MARK: Observed Properties UI must react to
-    
-//    1.
+    // MARK: Observed Properties
     @Published public var flashMode: AVCaptureDevice.FlashMode = .off
-//    2.
     @Published public var shouldShowAlertView = false
-//    3.
     @Published public var shouldShowSpinner = false
-//    4.
     @Published public var willCapturePhoto = false
-//    5.
     @Published public var isCameraButtonDisabled = true
-//    6.
     @Published public var isCameraUnavailable = true
-//    8.
     @Published public var photo: Photo?
     
-//    MARK: Alert properties
+    // MARK: Alert properties
     public var alertError: AlertError = AlertError()
     
-// MARK: Session Management Properties
+    // MARK: Session Management
     
-//    9
     public let session = AVCaptureSession()
-//    10
     var isSessionRunning = false
-//    12
     var isConfigured = false
-//    13
     var setupResult: SessionSetupResult = .success
-//    14
-    // Communicate with the session and other session objects on this queue.
     private let sessionQueue = DispatchQueue(label: "session queue")
-    
     @objc dynamic var videoDeviceInput: AVCaptureDeviceInput!
     
-    // MARK: Device Configuration Properties
+    // MARK: Device Configuration
     private let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .builtInDualCamera, .builtInTrueDepthCamera], mediaType: .video, position: .unspecified)
     
     // MARK: Capturing Photos
-    
+    var yaw: Float = 0.0
+    var pitch: Float = 0.0
+    let motionManager: CMMotionManager = CMMotionManager()
     private let photoOutput = AVCapturePhotoOutput()
-    
     private var inProgressPhotoCaptureDelegates = [Int64: PhotoCaptureProcessor]()
-    
-    // MARK: KVO and Notifications Properties
-    
     private var keyValueObservations = [NSKeyValueObservation]()
     
-    
+    /**
+     Setup the capture session.
+     */
     public func configure() {
-        /*
-         Setup the capture session.
-         In general, it's not safe to mutate an AVCaptureSession or any of its
-         inputs, outputs, or connections from multiple threads at the same time.
-         
-         Don't perform these tasks on the main queue because
-         AVCaptureSession.startRunning() is a blocking call, which can
-         take a long time. Dispatch session setup to the sessionQueue, so
-         that the main queue isn't blocked, which keeps the UI responsive.
-         */
         sessionQueue.async {
             self.configureSession()
         }
     }
     
-    //        MARK: Checks for user's permisions
+    /**
+     Check for user's permission
+     */
     public func checkForPermissions() {
-      
+        
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            // The user has previously granted access to the camera.
+            // Previously granted
             break
         case .notDetermined:
-            /*
-             The user has not yet been presented with the option to grant
-             video access. Suspend the session queue to delay session
-             setup until the access request has completed.
-             */
+            // Not asked before
             sessionQueue.suspend()
             AVCaptureDevice.requestAccess(for: .video, completionHandler: { granted in
                 if !granted {
@@ -122,13 +81,12 @@ public class CameraService {
             })
             
         default:
-            // The user has previously denied access.
+            // Not granted
             setupResult = .notAuthorized
-            
             DispatchQueue.main.async {
-                self.alertError = AlertError(title: "Camera Access", message: "SwiftCamera doesn't have access to use your camera, please update your privacy settings.", primaryButtonTitle: "Settings", secondaryButtonTitle: nil, primaryAction: {
-                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
-                                                  options: [:], completionHandler: nil)
+                self.alertError = AlertError(title: "Camera Access", message: "CapVis-AR doesn't have access to use your camera, please update your privacy settings.", primaryButtonTitle: "Settings", secondaryButtonTitle: nil, primaryAction: {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
+                                              options: [:], completionHandler: nil)
                     
                 }, secondaryAction: nil)
                 self.shouldShowAlertView = true
@@ -209,16 +167,17 @@ public class CameraService {
         
         self.start()
     }
- 
+    
     //  MARK: Device Configuration
     
-    /// - Tag: ChangeCamera
+    /**
+     Function to switch between built-in camera lenses
+     */
     public func changeCamera() {
-        //        MARK: Here disable all camera operation related buttons due to configuration is due upon and must not be interrupted
+        // Disable buttons while setup is in progress
         DispatchQueue.main.async {
             self.isCameraButtonDisabled = true
         }
-        //
         
         sessionQueue.async {
             let currentVideoDevice = self.videoDeviceInput.device
@@ -244,7 +203,6 @@ public class CameraService {
             let devices = self.videoDeviceDiscoverySession.devices
             var newVideoDevice: AVCaptureDevice? = nil
             
-            // First, seek a device with both the preferred position and device type. Otherwise, seek a device with only the preferred position.
             if let device = devices.first(where: { $0.position == preferredPosition && $0.deviceType == preferredDeviceType }) {
                 newVideoDevice = device
             } else if let device = devices.first(where: { $0.position == preferredPosition }) {
@@ -254,11 +212,7 @@ public class CameraService {
             if let videoDevice = newVideoDevice {
                 do {
                     let videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
-                    
                     self.session.beginConfiguration()
-                    
-                    // Remove the existing device input first, because AVCaptureSession doesn't support
-                    // simultaneous use of the rear and front cameras.
                     self.session.removeInput(self.videoDeviceInput)
                     
                     if self.session.canAddInput(videoDeviceInput) {
@@ -275,7 +229,6 @@ public class CameraService {
                     }
                     
                     self.photoOutput.maxPhotoQualityPrioritization = .quality
-                    
                     self.session.commitConfiguration()
                 } catch {
                     print("Error occurred while creating video device input: \(error)")
@@ -283,15 +236,13 @@ public class CameraService {
             }
             
             DispatchQueue.main.async {
-//                MARK: Here enable capture button due to successfull setup
+                // Enable capture button, setup completed
                 self.isCameraButtonDisabled = false
             }
         }
     }
     
     public func focus(at focusPoint: CGPoint){
-//        let focusPoint = self.videoPreviewLayer.captureDevicePointConverted(fromLayerPoint: point)
-
         let device = self.videoDeviceInput.device
         do {
             try device.lockForConfiguration()
@@ -308,7 +259,55 @@ public class CameraService {
         }
     }
     
-    /// - Tag: Stop capture session
+    /**
+     Start capture session and device motion capture
+     */
+    public func start() {
+        if motionManager.isDeviceMotionAvailable == true {
+            motionManager.deviceMotionUpdateInterval = 0.01
+            
+            let queue = OperationQueue()
+            motionManager.startDeviceMotionUpdates(to: queue, withHandler: { (motion, error) in
+                if let data = motion {
+                    // Update yaw angle to save when capture button is pressed
+                    self.yaw = GLKMathRadiansToDegrees(-Float(.pi - atan2(data.gravity.x, data.gravity.y)))
+                }
+            })
+            
+            print("Device motion started")
+        }
+        
+        sessionQueue.async {
+            if !self.isSessionRunning && self.isConfigured {
+                switch self.setupResult {
+                case .success:
+                    self.session.startRunning()
+                    self.isSessionRunning = self.session.isRunning
+                    
+                    if self.session.isRunning {
+                        DispatchQueue.main.async {
+                            self.isCameraButtonDisabled = false
+                            self.isCameraUnavailable = false
+                        }
+                    }
+                    
+                case .configurationFailed, .notAuthorized:
+                    print("Application not authorized to use camera")
+                    
+                    DispatchQueue.main.async {
+                        self.alertError = AlertError(title: "Camera Error", message: "Camera configuration failed. Either your device camera is not available or its missing permissions", primaryButtonTitle: "Accept", secondaryButtonTitle: nil, primaryAction: nil, secondaryAction: nil)
+                        self.shouldShowAlertView = true
+                        self.isCameraButtonDisabled = true
+                        self.isCameraUnavailable = true
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     Stop capture session
+     */
     
     public func stop(completion: (() -> ())? = nil) {
         sessionQueue.async {
@@ -329,40 +328,11 @@ public class CameraService {
         }
     }
     
-    /// - Tag: Start capture session
-    
-    public func start() {
-//        We use our capture session queue to ensure our UI runs smoothly on the main thread.
-        sessionQueue.async {
-            if !self.isSessionRunning && self.isConfigured {
-                switch self.setupResult {
-                case .success:
-                    self.session.startRunning()
-                    self.isSessionRunning = self.session.isRunning
-                    
-                    if self.session.isRunning {
-                        DispatchQueue.main.async {
-                            self.isCameraButtonDisabled = false
-                            self.isCameraUnavailable = false
-                        }
-                    }
-                    
-                case .configurationFailed, .notAuthorized:
-                    print("Application not authorized to use camera")
-
-                    DispatchQueue.main.async {
-                        self.alertError = AlertError(title: "Camera Error", message: "Camera configuration failed. Either your device camera is not available or its missing permissions", primaryButtonTitle: "Accept", secondaryButtonTitle: nil, primaryAction: nil, secondaryAction: nil)
-                        self.shouldShowAlertView = true
-                        self.isCameraButtonDisabled = true
-                        self.isCameraUnavailable = true
-                    }
-                }
-            }
-        }
-    }
-    
-    public func set(zoom: CGFloat){
-        let factor = zoom < 1 ? 1 : zoom
+    /**
+     Function to apply a zoom factor to capture session
+     */
+    public func setZoom(zoomFactor: CGFloat){
+        let factor = zoomFactor < 1 ? 1 : zoomFactor
         let device = self.videoDeviceInput.device
         
         do {
@@ -377,23 +347,43 @@ public class CameraService {
     
     //    MARK: Capture Photo
     
-    /// - Tag: CapturePhoto
+    /**
+     Capturing of photo and additional information such as location and orientation
+     */
     public func capturePhoto(heading: CLHeading) {
         if self.setupResult != .configurationFailed {
             self.isCameraButtonDisabled = true
-            
+            let currYaw = self.yaw
+            var currPitch = self.pitch
             sessionQueue.async {
+                
+                // Photo orientation setup
                 if let photoOutputConnection = self.photoOutput.connection(with: .video) {
-                    photoOutputConnection.videoOrientation = .portrait
+                    print(UIDevice.current.orientation.isLandscape)
+                    if UIDevice.current.orientation == .landscapeLeft {
+                        photoOutputConnection.videoOrientation = .landscapeRight
+                        print("Left")
+                        currPitch = 1.0
+                    } else if UIDevice.current.orientation == .landscapeRight {
+                        print("Right")
+                        photoOutputConnection.videoOrientation = .landscapeLeft
+                        currPitch = -1.0
+                    } else if UIDevice.current.orientation == .portraitUpsideDown {
+                        print("Portrait Upside Down")
+                        photoOutputConnection.videoOrientation = .portraitUpsideDown
+                    } else {
+                        print("Portrait")
+                        photoOutputConnection.videoOrientation = .portrait
+                    }
                 }
                 var photoSettings = AVCapturePhotoSettings()
                 
-                // Capture HEIF photos when supported. Enable according to user settings and high-resolution photos.
+                // Capture JPEG photos
                 if  self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
                     photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])
                 }
                 
-                // Sets the flash option for this capture.
+                // Activates flash
                 if self.videoDeviceInput.device.isFlashAvailable {
                     photoSettings.flashMode = self.flashMode
                 }
@@ -408,11 +398,9 @@ public class CameraService {
                 photoSettings.photoQualityPrioritization = .quality
                 
                 let photoCaptureProcessor = PhotoCaptureProcessor(with: photoSettings, willCapturePhotoAnimation: { [weak self] in
-                    // Tells the UI to flash the screen to signal that SwiftCamera took a photo.
                     DispatchQueue.main.async {
                         self?.willCapturePhoto = true
                     }
-                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                         self?.willCapturePhoto = false
                     }
@@ -420,19 +408,18 @@ public class CameraService {
                 }, completionHandler: { [weak self] (photoCaptureProcessor) in
                     // When the capture is complete, remove a reference to the photo capture delegate so it can be deallocated.
                     if let data = photoCaptureProcessor.photoData {
-                        self?.photo = Photo(originalData: data, heading: heading)
+                        self?.photo = Photo(originalData: data, heading: heading, yaw: currYaw, pitch: currPitch)
                         print("passing photo")
                     } else {
                         print("No photo data")
                     }
                     
                     self?.isCameraButtonDisabled = false
-                    
                     self?.sessionQueue.async {
                         self?.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
                     }
+                    
                 }, photoProcessingHandler: { [weak self] animate in
-                    // Animates a spinner while photo is processing
                     if animate {
                         self?.shouldShowSpinner = true
                     } else {
@@ -440,7 +427,6 @@ public class CameraService {
                     }
                 })
                 
-                // The photo output holds a weak reference to the photo capture delegate and stores it in an array to maintain a strong reference.
                 self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = photoCaptureProcessor
                 self.photoOutput.capturePhoto(with: photoSettings, delegate: photoCaptureProcessor)
             }

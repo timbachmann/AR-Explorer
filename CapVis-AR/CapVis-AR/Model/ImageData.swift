@@ -13,13 +13,12 @@ class ImageData: ObservableObject {
     @Published var capVisImages: [ApiImage] = []
     @Published var imagesToUpload: [ApiImage] = []
     @Published var localFilesSynced: Bool = true
-    private static var instance: ImageData? = nil
     
     init() {
-        ImageData.instance = self
         loadAllImages { (data, error) in
             if let retrievedData = data {
                 self.capVisImages = retrievedData
+                self.capVisImages.sort(by: { $0.date < $1.date })
             }
         }
         
@@ -29,10 +28,6 @@ class ImageData: ObservableObject {
                 self.localFilesSynced = self.imagesToUpload.isEmpty
             }
         }
-    }
-    
-    class func getInstance() -> ImageData? {
-        return instance
     }
     
     func loadAllImages(completion: @escaping (_ data: [ApiImage]?, _ error: String?) -> ())  {
@@ -74,7 +69,7 @@ class ImageData: ObservableObject {
                             thumbData = Data()
                         }
                         
-                        images.append(ApiImage(id: metaData.id, data: imageData, thumbnail: thumbData, lat: metaData.lat, lng: metaData.lng, date: metaData.date, source: metaData.source, bearing: metaData.bearing))
+                        images.append(ApiImage(id: metaData.id, data: imageData, thumbnail: thumbData, lat: metaData.lat, lng: metaData.lng, date: metaData.date, source: metaData.source, bearing: metaData.bearing, yaw: metaData.yaw, pitch: metaData.pitch))
                         
                     } catch {
                         receivedError = "Couldn't parse \(metaPath.path) as \(MetaData.self):\n\(error)"
@@ -132,7 +127,7 @@ class ImageData: ObservableObject {
             } catch let error as NSError {
                 print("Unable to create directory \(error.debugDescription)")
             }
-            let meta = MetaData(id: image.id, lat: image.lat, lng: image.lng, date: image.date, source: image.source, bearing: image.bearing)
+            let meta = MetaData(id: image.id, lat: image.lat, lng: image.lng, date: image.date, source: image.source, bearing: image.bearing, yaw: image.yaw, pitch: image.pitch)
             
             let metaPath = folderPath.appendingPathComponent("\(image.id).json")
             do {

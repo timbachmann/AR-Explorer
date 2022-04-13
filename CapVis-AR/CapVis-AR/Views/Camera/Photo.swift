@@ -11,6 +11,7 @@ import CoreLocation
 import OpenAPIClient
 import SwiftUI
 import CoreLocation
+import CoreMotion
 
 public struct Photo: Identifiable, Equatable {
     
@@ -18,9 +19,11 @@ public struct Photo: Identifiable, Equatable {
     public var originalData: Data
     var coordinates: Coordinates
     var heading: CLHeading
+    var yaw: Float
+    var pitch: Float
     let locationManager: CLLocationManager = CLLocationManager()
     
-    public init(id: String = UUID().uuidString, originalData: Data, heading: CLHeading) {
+    public init(id: String = UUID().uuidString, originalData: Data, heading: CLHeading, yaw: Float, pitch: Float) {
         self.id = id
         self.originalData = originalData
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -28,6 +31,8 @@ public struct Photo: Identifiable, Equatable {
         let longitude = locationManager.location?.coordinate.longitude
         self.coordinates = Coordinates(latitude: latitude ?? 0.0, longitude: longitude ?? 0.0)
         self.heading = heading
+        self.yaw = yaw
+        self.pitch = pitch
     }
 }
 
