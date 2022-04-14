@@ -16,7 +16,6 @@ final class ImageAnnotation: NSObject, MKAnnotation {
     let subtitle: String?
     var image: UIImage?
     var id: String?
-    var route: MKRoute?
     
     init(coordinate: CLLocationCoordinate2D, title: String, image: UIImage, subtitle: String, id: String) {
         self.coordinate = coordinate

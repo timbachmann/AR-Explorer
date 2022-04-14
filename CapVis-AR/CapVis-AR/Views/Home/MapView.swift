@@ -143,16 +143,12 @@ struct MapView: UIViewRepresentable {
         
         func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
             guard view is ImageAnnotationView else { return }
-            if let imageAnnotation = view.annotation as? ImageAnnotation {
+            if view.annotation is ImageAnnotation {
                 view.canShowCallout = true
                 view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
                 let directionsButton: UIButton = UIButton(type: .detailDisclosure)
                 directionsButton.tag = 123
-                if imageAnnotation.route == nil {
-                    directionsButton.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.diamond"), for: .normal)
-                } else {
-                    directionsButton.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-                }
+                directionsButton.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.diamond"), for: .normal)
                 view.leftCalloutAccessoryView = directionsButton
             }
         }
