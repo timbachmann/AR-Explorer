@@ -114,8 +114,8 @@ struct ARViewRepresentable: UIViewRepresentable {
             
             let points = mapRoute.polyline.points()
             
-            let cylinderLineNode = SCNGeometry.cylinderLine(from: translateNode(locationManagerModel.location, altitude: -1.0), to: translateNode(CLLocation(coordinate: points[0].coordinate, altitude: -1.0), altitude: -1.0), segments: 48)
-            arDelegate.placePolyNode(polyNode: cylinderLineNode)
+            let startLineNode = SCNGeometry.cylinderLine(from: translateNode(locationManagerModel.location, altitude: -1.0), to: translateNode(CLLocation(coordinate: points[0].coordinate, altitude: -1.0), altitude: -1.0), segments: 48)
+            arDelegate.placePolyNode(polyNode: startLineNode)
             
             for i in 0 ..< mapRoute.polyline.pointCount - 1 {
                 let currentLocation = CLLocation(coordinate: points[i].coordinate, altitude: -1.0)
@@ -124,16 +124,19 @@ struct ARViewRepresentable: UIViewRepresentable {
                 let cylinderLineNode = SCNGeometry.cylinderLine(from: translateNode(currentLocation, altitude: -1.0), to: translateNode(nextLocation, altitude: -1.0), segments: 48)
                 arDelegate.placePolyNode(polyNode: cylinderLineNode)
                 
-                addPolyPointNode(point: currentLocation)
+                addPolyPointNode(point: currentLocation, color: .green)
             }
             
-            addPolyPointNode(point: CLLocation(coordinate: points[mapRoute.polyline.pointCount].coordinate, altitude: -1.0))
+            addPolyPointNode(point: CLLocation(coordinate: points[mapRoute.polyline.pointCount-1].coordinate, altitude: -1.0), color: .green)
+            let endLineNode = SCNGeometry.cylinderLine(from: translateNode(CLLocation(coordinate: points[mapRoute.polyline.pointCount-1].coordinate, altitude: -1.0), altitude: -1.0), to: translateNode(CLLocation(coordinate: CLLocationCoordinate2D(latitude: imageData.navigationImage!.lat, longitude: imageData.navigationImage!.lng), altitude: -1.0), altitude: -1.0), segments: 48)
+            arDelegate.placePolyNode(polyNode: endLineNode)
+            
         }
     }
     
-    func addPolyPointNode(point: CLLocation) {
+    func addPolyPointNode(point: CLLocation, color: UIColor) {
         let scnSphere = SCNSphere(radius: 0.5)
-        scnSphere.firstMaterial?.diffuse.contents = UIColor.green
+        scnSphere.firstMaterial?.diffuse.contents = color
         let polyNode = SCNNode(geometry: scnSphere)
         
         polyNode.worldPosition = translateNode(point, altitude: -1.0)
