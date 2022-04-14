@@ -12,7 +12,7 @@ struct ContentView: View {
     @State private var selectedTab: Tab = .home
     let pub = NotificationCenter.default.publisher(for: Notification.Name("capVisAR"))
     
-    enum Tab {
+    public enum Tab {
         case home
         case ar
     }
@@ -24,7 +24,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            Home()
+            Home(selectedTab: $selectedTab)
                 .tabItem {
                     Label("Home", systemImage: "map")
                 }

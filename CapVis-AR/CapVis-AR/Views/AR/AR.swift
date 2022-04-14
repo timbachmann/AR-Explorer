@@ -38,7 +38,7 @@ struct AR: View {
                             Circle()
                                 .size(width: 120.0, height: 96.0)
                                 .offset(x: -12.0, y: 0)
-                            )
+                        )
                         .overlay(
                             Circle()
                                 .stroke(Color(uiColor: UIColor.systemBackground), lineWidth: 4)
@@ -49,7 +49,20 @@ struct AR: View {
                         .offset(x: 0.0, y: 40)
                 }
                 Spacer()
-                HStack (alignment: .center){
+                HStack (alignment: .center) {
+                    if imageData.navigationImage != nil {
+                        Button(action: {
+                            arDelegate.removeAllPolyNodes()
+                            imageData.navigationImage = nil
+                        }, label: {
+                            Image(systemName: "xmark")
+                                .padding()
+                                .foregroundColor(Color.accentColor)
+                        })
+                        .frame(width: 48.0, height: 48.0)
+                        .background(Color(UIColor.systemBackground).opacity(0.95))
+                        .cornerRadius(10.0, corners: [.bottomLeft, .bottomRight, .topLeft, .topRight])
+                    }
                     Spacer()
                     Text(arDelegate.message)
                         .foregroundColor(Color.primary)
@@ -69,7 +82,7 @@ struct AR: View {
                 }
             }
             .padding()
-                    
+            
         }
         .edgesIgnoringSafeArea(.top)
         .onChange(of: locationManagerModel.location, perform: { [old = locationManagerModel.location] new in

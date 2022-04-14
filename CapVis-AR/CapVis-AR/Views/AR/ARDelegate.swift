@@ -69,7 +69,8 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
     
     // MARK: - Private
     private var arView: ARSCNView?
-    private var images:[SCNNode] = []
+    private var images: [SCNNode] = []
+    private var polyNodes: [SCNNode] = []
     private var trackedNode:SCNNode?
     
     
@@ -90,6 +91,11 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
         images.append(imageNode)
         arView?.scene.rootNode.addChildNode(imageNode)
         nodesUpdated()
+    }
+    
+    func placePolyNode(polyNode: SCNNode) {
+        polyNodes.append(polyNode)
+        arView?.scene.rootNode.addChildNode(polyNode)
     }
     
     func nodesUpdated() {
@@ -118,6 +124,17 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
     func removeAllNodes() {
         for node in images {
             removeImage(node: node)
+        }
+    }
+    
+    func removePolyNode(node: SCNNode) {
+        node.removeFromParentNode()
+        polyNodes.removeAll(where: { $0 == node })
+    }
+    
+    func removeAllPolyNodes() {
+        for node in polyNodes {
+            removePolyNode(node: node)
         }
     }
 }

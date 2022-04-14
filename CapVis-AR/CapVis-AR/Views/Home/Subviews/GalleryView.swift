@@ -15,6 +15,7 @@ struct GalleryView: View {
     @State private var sortingOption: String = "None"
     @State private var notSelectingImages: Bool = true
     @State private var selectedImages: [String] = []
+    @Binding var selectedTab: ContentView.Tab
     
     private let threeColumnGrid = [
         GridItem(.flexible(minimum: 40)),
@@ -48,7 +49,7 @@ struct GalleryView: View {
                 ForEach(imageData.capVisImages) { item in
                     
                     if $notSelectingImages.wrappedValue {
-                        NavigationLink(destination: DetailView(imageIndex: imageData.capVisImages.firstIndex(of: item)!)) {
+                        NavigationLink(destination: DetailView(imageIndex: imageData.capVisImages.firstIndex(of: item)!, selectedTab: $selectedTab)) {
                             Image(uiImage: UIImage(data: item.thumbnail)!)
                                 .resizable()
                                 .scaledToFill()

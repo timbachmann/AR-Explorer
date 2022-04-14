@@ -21,6 +21,8 @@ struct MapView: UIViewRepresentable {
     }
     
     @Binding var mapMarkerImages: [ApiImage]
+    @Binding var navigationImage: ApiImage?
+    @Binding var selectedTab: ContentView.Tab
     @Binding var showDetail: Bool
     @Binding var detailId: String
     @Binding var zoomOnLocation: Bool
@@ -63,7 +65,7 @@ struct MapView: UIViewRepresentable {
     }
     
     func makeCoordinator() -> MapView.Coordinator {
-        Coordinator(self, mapImages: $mapMarkerImages, detailId: $detailId, showDetail: $showDetail)
+        Coordinator(self, mapImages: $mapMarkerImages, detailId: $detailId, showDetail: $showDetail, navigationImage: $navigationImage, selectedTab: $selectedTab)
     }
     
     class Coordinator: NSObject, MKMapViewDelegate {
@@ -71,6 +73,8 @@ struct MapView: UIViewRepresentable {
         @Binding var mapImages: [ApiImage]
         @Binding var showDetail: Bool
         @Binding var detailId: String
+        @Binding var navigationImage: ApiImage?
+        @Binding var selectedTab: ContentView.Tab
         private let mapView: MapView
         private var route: MKRoute? = nil
         let identifier = "Annotation"
@@ -103,11 +107,13 @@ struct MapView: UIViewRepresentable {
             }
         }
         
-        init(_ mapView: MapView, mapImages: Binding<[ApiImage]>, detailId: Binding<String>, showDetail: Binding<Bool>) {
+        init(_ mapView: MapView, mapImages: Binding<[ApiImage]>, detailId: Binding<String>, showDetail: Binding<Bool>, navigationImage: Binding<ApiImage?>, selectedTab: Binding<ContentView.Tab>) {
             self.mapView = mapView
             _mapImages = mapImages
             _detailId = detailId
             _showDetail = showDetail
+            _navigationImage = navigationImage
+            _selectedTab = selectedTab
         }
         
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -159,48 +165,8 @@ struct MapView: UIViewRepresentable {
                 
                 if let controlDetail = control as? UIButton {
                     if controlDetail.tag == 123 {
-                        let request = MKDirections.Request()
-                        request.transportType = .walking
-                        request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationManager().location!.coordinate))
-                        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: imageAnnotation.coordinate))
-                        
-                        let directions = MKDirections(request: request)
-                        directions.calculate { response, error in
-                            guard let mapRoute = response?.routes.first else {
-                                return
-                            }
-                            
-                            let padding: CGFloat = 8
-                            if self.route != nil {
-                                mapView.removeOverlay(self.route!.polyline)
-                                if imageAnnotation.route == nil {
-                                    mapView.addOverlay(mapRoute.polyline)
-                                    self.route = mapRoute
-                                    imageAnnotation.route = mapRoute
-                                    controlDetail.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-                                } else {
-                                    imageAnnotation.route = nil
-                                    controlDetail.setImage(UIImage(systemName: "arrow.triangle.turn.up.right.diamond"), for: .normal)
-                                }
-                            } else {
-                                mapView.addOverlay(mapRoute.polyline)
-                                self.route = mapRoute
-                                imageAnnotation.route = mapRoute
-                                controlDetail.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-                            }
-                            mapView.setVisibleMapRect(
-                                mapView.visibleMapRect.union(
-                                    mapRoute.polyline.boundingMapRect
-                                ),
-                                edgePadding: UIEdgeInsets(
-                                    top: 0,
-                                    left: padding,
-                                    bottom: padding,
-                                    right: padding
-                                ),
-                                animated: true
-                            )
-                        }
+                        self.navigationImage = self.mapImages[self.mapImages.firstIndex(where: {$0.id == imageAnnotation.id})!]
+                        selectedTab = .ar
                     } else {
                         showDetail = true
                     }

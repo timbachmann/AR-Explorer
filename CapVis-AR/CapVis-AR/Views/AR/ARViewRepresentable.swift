@@ -9,6 +9,8 @@ import ARKit
 import SwiftUI
 import OpenAPIClient
 import CoreMotion
+import MapKit
+
 
 struct ARViewRepresentable: UIViewRepresentable {
     let arDelegate:ARDelegate
@@ -22,6 +24,9 @@ struct ARViewRepresentable: UIViewRepresentable {
         //arView.showsStatistics = true
         //arView.debugOptions = [ARSCNDebugOptions.showWorldOrigin]
         arDelegate.setARView(arView)
+        if imageData.navigationImage != nil {
+            loadRoute()
+        }
         loadImageNodes()
         return arView
     }
@@ -30,6 +35,10 @@ struct ARViewRepresentable: UIViewRepresentable {
         if redrawImages {
             arDelegate.removeAllNodes()
             loadImageNodes()
+            if imageData.navigationImage != nil {
+                arDelegate.removeAllPolyNodes()
+                loadRoute()
+            }
             redrawImages = false
         }
     }
@@ -80,20 +89,60 @@ struct ARViewRepresentable: UIViewRepresentable {
         imageNode.geometry?.firstMaterial?.diffuse.contents = imageUI
         imageNode.geometry?.firstMaterial?.isDoubleSided = true
         
-        imageNode.worldPosition = translateNode(location)
-
+        imageNode.worldPosition = translateNode(location, altitude: 0.0)
+        
         let currentOrientation = GLKQuaternionMake(imageNode.orientation.x, imageNode.orientation.y, imageNode.orientation.z, imageNode.orientation.w)
         let bearingRotation = GLKQuaternionMakeWithAngleAndAxis(GLKMathDegreesToRadians(-Float(image.bearing)), 0, 1, 0)
         let yawRotation = GLKQuaternionMakeWithAngleAndAxis(GLKMathDegreesToRadians(finalYaw), 0, 0, 1)
         let finalOrientation = GLKQuaternionMultiply(GLKQuaternionMultiply(currentOrientation, bearingRotation), yawRotation)
         imageNode.orientation = SCNQuaternion(finalOrientation.x, finalOrientation.y, finalOrientation.z, finalOrientation.w)
-         
+        
         arDelegate.placeImage(imageNode: imageNode)
     }
     
-    func translateNode (_ location: CLLocation) -> SCNVector3 {
+    func loadRoute() {
+        let request = MKDirections.Request()
+        request.transportType = .walking
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationManager().location!.coordinate))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: imageData.navigationImage!.lat, longitude: imageData.navigationImage!.lng)))
+        
+        let directions = MKDirections(request: request)
+        directions.calculate { response, error in
+            guard let mapRoute = response?.routes.first else {
+                return
+            }
+            
+            let points = mapRoute.polyline.points()
+            
+            let cylinderLineNode = SCNGeometry.cylinderLine(from: translateNode(locationManagerModel.location, altitude: -1.0), to: translateNode(CLLocation(coordinate: points[0].coordinate, altitude: -1.0), altitude: -1.0), segments: 48)
+            arDelegate.placePolyNode(polyNode: cylinderLineNode)
+            
+            for i in 0 ..< mapRoute.polyline.pointCount - 1 {
+                let currentLocation = CLLocation(coordinate: points[i].coordinate, altitude: -1.0)
+                let nextLocation = CLLocation(coordinate: points[i + 1].coordinate, altitude: -1.0)
+                
+                let cylinderLineNode = SCNGeometry.cylinderLine(from: translateNode(currentLocation, altitude: -1.0), to: translateNode(nextLocation, altitude: -1.0), segments: 48)
+                arDelegate.placePolyNode(polyNode: cylinderLineNode)
+                
+                addPolyPointNode(point: currentLocation)
+            }
+            
+            addPolyPointNode(point: CLLocation(coordinate: points[mapRoute.polyline.pointCount].coordinate, altitude: -1.0))
+        }
+    }
+    
+    func addPolyPointNode(point: CLLocation) {
+        let scnSphere = SCNSphere(radius: 0.5)
+        scnSphere.firstMaterial?.diffuse.contents = UIColor.green
+        let polyNode = SCNNode(geometry: scnSphere)
+        
+        polyNode.worldPosition = translateNode(point, altitude: -1.0)
+        arDelegate.placePolyNode(polyNode: polyNode)
+    }
+    
+    func translateNode (_ location: CLLocation, altitude: CLLocationDistance) -> SCNVector3 {
         let locationTransform = GeometryUtils.transformMatrix(matrix_identity_float4x4, locationManagerModel.location, location)
-        return SCNVector3Make(locationTransform.columns.3.x, locationTransform.columns.3.y, locationTransform.columns.3.z)
+        return SCNVector3Make(locationTransform.columns.3.x, locationTransform.columns.3.y + Float(altitude), locationTransform.columns.3.z)
     }
 }
 
@@ -103,8 +152,31 @@ struct ARViewRepresentable_Previews: PreviewProvider {
     }
 }
 
-extension simd_quatf {
-    init(_ cmq: CMQuaternion) {
-        self.init(ix: Float(cmq.x), iy: Float(cmq.y), iz: Float(cmq.z), r: Float(cmq.w))
+extension SCNGeometry {
+    
+    class func cylinderLine(from: SCNVector3, to: SCNVector3, segments: Int) -> SCNNode {
+        let x1 = from.x
+        let x2 = to.x
+        let y1 = from.y
+        let y2 = to.y
+        let z1 = from.z
+        let z2 = to.z
+        
+        let distance =  sqrtf((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1) + (z2-z1) * (z2-z1))
+        let cylinder = SCNCylinder(radius: 0.05, height: CGFloat(distance))
+        cylinder.radialSegmentCount = segments
+        cylinder.firstMaterial?.diffuse.contents = UIColor.blue
+        let lineNode = SCNNode(geometry: cylinder)
+        lineNode.position = SCNVector3(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2, z: (from.z + to.z) / 2)
+        lineNode.eulerAngles = SCNVector3(Float.pi / 2, acos((to.z-from.z)/distance), atan2((to.y-from.y),(to.x-from.x)))
+        
+        return lineNode
     }
+}
+
+extension CLLocation {
+    convenience init(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance) {
+        self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: 0, verticalAccuracy: 0, timestamp: Date())
+    }
+    
 }

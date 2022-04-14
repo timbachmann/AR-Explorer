@@ -19,6 +19,7 @@ struct DetailView: View {
     @State var index: Int? = nil
     @State var isLoading: Bool = true
     @State private var showingOptions = false
+    @Binding var selectedTab: ContentView.Tab
     @EnvironmentObject var imageData: ImageData
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
@@ -28,10 +29,28 @@ struct DetailView: View {
                 ProgressView()
             } else {
                 VStack {
+                    Spacer()
                     detailImage?
                         .resizable()
                         .scaledToFit()
                     detailYaw ?? Text("").font(.headline)
+                    Spacer()
+                    Button(action: {
+                        if image != ApiImage() {
+                            imageData.navigationImage = image
+                            selectedTab = .ar
+                        }
+                    }, label: {
+                        HStack {
+                            Image(systemName: "arrow.triangle.turn.up.right.diamond")
+                                .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                            Text("Directions in AR")
+                                .foregroundColor(Color(uiColor: UIColor.systemBackground))
+                        }
+                    })
+                    .frame(width: 200.0, height: 48.0)
+                    .background(Color.accentColor)
+                    .cornerRadius(10.0, corners: [.topLeft, .topRight, .bottomLeft, .bottomRight])
                 }
             }
         }
@@ -40,11 +59,11 @@ struct DetailView: View {
         .onAppear { loadImage() }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                            VStack {
-                                detailDate ?? Text("").font(.headline)
-                                detailSource ?? Text("").font(.subheadline)
-                            }
-                        }
+                VStack {
+                    detailDate ?? Text("").font(.headline)
+                    detailSource ?? Text("").font(.subheadline)
+                }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     showingOptions = true
@@ -66,7 +85,7 @@ struct DetailView: View {
                                     print(error ?? "Could not delete image!")
                                     return
                                 }
-
+                                
                                 if (response != nil) {
                                     imageData.capVisImages.remove(at: imageIndex!)
                                     imageData.saveImagesToFile()
@@ -105,7 +124,7 @@ extension DetailView {
                     print(error ?? "Unknown Error")
                     return
                 }
-
+                
                 if (response != nil) {
                     index = imageData.capVisImages.firstIndex{$0.id == image.id}!
                     imageData.capVisImages[index!].data = response!.data

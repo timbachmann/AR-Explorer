@@ -16,6 +16,7 @@ struct Home: View {
     private let buttonOpacity: CGFloat = 0.95
     @EnvironmentObject var imageData: ImageData
     @EnvironmentObject var locationManagerModel: LocationManagerModel
+    @Binding var selectedTab: ContentView.Tab
     @State private var showFavoritesOnly = false
     @State private var mapStyleSheetVisible: Bool = false
     @State private var locationButtonCount: Int = 0
@@ -42,7 +43,7 @@ struct Home: View {
     var body: some View {
         NavigationView {
             ZStack {
-                MapView(mapMarkerImages: $imageData.capVisImages,showDetail: $showDetail, detailId: $detailId, zoomOnLocation: $zoomOnLocation, changeMapType: $changeMapType, applyAnnotations: $applyAnnotations, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
+                MapView(mapMarkerImages: $imageData.capVisImages, navigationImage: $imageData.navigationImage, selectedTab: $selectedTab, showDetail: $showDetail, detailId: $detailId, zoomOnLocation: $zoomOnLocation, changeMapType: $changeMapType, applyAnnotations: $applyAnnotations, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
                     .edgesIgnoringSafeArea(.top)
                     .onChange(of: imageData.capVisImages) { tag in
                         applyAnnotations = true
@@ -84,7 +85,7 @@ struct Home: View {
                                     .frame(width: buttonSize)
                                     .background(Color(UIColor.systemBackground).opacity(buttonOpacity))
                                 
-                                NavigationLink(destination: GalleryView(), isActive: $showGallery) {
+                                NavigationLink(destination: GalleryView(selectedTab: $selectedTab), isActive: $showGallery) {
                                     EmptyView()
                                 }
                                 
@@ -177,7 +178,7 @@ struct Home: View {
                     EmptyView()
                 }
                 
-                NavigationLink(destination: DetailView(imageIndex: imageData.capVisImages.firstIndex(where: {$0.id == detailId})), isActive: $showDetail) {
+                NavigationLink(destination: DetailView(imageIndex: imageData.capVisImages.firstIndex(where: {$0.id == detailId}), selectedTab: $selectedTab), isActive: $showDetail) {
                     EmptyView()
                 }
                 
@@ -342,7 +343,7 @@ struct RoundedCorner: Shape {
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-        Home()
+        Home(selectedTab: .constant(.home))
             .environmentObject(ImageData())
     }
 }

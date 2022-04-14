@@ -13,6 +13,7 @@ class ImageData: ObservableObject {
     @Published var capVisImages: [ApiImage] = []
     @Published var imagesToUpload: [ApiImage] = []
     @Published var localFilesSynced: Bool = true
+    @Published var navigationImage: ApiImage? = nil
     
     init() {
         loadAllImages { (data, error) in

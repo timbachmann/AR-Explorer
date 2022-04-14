@@ -70,9 +70,7 @@ struct RadarView: UIViewRepresentable {
         }
         
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            print("vewrvvrvw")
             if annotation is PointAnnotation {
-                print("test")
                 let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as! RadarAnnotationView
                 annotationView.canShowCallout = false
                 annotationView.annotation = annotation
