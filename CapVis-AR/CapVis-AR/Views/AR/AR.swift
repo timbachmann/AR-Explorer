@@ -32,7 +32,7 @@ struct AR: View {
             VStack {
                 HStack {
                     Spacer()
-                    RadarView(mapMarkerImages: $imageData.capVisImages, applyAnnotations: $applyAnnotations)
+                    RadarView(mapMarkerImages: $imageData.capVisImages, navigationImage: $imageData.navigationImage, redrawImages: $redrawImages, applyAnnotations: $applyAnnotations)
                         .frame(width: 96.0, height: 96.0)
                         .clipShape(
                             Circle()
@@ -53,6 +53,7 @@ struct AR: View {
                     if imageData.navigationImage != nil {
                         Button(action: {
                             arDelegate.removeAllPolyNodes()
+                            $redrawImages.wrappedValue.toggle()
                             imageData.navigationImage = nil
                         }, label: {
                             Image(systemName: "xmark")

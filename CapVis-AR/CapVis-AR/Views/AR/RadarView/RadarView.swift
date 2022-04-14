@@ -23,7 +23,10 @@ struct RadarView: UIViewRepresentable {
     }
     
     @Binding var mapMarkerImages: [ApiImage]
+    @Binding var navigationImage: ApiImage?
+    @Binding var redrawImages: Bool
     @Binding var applyAnnotations: Bool
+    @State var polyline: MKPolyline? = nil
     let identifier = "radar"
     let mapView = MKMapView()
     
@@ -40,6 +43,10 @@ struct RadarView: UIViewRepresentable {
         mapView.isZoomEnabled = false
         mapView.isPitchEnabled = false
         mapView.isUserInteractionEnabled = false
+        
+        if navigationImage != nil {
+            addRoute(to: mapView)
+        }
         return mapView
     }
     
@@ -51,6 +58,19 @@ struct RadarView: UIViewRepresentable {
             addAnnotations(to: uiView)
             applyAnnotations = false
         }
+        
+        if redrawImages {
+            if navigationImage != nil {
+                if polyline != nil {
+                    removePolyline(from: uiView)
+                }
+                addRoute(to: uiView)
+            } else {
+                if polyline != nil {
+                    removePolyline(from: uiView)
+                }
+            }
+        }
     }
     
     func makeCoordinator() -> RadarView.Coordinator {
@@ -61,7 +81,6 @@ struct RadarView: UIViewRepresentable {
         
         @Binding var mapImages: [ApiImage]
         private let mapView: RadarView
-        private var route: MKRoute? = nil
         let identifier = "radar"
         
         init(_ mapView: RadarView, mapImages: Binding<[ApiImage]>) {
@@ -80,6 +99,44 @@ struct RadarView: UIViewRepresentable {
                 return nil
             }
         }
+        
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            if let polyOverlay = overlay as? MKPolyline {
+                let renderer = MKPolylineRenderer(overlay: polyOverlay)
+                renderer.strokeColor = .systemBlue
+                renderer.lineWidth = 3
+                return renderer
+                
+            } else if let circleOverlay = overlay as? MKCircle {
+                let circleRenderer = MKCircleRenderer(overlay: circleOverlay)
+                circleRenderer.fillColor = .blue
+                circleRenderer.alpha = 0.1
+                return circleRenderer
+                
+            } else {
+                return MKOverlayRenderer()
+            }
+        }
+    }
+    
+    func addRoute(to mapView: MKMapView) {
+        let request = MKDirections.Request()
+        request.transportType = .walking
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: locationManager.location!.coordinate))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: navigationImage!.lat, longitude: navigationImage!.lng)))
+        
+        let directions = MKDirections(request: request)
+        directions.calculate { response, error in
+            guard let mapRoute = response?.routes.first else {
+                return
+            }
+            polyline = mapRoute.polyline
+            mapView.addOverlay(polyline!)
+        }
+    }
+    
+    func removePolyline(from mapView: MKMapView) {
+        mapView.removeOverlay(polyline!)
     }
     
     func addAnnotations(to mapView: MKMapView) {
