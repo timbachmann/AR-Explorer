@@ -16,11 +16,12 @@ struct GalleryView: View {
     @State private var notSelectingImages: Bool = true
     @State private var selectedImages: [String] = []
     @Binding var selectedTab: ContentView.Tab
+    private let gridWidth = (UIScreen.main.bounds.width-40)/3
     
     private let threeColumnGrid = [
-        GridItem(.flexible(minimum: 40)),
-        GridItem(.flexible(minimum: 40)),
-        GridItem(.flexible(minimum: 40)),
+        GridItem(.flexible(minimum: (UIScreen.main.bounds.width-40)/3, maximum: (UIScreen.main.bounds.width-40)/3)),
+        GridItem(.flexible(minimum: (UIScreen.main.bounds.width-40)/3, maximum: (UIScreen.main.bounds.width-40)/3)),
+        GridItem(.flexible(minimum: (UIScreen.main.bounds.width-40)/3, maximum: (UIScreen.main.bounds.width-40)/3)),
     ]
     
     var isSelectedOverlay: some View {
@@ -45,7 +46,7 @@ struct GalleryView: View {
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: threeColumnGrid, spacing: 20) {
+            LazyVGrid(columns: threeColumnGrid, spacing: 10) {
                 ForEach(imageData.capVisImages) { item in
                     
                     if $notSelectingImages.wrappedValue {
@@ -53,19 +54,20 @@ struct GalleryView: View {
                             Image(uiImage: UIImage(data: item.thumbnail)!)
                                 .resizable()
                                 .scaledToFill()
-                                .frame(minWidth: 0, maxWidth: .infinity)
+                                .frame(width: gridWidth, height: gridWidth)
                                 .aspectRatio(1, contentMode: .fill)
-                                .cornerRadius(4)
+                                .cornerRadius(2)
+                                .clipped()
                         }
                     } else {
                         Image(uiImage: UIImage(data: item.thumbnail)!)
                             .resizable()
                             .scaledToFill()
-                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .frame(width: gridWidth, height: gridWidth)
                             .aspectRatio(1, contentMode: .fill)
-                            .cornerRadius(4)
-                        .overlay(selectedImages.contains(item.id) ? isSelectedOverlay : nil)
-                                        
+                            .cornerRadius(2)
+                            .clipped()
+                            .overlay(selectedImages.contains(item.id) ? isSelectedOverlay : nil)
                             .onTapGesture {
                                 if selectedImages.contains(item.id) {
                                     selectedImages.remove(at: selectedImages.firstIndex(of: item.id)!)
