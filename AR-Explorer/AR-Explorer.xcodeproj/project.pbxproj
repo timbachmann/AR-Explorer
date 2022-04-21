@@ -71,14 +71,14 @@
 		2211EAE3280EB4F400783F20 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2213A27427B6890C00497182 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		2227E9F327B54CF200E545D4 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
-		222F3C4727B3C59200EEF17B /* CapVis-AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CapVis-AR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		222F3C4727B3C59200EEF17B /* AR-Explorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AR-Explorer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARApp.swift; sourceTree = "<group>"; };
 		222F3C4C27B3C59200EEF17B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		222F3C4E27B3C59300EEF17B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		222F3C5127B3C59300EEF17B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		222F3C5727B3C59400EEF17B /* CapVis-ARTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CapVis-ARTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		222F3C5727B3C59400EEF17B /* AR-ExplorerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AR-ExplorerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		222F3C5B27B3C59400EEF17B /* CapVis_ARTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARTests.swift; sourceTree = "<group>"; };
-		222F3C6127B3C59400EEF17B /* CapVis-ARUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CapVis-ARUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		222F3C6127B3C59400EEF17B /* AR-ExplorerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AR-ExplorerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		222F3C6527B3C59400EEF17B /* CapVis_ARUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITests.swift; sourceTree = "<group>"; };
 		222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		22371D8827DA4F7D00E9B07C /* LocationManagerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerModel.swift; sourceTree = "<group>"; };
@@ -152,9 +152,9 @@
 		222F3C4827B3C59200EEF17B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				222F3C4727B3C59200EEF17B /* CapVis-AR.app */,
-				222F3C5727B3C59400EEF17B /* CapVis-ARTests.xctest */,
-				222F3C6127B3C59400EEF17B /* CapVis-ARUITests.xctest */,
+				222F3C4727B3C59200EEF17B /* AR-Explorer.app */,
+				222F3C5727B3C59400EEF17B /* AR-ExplorerTests.xctest */,
+				222F3C6127B3C59400EEF17B /* AR-ExplorerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -317,9 +317,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		222F3C4627B3C59200EEF17B /* CapVis-AR */ = {
+		222F3C4627B3C59200EEF17B /* AR-Explorer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 222F3C6B27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-AR" */;
+			buildConfigurationList = 222F3C6B27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "AR-Explorer" */;
 			buildPhases = (
 				222F3C4327B3C59200EEF17B /* Sources */,
 				222F3C4427B3C59200EEF17B /* Frameworks */,
@@ -329,17 +329,17 @@
 			);
 			dependencies = (
 			);
-			name = "CapVis-AR";
+			name = "AR-Explorer";
 			packageProductDependencies = (
 				22B9C3D0280588D8002C07C6 /* OpenAPIClient */,
 			);
 			productName = "CapVis-AR";
-			productReference = 222F3C4727B3C59200EEF17B /* CapVis-AR.app */;
+			productReference = 222F3C4727B3C59200EEF17B /* AR-Explorer.app */;
 			productType = "com.apple.product-type.application";
 		};
-		222F3C5627B3C59400EEF17B /* CapVis-ARTests */ = {
+		222F3C5627B3C59400EEF17B /* AR-ExplorerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 222F3C6E27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-ARTests" */;
+			buildConfigurationList = 222F3C6E27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "AR-ExplorerTests" */;
 			buildPhases = (
 				222F3C5327B3C59400EEF17B /* Sources */,
 				222F3C5427B3C59400EEF17B /* Frameworks */,
@@ -350,14 +350,14 @@
 			dependencies = (
 				222F3C5927B3C59400EEF17B /* PBXTargetDependency */,
 			);
-			name = "CapVis-ARTests";
+			name = "AR-ExplorerTests";
 			productName = "CapVis-ARTests";
-			productReference = 222F3C5727B3C59400EEF17B /* CapVis-ARTests.xctest */;
+			productReference = 222F3C5727B3C59400EEF17B /* AR-ExplorerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		222F3C6027B3C59400EEF17B /* CapVis-ARUITests */ = {
+		222F3C6027B3C59400EEF17B /* AR-ExplorerUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 222F3C7127B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-ARUITests" */;
+			buildConfigurationList = 222F3C7127B3C59400EEF17B /* Build configuration list for PBXNativeTarget "AR-ExplorerUITests" */;
 			buildPhases = (
 				222F3C5D27B3C59400EEF17B /* Sources */,
 				222F3C5E27B3C59400EEF17B /* Frameworks */,
@@ -368,9 +368,9 @@
 			dependencies = (
 				222F3C6327B3C59400EEF17B /* PBXTargetDependency */,
 			);
-			name = "CapVis-ARUITests";
+			name = "AR-ExplorerUITests";
 			productName = "CapVis-ARUITests";
-			productReference = 222F3C6127B3C59400EEF17B /* CapVis-ARUITests.xctest */;
+			productReference = 222F3C6127B3C59400EEF17B /* AR-ExplorerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -396,7 +396,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 222F3C4227B3C59200EEF17B /* Build configuration list for PBXProject "CapVis-AR" */;
+			buildConfigurationList = 222F3C4227B3C59200EEF17B /* Build configuration list for PBXProject "AR-Explorer" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -409,9 +409,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				222F3C4627B3C59200EEF17B /* CapVis-AR */,
-				222F3C5627B3C59400EEF17B /* CapVis-ARTests */,
-				222F3C6027B3C59400EEF17B /* CapVis-ARUITests */,
+				222F3C4627B3C59200EEF17B /* AR-Explorer */,
+				222F3C5627B3C59400EEF17B /* AR-ExplorerTests */,
+				222F3C6027B3C59400EEF17B /* AR-ExplorerUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -505,12 +505,12 @@
 /* Begin PBXTargetDependency section */
 		222F3C5927B3C59400EEF17B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 222F3C4627B3C59200EEF17B /* CapVis-AR */;
+			target = 222F3C4627B3C59200EEF17B /* AR-Explorer */;
 			targetProxy = 222F3C5827B3C59400EEF17B /* PBXContainerItemProxy */;
 		};
 		222F3C6327B3C59400EEF17B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 222F3C4627B3C59200EEF17B /* CapVis-AR */;
+			target = 222F3C4627B3C59200EEF17B /* AR-Explorer */;
 			targetProxy = 222F3C6227B3C59400EEF17B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -724,7 +724,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CapVis-AR.app/CapVis-AR";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AR-Explorer.app/AR-Explorer";
 			};
 			name = Debug;
 		};
@@ -744,7 +744,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CapVis-AR.app/CapVis-AR";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AR-Explorer.app/AR-Explorer";
 			};
 			name = Release;
 		};
@@ -787,7 +787,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		222F3C4227B3C59200EEF17B /* Build configuration list for PBXProject "CapVis-AR" */ = {
+		222F3C4227B3C59200EEF17B /* Build configuration list for PBXProject "AR-Explorer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				222F3C6927B3C59400EEF17B /* Debug */,
@@ -796,7 +796,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		222F3C6B27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-AR" */ = {
+		222F3C6B27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "AR-Explorer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				222F3C6C27B3C59400EEF17B /* Debug */,
@@ -805,7 +805,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		222F3C6E27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-ARTests" */ = {
+		222F3C6E27B3C59400EEF17B /* Build configuration list for PBXNativeTarget "AR-ExplorerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				222F3C6F27B3C59400EEF17B /* Debug */,
@@ -814,7 +814,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		222F3C7127B3C59400EEF17B /* Build configuration list for PBXNativeTarget "CapVis-ARUITests" */ = {
+		222F3C7127B3C59400EEF17B /* Build configuration list for PBXNativeTarget "AR-ExplorerUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				222F3C7227B3C59400EEF17B /* Debug */,
