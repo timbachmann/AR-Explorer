@@ -1,4 +1,4 @@
-# CapVis-AR
+# AR-Explorer
 Capture images and visualize them in AR at their real world location
 
 # Context
