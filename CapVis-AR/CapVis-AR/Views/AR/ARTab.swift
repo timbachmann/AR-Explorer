@@ -1,5 +1,5 @@
 //
-//  AR.swift
+//  ARTab.swift
 //  CapVis-AR
 //
 //  Created by Tim Bachmann on 28.01.22.
@@ -9,7 +9,10 @@ import SwiftUI
 import ARKit
 import MapKit
 
-struct AR: View {
+/**
+ 
+ */
+struct ARTab: View {
     
     @EnvironmentObject var imageData: ImageData
     @EnvironmentObject var locationManagerModel: LocationManagerModel
@@ -17,6 +20,7 @@ struct AR: View {
     @ObservedObject var arDelegate = ARDelegate()
     @State var redrawImages: Bool = false
     @State private var applyAnnotations: Bool = true
+    @State var currLocation: CLLocation = CLLocation()
     
     var body: some View {
         ZStack {
@@ -86,8 +90,9 @@ struct AR: View {
             
         }
         .edgesIgnoringSafeArea(.top)
-        .onChange(of: locationManagerModel.location, perform: { [old = locationManagerModel.location] new in
-            if new.distance(from: old) > 5.0 {
+        .onChange(of: locationManagerModel.location, perform: { newLocation in
+            if newLocation.distance(from: currLocation) >= 5.0 {
+                currLocation = newLocation
                 $redrawImages.wrappedValue.toggle()
             }
         })
@@ -96,7 +101,7 @@ struct AR: View {
 
 struct AR_Previews: PreviewProvider {
     static var previews: some View {
-        AR(selectedTab: .constant(ContentView.Tab.ar))
+        ARTab(selectedTab: .constant(ContentView.Tab.ar))
             .environmentObject(ImageData())
     }
 }

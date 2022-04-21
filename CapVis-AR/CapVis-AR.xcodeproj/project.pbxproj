@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2203DAEF27FAF152006D093F /* RadarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2203DAEE27FAF152006D093F /* RadarView.swift */; };
 		220A0B5127F86F8E0088FB45 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220A0B5027F86F8E0088FB45 /* AppDelegate.swift */; };
+		2211EAE4280EB4F400783F20 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2211EAE3280EB4F400783F20 /* LaunchScreen.storyboard */; };
 		2213A27527B6890C00497182 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2213A27427B6890C00497182 /* MapView.swift */; };
 		2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2227E9F327B54CF200E545D4 /* ImageData.swift */; };
 		222F3C4B27B3C59200EEF17B /* CapVis_ARApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C4A27B3C59200EEF17B /* CapVis_ARApp.swift */; };
@@ -20,7 +21,7 @@
 		222F3C6827B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */; };
 		22371D8927DA4F7D00E9B07C /* LocationManagerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22371D8827DA4F7D00E9B07C /* LocationManagerModel.swift */; };
 		227CCA4927CE82620049C4B8 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227CCA4827CE82620049C4B8 /* Photo.swift */; };
-		2285092E27B3DF3F00E9FB26 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285091D27B3DF3F00E9FB26 /* Home.swift */; };
+		2285092E27B3DF3F00E9FB26 /* MapTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285091D27B3DF3F00E9FB26 /* MapTab.swift */; };
 		2285092F27B3DF3F00E9FB26 /* CaptureOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285091F27B3DF3F00E9FB26 /* CaptureOrientation.swift */; };
 		2285093027B3DF3F00E9FB26 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092027B3DF3F00E9FB26 /* CameraPreview.swift */; };
 		2285093127B3DF3F00E9FB26 /* CameraServiceEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092127B3DF3F00E9FB26 /* CameraServiceEnums.swift */; };
@@ -31,8 +32,9 @@
 		2285093727B3DF3F00E9FB26 /* ARDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092827B3DF3F00E9FB26 /* ARDelegate.swift */; };
 		2285093827B3DF3F00E9FB26 /* ARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092927B3DF3F00E9FB26 /* ARViewRepresentable.swift */; };
 		2285093927B3DF3F00E9FB26 /* GeometryUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092A27B3DF3F00E9FB26 /* GeometryUtils.swift */; };
-		2285093A27B3DF3F00E9FB26 /* AR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092B27B3DF3F00E9FB26 /* AR.swift */; };
+		2285093A27B3DF3F00E9FB26 /* ARTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092B27B3DF3F00E9FB26 /* ARTab.swift */; };
 		228D292E27D12ACB00F6EA9F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228D292D27D12ACB00F6EA9F /* Launch Screen.storyboard */; };
+		22A276D62810031400A26BD4 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A276D52810031400A26BD4 /* Settings.swift */; };
 		22AA75552806BA1200A847DB /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA75542806BA1200A847DB /* AlertError.swift */; };
 		22AA75572806BFFF00A847DB /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA75562806BFFF00A847DB /* UIImage+Extension.swift */; };
 		22AA755D2806C0D300A847DB /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA755C2806C0D300A847DB /* CameraModel.swift */; };
@@ -66,6 +68,7 @@
 /* Begin PBXFileReference section */
 		2203DAEE27FAF152006D093F /* RadarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarView.swift; sourceTree = "<group>"; };
 		220A0B5027F86F8E0088FB45 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2211EAE3280EB4F400783F20 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2213A27427B6890C00497182 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		2227E9F327B54CF200E545D4 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
 		222F3C4727B3C59200EEF17B /* CapVis-AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CapVis-AR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,7 +83,7 @@
 		222F3C6727B3C59400EEF17B /* CapVis_ARUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapVis_ARUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		22371D8827DA4F7D00E9B07C /* LocationManagerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerModel.swift; sourceTree = "<group>"; };
 		227CCA4827CE82620049C4B8 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
-		2285091D27B3DF3F00E9FB26 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		2285091D27B3DF3F00E9FB26 /* MapTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTab.swift; sourceTree = "<group>"; };
 		2285091F27B3DF3F00E9FB26 /* CaptureOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureOrientation.swift; sourceTree = "<group>"; };
 		2285092027B3DF3F00E9FB26 /* CameraPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
 		2285092127B3DF3F00E9FB26 /* CameraServiceEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraServiceEnums.swift; sourceTree = "<group>"; };
@@ -91,9 +94,10 @@
 		2285092827B3DF3F00E9FB26 /* ARDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARDelegate.swift; sourceTree = "<group>"; };
 		2285092927B3DF3F00E9FB26 /* ARViewRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARViewRepresentable.swift; sourceTree = "<group>"; };
 		2285092A27B3DF3F00E9FB26 /* GeometryUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeometryUtils.swift; sourceTree = "<group>"; };
-		2285092B27B3DF3F00E9FB26 /* AR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AR.swift; sourceTree = "<group>"; };
+		2285092B27B3DF3F00E9FB26 /* ARTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARTab.swift; sourceTree = "<group>"; };
 		228D292C27D12A0200F6EA9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		228D292D27D12ACB00F6EA9F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		22A276D52810031400A26BD4 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		22AA75542806BA1200A847DB /* AlertError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertError.swift; sourceTree = "<group>"; };
 		22AA75562806BFFF00A847DB /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Extension.swift"; path = "../../../../../../.Trash/UIImage+Extension.swift"; sourceTree = "<group>"; };
 		22AA755C2806C0D300A847DB /* CameraModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModel.swift; sourceTree = "<group>"; };
@@ -208,6 +212,7 @@
 		2243ABE327D64AD500B9052C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2211EAE3280EB4F400783F20 /* LaunchScreen.storyboard */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -244,7 +249,7 @@
 		2285091B27B3DF3F00E9FB26 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				2285091D27B3DF3F00E9FB26 /* Home.swift */,
+				2285091D27B3DF3F00E9FB26 /* MapTab.swift */,
 				2213A27427B6890C00497182 /* MapView.swift */,
 				22CFC77927DB931200E4BD26 /* Subviews */,
 				22CFC77827DB930100E4BD26 /* Annotations */,
@@ -269,7 +274,7 @@
 		2285092727B3DF3F00E9FB26 /* AR */ = {
 			isa = PBXGroup;
 			children = (
-				2285092B27B3DF3F00E9FB26 /* AR.swift */,
+				2285092B27B3DF3F00E9FB26 /* ARTab.swift */,
 				2285092927B3DF3F00E9FB26 /* ARViewRepresentable.swift */,
 				2285092827B3DF3F00E9FB26 /* ARDelegate.swift */,
 				2285092A27B3DF3F00E9FB26 /* GeometryUtils.swift */,
@@ -304,6 +309,7 @@
 				22CFC77B27DB932300E4BD26 /* FilterView.swift */,
 				22E69AAF27D9E04900803960 /* GalleryView.swift */,
 				22E69AB127D9EC6F00803960 /* DetailView.swift */,
+				22A276D52810031400A26BD4 /* Settings.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -416,6 +422,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				222F3C5227B3C59300EEF17B /* Preview Assets.xcassets in Resources */,
+				2211EAE4280EB4F400783F20 /* LaunchScreen.storyboard in Resources */,
 				222F3C4F27B3C59300EEF17B /* Assets.xcassets in Resources */,
 				228D292E27D12ACB00F6EA9F /* Launch Screen.storyboard in Resources */,
 			);
@@ -449,7 +456,7 @@
 				2285093327B3DF3F00E9FB26 /* CameraView.swift in Sources */,
 				2213A27527B6890C00497182 /* MapView.swift in Sources */,
 				2227E9F427B54CF200E545D4 /* ImageData.swift in Sources */,
-				2285092E27B3DF3F00E9FB26 /* Home.swift in Sources */,
+				2285092E27B3DF3F00E9FB26 /* MapTab.swift in Sources */,
 				220A0B5127F86F8E0088FB45 /* AppDelegate.swift in Sources */,
 				22AA75552806BA1200A847DB /* AlertError.swift in Sources */,
 				2285093627B3DF3F00E9FB26 /* CameraService.swift in Sources */,
@@ -457,12 +464,13 @@
 				22AA75602806C28400A847DB /* RadarAnnotationView.swift in Sources */,
 				22371D8927DA4F7D00E9B07C /* LocationManagerModel.swift in Sources */,
 				22CFC77727DB912200E4BD26 /* ImageAnnotation.swift in Sources */,
-				2285093A27B3DF3F00E9FB26 /* AR.swift in Sources */,
+				2285093A27B3DF3F00E9FB26 /* ARTab.swift in Sources */,
 				22AA75572806BFFF00A847DB /* UIImage+Extension.swift in Sources */,
 				227CCA4927CE82620049C4B8 /* Photo.swift in Sources */,
 				22CFC77327DB90B300E4BD26 /* ImageAnnotationView.swift in Sources */,
 				2285093227B3DF3F00E9FB26 /* PhotoCaptureProcessor.swift in Sources */,
 				222F3C4B27B3C59200EEF17B /* CapVis_ARApp.swift in Sources */,
+				22A276D62810031400A26BD4 /* Settings.swift in Sources */,
 				22E69AB227D9EC6F00803960 /* DetailView.swift in Sources */,
 				2285093927B3DF3F00E9FB26 /* GeometryUtils.swift in Sources */,
 				2285092F27B3DF3F00E9FB26 /* CaptureOrientation.swift in Sources */,
@@ -631,7 +639,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"CapVis-AR/Preview Content\"";
 				DEVELOPMENT_TEAM = 883GXF926S;
 				ENABLE_PREVIEWS = YES;
@@ -669,7 +677,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_ASSET_PATHS = "\"CapVis-AR/Preview Content\"";
 				DEVELOPMENT_TEAM = 883GXF926S;
 				ENABLE_PREVIEWS = YES;

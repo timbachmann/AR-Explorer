@@ -10,6 +10,9 @@ import AVFoundation
 import Combine
 import CoreLocation
 
+/**
+ 
+ */
 final class CameraModel: ObservableObject {
     
     private let service = CameraService()

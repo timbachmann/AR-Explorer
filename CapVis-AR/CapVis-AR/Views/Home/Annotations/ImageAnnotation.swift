@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 import MapKit
 
+/**
+ 
+ */
 final class ImageAnnotation: NSObject, MKAnnotation {
     
     let coordinate: CLLocationCoordinate2D

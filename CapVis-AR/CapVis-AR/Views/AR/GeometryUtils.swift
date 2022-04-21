@@ -10,8 +10,14 @@ import ARKit
 import SwiftUI
 import UIKit
 
+/**
+ 
+ */
 class GeometryUtils {
     
+    /**
+     
+     */
     static func transformMatrix(_ matrix:simd_float4x4,_ originLocation:CLLocation, _ waypointLocation: CLLocation) -> simd_float4x4 {
         let bearing: Double = bearingBetweenLocations(originLocation, waypointLocation)
         let rotationMatrix: simd_float4x4 = rotateAroundY(matrix_identity_float4x4, Float(bearing))
@@ -22,6 +28,9 @@ class GeometryUtils {
         return simd_mul(matrix, transformMatrix)
     }
     
+    /**
+     
+     */
     static func bearingBetweenLocations(_ originLocation: CLLocation, _ waypointLocation: CLLocation) -> Double {
         let lat1: Float = GLKMathDegreesToRadians(Float(originLocation.coordinate.latitude))
         let lon1: Float = GLKMathDegreesToRadians(Float(originLocation.coordinate.longitude))
@@ -33,6 +42,9 @@ class GeometryUtils {
         return Double(atan2(y, x))
     }
     
+    /**
+     
+     */
     static func rotateAroundY(_ matrix: simd_float4x4, _ degrees: Float) -> simd_float4x4 {
         var matrix = matrix
         matrix.columns.0.x = cos(degrees)
@@ -42,6 +54,9 @@ class GeometryUtils {
         return matrix.inverse
     }
     
+    /**
+     
+     */
     static func getTranslationMatrix(_ matrix:simd_float4x4, _ translation:vector_float4) -> simd_float4x4 {
         var matrix = matrix
         matrix.columns.3 = translation

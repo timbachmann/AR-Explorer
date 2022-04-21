@@ -8,12 +8,16 @@
 import SwiftUI
 import OpenAPIClient
 
+/**
+ 
+ */
 struct GalleryView: View {
     
     @EnvironmentObject var imageData: ImageData
     @State private var showingOptions: Bool = false
     @State private var sortingOption: String = "None"
     @State private var notSelectingImages: Bool = true
+    @State private var showSettings: Bool = false
     @State private var selectedImages: [String] = []
     @Binding var selectedTab: ContentView.Tab
     private let gridWidth = (UIScreen.main.bounds.width-40)/3
@@ -24,6 +28,9 @@ struct GalleryView: View {
         GridItem(.flexible(minimum: (UIScreen.main.bounds.width-40)/3, maximum: (UIScreen.main.bounds.width-40)/3)),
     ]
     
+    /**
+     
+     */
     var isSelectedOverlay: some View {
         ZStack{
             Color.gray.opacity(0.3)
@@ -46,6 +53,12 @@ struct GalleryView: View {
     
     var body: some View {
         ScrollView {
+            ///
+            
+            NavigationLink(destination: Settings(), isActive: $showSettings) {
+                EmptyView()
+            }
+            
             LazyVGrid(columns: threeColumnGrid, spacing: 10) {
                 ForEach(imageData.capVisImages) { item in
                     
@@ -81,11 +94,10 @@ struct GalleryView: View {
             .padding()
             .onChange(of: sortingOption) { newSelection in
                 switch newSelection {
-                case "Date":
+                case "Date (standard)":
                     imageData.capVisImages.sort(by: { $0.date < $1.date })
-                case "Radius":
-                    //imageData.capVisImages.sort(by: { $0.date > $1.date })
-                    print("Not implemented")
+                case "Date (recent images first)":
+                    imageData.capVisImages.sort(by: { $0.date > $1.date })
                 default:
                     print("No sorting option selected")
                 }
@@ -97,6 +109,7 @@ struct GalleryView: View {
         }
         .navigationTitle(Text("Photos"))
         .toolbar {
+            ///
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
                     $notSelectingImages.wrappedValue.toggle()
@@ -111,6 +124,7 @@ struct GalleryView: View {
                 })
                 
             }
+            
             ToolbarItem(placement: .navigationBarTrailing) {
                 if $notSelectingImages.wrappedValue {
                     Button(action: {
@@ -120,7 +134,7 @@ struct GalleryView: View {
                             .foregroundColor(Color.accentColor)
                     })
                     .confirmationDialog("Sort list by", isPresented: $showingOptions, titleVisibility: .visible) {
-                        ForEach(["Date", "Radius"], id: \.self) { sortOption in
+                        ForEach(["Date (standard)", "Date (recent images first)"], id: \.self) { sortOption in
                             Button(sortOption) {
                                 sortingOption = sortOption
                             }
@@ -159,15 +173,16 @@ struct GalleryView: View {
                         ])
                     }
                 }
-                
+            }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        $showSettings.wrappedValue.toggle()
+                    }, label: {
+                        Image(systemName: "gear")
+                            .foregroundColor(Color.accentColor)
+                    })
             }
         }
     }
 }
-
-//struct GalleryView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        GalleryView(showSelf: true)
-//            .environmentObject(ImageData())
-//    }
-//}

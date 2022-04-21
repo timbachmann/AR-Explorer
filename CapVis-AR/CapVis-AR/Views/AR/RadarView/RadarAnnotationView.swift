@@ -9,15 +9,21 @@ import Foundation
 import UIKit
 import MapKit
 
-
+/**
+ 
+ */
 final class RadarAnnotationView: MKAnnotationView {
     
-    override var annotation: MKAnnotation? { didSet {
-        editView()
-    } }
+    override var annotation: MKAnnotation? {
+        didSet {
+            editView()
+        }
+    }
     
+    /**
+     
+     */
     private func editView() {
-        //View
         backgroundColor = UIColor.red
         frame = CGRect(origin: frame.origin, size: CGSize(width: 12.0, height: 12.0))
         layer.cornerRadius = self.frame.width / 2;
@@ -25,6 +31,9 @@ final class RadarAnnotationView: MKAnnotationView {
         setNeedsLayout()
     }
     
+    /**
+     
+     */
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = self.frame.width / 2;

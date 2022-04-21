@@ -11,7 +11,9 @@ import OpenAPIClient
 import CoreMotion
 import MapKit
 
-
+/**
+ 
+ */
 struct ARViewRepresentable: UIViewRepresentable {
     let arDelegate:ARDelegate
     @Binding var redrawImages: Bool
@@ -19,6 +21,9 @@ struct ARViewRepresentable: UIViewRepresentable {
     @EnvironmentObject var locationManagerModel: LocationManagerModel
     @State var nodes: [SCNNode] = []
     
+    /**
+     
+     */
     func makeUIView(context: Context) -> some UIView {
         let arView = ARSCNView(frame: .zero)
         //arView.showsStatistics = true
@@ -31,6 +36,9 @@ struct ARViewRepresentable: UIViewRepresentable {
         return arView
     }
     
+    /**
+     
+     */
     func updateUIView(_ uiView: UIViewType, context: Context) {
         if redrawImages {
             arDelegate.removeAllNodes()
@@ -43,6 +51,9 @@ struct ARViewRepresentable: UIViewRepresentable {
         }
     }
     
+    /**
+     
+     */
     func loadImageNodes() {
         for apiImage in imageData.capVisImages {
             let nodeLocation = CLLocation(latitude: apiImage.lat, longitude: apiImage.lng)
@@ -70,8 +81,10 @@ struct ARViewRepresentable: UIViewRepresentable {
         }
     }
     
+    /**
+     
+     */
     func createImageNode(image: ApiImage, location: CLLocation) {
-        
         let imageUI = UIImage(data: image.data, scale: CGFloat(1.0))!
         var width: CGFloat = 0
         var height: CGFloat = 0
@@ -100,6 +113,9 @@ struct ARViewRepresentable: UIViewRepresentable {
         arDelegate.placeImage(imageNode: imageNode)
     }
     
+    /**
+     
+     */
     func loadRoute() {
         let request = MKDirections.Request()
         request.transportType = .walking
@@ -114,35 +130,41 @@ struct ARViewRepresentable: UIViewRepresentable {
             
             let points = mapRoute.polyline.points()
             
-            let startLineNode = SCNGeometry.cylinderLine(from: translateNode(locationManagerModel.location, altitude: -1.0), to: translateNode(CLLocation(coordinate: points[0].coordinate, altitude: -1.0), altitude: -1.0), segments: 48)
+            let startLineNode = SCNGeometry.cylinderLine(from: translateNode(locationManagerModel.location, altitude: -2.0), to: translateNode(CLLocation(coordinate: points[0].coordinate), altitude: -2.0), segments: 48)
             arDelegate.placePolyNode(polyNode: startLineNode)
             
             for i in 0 ..< mapRoute.polyline.pointCount - 1 {
-                let currentLocation = CLLocation(coordinate: points[i].coordinate, altitude: -1.0)
-                let nextLocation = CLLocation(coordinate: points[i + 1].coordinate, altitude: -1.0)
+                let currentLocation = CLLocation(coordinate: points[i].coordinate)
+                let nextLocation = CLLocation(coordinate: points[i + 1].coordinate)
                 
-                let cylinderLineNode = SCNGeometry.cylinderLine(from: translateNode(currentLocation, altitude: -1.0), to: translateNode(nextLocation, altitude: -1.0), segments: 48)
+                let cylinderLineNode = SCNGeometry.cylinderLine(from: translateNode(currentLocation, altitude: -2.0), to: translateNode(nextLocation, altitude: -2.0), segments: 48)
                 arDelegate.placePolyNode(polyNode: cylinderLineNode)
                 
                 addPolyPointNode(point: currentLocation, color: .green)
             }
             
-            addPolyPointNode(point: CLLocation(coordinate: points[mapRoute.polyline.pointCount-1].coordinate, altitude: -1.0), color: .green)
-            let endLineNode = SCNGeometry.cylinderLine(from: translateNode(CLLocation(coordinate: points[mapRoute.polyline.pointCount-1].coordinate, altitude: -1.0), altitude: -1.0), to: translateNode(CLLocation(coordinate: CLLocationCoordinate2D(latitude: imageData.navigationImage!.lat, longitude: imageData.navigationImage!.lng), altitude: -1.0), altitude: -1.0), segments: 48)
+            addPolyPointNode(point: CLLocation(coordinate: points[mapRoute.polyline.pointCount-1].coordinate), color: .green)
+            let endLineNode = SCNGeometry.cylinderLine(from: translateNode(CLLocation(coordinate: points[mapRoute.polyline.pointCount-1].coordinate), altitude: -2.0), to: translateNode(CLLocation(coordinate: CLLocationCoordinate2D(latitude: imageData.navigationImage!.lat, longitude: imageData.navigationImage!.lng)), altitude: -2.0), segments: 48)
             arDelegate.placePolyNode(polyNode: endLineNode)
             
         }
     }
     
+    /**
+     
+     */
     func addPolyPointNode(point: CLLocation, color: UIColor) {
-        let scnSphere = SCNSphere(radius: 0.5)
+        let scnSphere = SCNSphere(radius: 1.0)
         scnSphere.firstMaterial?.diffuse.contents = color
         let polyNode = SCNNode(geometry: scnSphere)
         
-        polyNode.worldPosition = translateNode(point, altitude: -1.0)
+        polyNode.worldPosition = translateNode(point, altitude: -2.0)
         arDelegate.placePolyNode(polyNode: polyNode)
     }
     
+    /**
+     
+     */
     func translateNode (_ location: CLLocation, altitude: CLLocationDistance) -> SCNVector3 {
         let locationTransform = GeometryUtils.transformMatrix(matrix_identity_float4x4, locationManagerModel.location, location)
         return SCNVector3Make(locationTransform.columns.3.x, locationTransform.columns.3.y + Float(altitude), locationTransform.columns.3.z)
@@ -157,6 +179,9 @@ struct ARViewRepresentable_Previews: PreviewProvider {
 
 extension SCNGeometry {
     
+    /**
+     
+     */
     class func cylinderLine(from: SCNVector3, to: SCNVector3, segments: Int) -> SCNNode {
         let x1 = from.x
         let x2 = to.x
@@ -166,7 +191,7 @@ extension SCNGeometry {
         let z2 = to.z
         
         let distance =  sqrtf((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1) + (z2-z1) * (z2-z1))
-        let cylinder = SCNCylinder(radius: 0.05, height: CGFloat(distance))
+        let cylinder = SCNCylinder(radius: 0.2, height: CGFloat(distance))
         cylinder.radialSegmentCount = segments
         cylinder.firstMaterial?.diffuse.contents = UIColor.blue
         let lineNode = SCNNode(geometry: cylinder)
@@ -178,8 +203,7 @@ extension SCNGeometry {
 }
 
 extension CLLocation {
-    convenience init(coordinate: CLLocationCoordinate2D, altitude: CLLocationDistance) {
-        self.init(coordinate: coordinate, altitude: altitude, horizontalAccuracy: 0, verticalAccuracy: 0, timestamp: Date())
+    convenience init(coordinate: CLLocationCoordinate2D) {
+        self.init(coordinate: coordinate, altitude: 2.0, horizontalAccuracy: 0, verticalAccuracy: 0, timestamp: Date())
     }
-    
 }

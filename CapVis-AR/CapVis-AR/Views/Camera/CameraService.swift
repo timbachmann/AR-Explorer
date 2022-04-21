@@ -98,8 +98,9 @@ public class CameraService {
     
     //  MARK: Session Management
     
-    // Call this on the session queue.
-    /// - Tag: ConfigureSession
+    /**
+     
+     */
     private func configureSession() {
         if setupResult != .success {
             return
@@ -242,6 +243,9 @@ public class CameraService {
         }
     }
     
+    /**
+     
+     */
     public func focus(at focusPoint: CGPoint){
         let device = self.videoDeviceInput.device
         do {
@@ -431,5 +435,36 @@ public class CameraService {
                 self.photoOutput.capturePhoto(with: photoSettings, delegate: photoCaptureProcessor)
             }
         }
+    }
+}
+
+/**
+ 
+ */
+extension CameraService {
+    enum LivePhotoMode {
+        case on
+        case off
+    }
+    
+    enum DepthDataDeliveryMode {
+        case on
+        case off
+    }
+    
+    enum PortraitEffectsMatteDeliveryMode {
+        case on
+        case off
+    }
+    
+    enum SessionSetupResult {
+        case success
+        case notAuthorized
+        case configurationFailed
+    }
+    
+    enum CaptureMode: Int {
+        case photo = 0
+        case movie = 1
     }
 }

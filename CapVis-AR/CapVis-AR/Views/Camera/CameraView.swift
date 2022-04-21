@@ -11,7 +11,9 @@ import CoreLocation
 import AVFoundation
 import OpenAPIClient
 
-
+/**
+ 
+ */
 struct CameraView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @StateObject var model = CameraModel()
@@ -64,36 +66,35 @@ struct CameraView: View {
                         .animation(Animation.easeInOut, value: currentZoomFactor)
                     
                     HStack {
-                        Group {
-                            if model.photo != nil {
-                                if !$isLoading.wrappedValue {
-                                    Image(uiImage: model.photo.image!)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 54, height: 54)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                                        .onAppear(perform: {
-                                            dismiss()
-                                        })
-                                        
-                                } else {
-                                    ProgressView()
-                                        .padding()
-                                        .frame(width: 54, height: 54)
-                                        .foregroundColor(Color.accentColor)
-                                }
+                        if model.photo != nil {
+                            if !$isLoading.wrappedValue {
+                                Image(uiImage: UIImage(data: model.photo.originalData)!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 54, height: 54)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                    .onAppear(perform: {
+                                        dismiss()
+                                    })
                                 
                             } else {
-                                Button(action: {
-                                    dismiss()
-                                }, label: {
-                                    HStack {
-                                        Image(systemName: "chevron.backward")
-                                        Text("Back")
-                                    }
-                                })
+                                ProgressView()
+                                    .padding()
+                                    .frame(width: 54, height: 54)
+                                    .foregroundColor(Color.accentColor)
                             }
+                            
+                        } else {
+                            Button(action: {
+                                dismiss()
+                            }, label: {
+                                HStack {
+                                    Image(systemName: "chevron.backward")
+                                    Text("Back")
+                                }
+                            })
                         }
+                        
                         Spacer()
                         Button(action: {
                             model.capturePhoto(heading: locationManagerModel.heading)
@@ -135,11 +136,17 @@ struct CameraView: View {
 
 extension CameraView {
     
+    /**
+     
+     */
     func dismiss() {
         self.model.session.stopRunning()
         self.mode.wrappedValue.dismiss()
     }
     
+    /**
+     
+     */
     func savePhotoToList() {
         print("Saving photo...")
         let date = Date()

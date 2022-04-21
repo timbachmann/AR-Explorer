@@ -8,25 +8,19 @@
 import Foundation
 import Photos
 
+/**
+ 
+ */
 class PhotoCaptureProcessor: NSObject {
     
     lazy var context = CIContext()
-
     private(set) var requestedPhotoSettings: AVCapturePhotoSettings
-    
     private let willCapturePhotoAnimation: () -> Void
-    
     private let completionHandler: (PhotoCaptureProcessor) -> Void
-    
     private let photoProcessingHandler: (Bool) -> Void
-    
-//    The actual captured photo's data
     var photoData: Data?
-    
-//    The maximum time lapse before telling UI to show a spinner
     private var maxPhotoProcessingTime: CMTime?
         
-//    Init takes multiple closures to be called in each step of the photco capture process
     init(with requestedPhotoSettings: AVCapturePhotoSettings, willCapturePhotoAnimation: @escaping () -> Void, completionHandler: @escaping (PhotoCaptureProcessor) -> Void, photoProcessingHandler: @escaping (Bool) -> Void) {
         
         self.requestedPhotoSettings = requestedPhotoSettings
@@ -38,7 +32,7 @@ class PhotoCaptureProcessor: NSObject {
 
 extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
     
-    // This extension adopts AVCapturePhotoCaptureDelegate protocol methods.
+    // This extension implements AVCapturePhotoCaptureDelegate protocol methods.
     
     /// - Tag: WillBeginCapture
     func photoOutput(_ output: AVCapturePhotoOutput, willBeginCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings) {
@@ -78,7 +72,7 @@ extension PhotoCaptureProcessor: AVCapturePhotoCaptureDelegate {
         }
     }
     
-    //        MARK: Saves capture to photo library
+    // MARK: Saves capture to photo library
     func saveToPhotoLibrary(_ photoData: Data) {
         
         PHPhotoLibrary.requestAuthorization { status in

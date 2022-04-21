@@ -8,6 +8,10 @@
 import SwiftUI
 import Combine
 
+/**
+ Contains main tab view with map and ar tab.
+ Receiver for notification events.
+ */
 struct ContentView: View {
     @State private var selectedTab: Tab = .home
     let pub = NotificationCenter.default.publisher(for: Notification.Name("capVisAR"))
@@ -24,12 +28,12 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            Home(selectedTab: $selectedTab)
+            MapTab(selectedTab: $selectedTab)
                 .tabItem {
-                    Label("Home", systemImage: "map")
+                    Label("Map", systemImage: "map")
                 }
                 .tag(Tab.home)
-            AR(selectedTab: $selectedTab)
+            ARTab(selectedTab: $selectedTab)
                 .tabItem {
                     Label("AR", systemImage: "arkit")
                 }

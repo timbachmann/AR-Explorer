@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+/**
+ Starting point for the CapVis-AR application.
+ Initializes App delegate to deal with notifications and environment objects to pass to child views.
+ */
 @main
 struct CapVis_ARApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

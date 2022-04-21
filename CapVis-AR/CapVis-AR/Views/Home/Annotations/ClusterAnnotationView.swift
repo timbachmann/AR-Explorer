@@ -9,7 +9,9 @@ import Foundation
 import MapKit
 import UIKit
 
-
+/**
+ 
+ */
 final class ClusterAnnotationView: MKAnnotationView {
     
     private let imageView = UIImageView()
@@ -43,6 +45,9 @@ final class ClusterAnnotationView: MKAnnotationView {
         self.setupView()
     }
     
+    /**
+     
+     */
     private func setupView() {
         backgroundColor = UIColor.clear
         layer.borderColor = UIColor.white.cgColor
@@ -59,6 +64,9 @@ final class ClusterAnnotationView: MKAnnotationView {
         addSubview(container)
     }
     
+    /**
+     
+     */
     private func updateView() {
         if let cluster = annotation as? MKClusterAnnotation {
             let count = cluster.memberAnnotations.count
@@ -73,6 +81,9 @@ final class ClusterAnnotationView: MKAnnotationView {
         }
     }
     
+    /**
+     
+     */
     override public func layoutSubviews() {
         super.layoutSubviews()
         imageView.frame = bounds.inset(by: UIEdgeInsets(top: 2.0, left: 2.0, bottom: 2.0, right: 2.0))

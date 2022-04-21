@@ -11,7 +11,9 @@ import SwiftUI
 import MapKit
 import OpenAPIClient
 
-
+/**
+ 
+ */
 struct RadarView: UIViewRepresentable {
     typealias UIViewType = MKMapView
     
@@ -30,6 +32,9 @@ struct RadarView: UIViewRepresentable {
     let identifier = "radar"
     let mapView = MKMapView()
     
+    /**
+     
+     */
     func makeUIView(context: UIViewRepresentableContext<RadarView>) -> MKMapView {
         setupManager()
         mapView.delegate = context.coordinator
@@ -50,6 +55,9 @@ struct RadarView: UIViewRepresentable {
         return mapView
     }
     
+    /**
+     
+     */
     func updateUIView(_ uiView: MKMapView, context: UIViewRepresentableContext<RadarView>) {
         //uiView.setRegion(MKCoordinateRegion(center: CLLocationManager().location!.coordinate, latitudinalMeters: 30.0, longitudinalMeters: 30.0), animated: true)
         uiView.setUserTrackingMode(.followWithHeading, animated: true)
@@ -73,52 +81,16 @@ struct RadarView: UIViewRepresentable {
         }
     }
     
+    /**
+     
+     */
     func makeCoordinator() -> RadarView.Coordinator {
         Coordinator(self, mapImages: $mapMarkerImages)
     }
     
-    class Coordinator: NSObject, MKMapViewDelegate {
-        
-        @Binding var mapImages: [ApiImage]
-        private let mapView: RadarView
-        let identifier = "radar"
-        
-        init(_ mapView: RadarView, mapImages: Binding<[ApiImage]>) {
-            self.mapView = mapView
-            _mapImages = mapImages
-        }
-        
-        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            if annotation is PointAnnotation {
-                let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as! RadarAnnotationView
-                annotationView.canShowCallout = false
-                annotationView.annotation = annotation
-                return annotationView
-                
-            } else {
-                return nil
-            }
-        }
-        
-        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-            if let polyOverlay = overlay as? MKPolyline {
-                let renderer = MKPolylineRenderer(overlay: polyOverlay)
-                renderer.strokeColor = .systemBlue
-                renderer.lineWidth = 3
-                return renderer
-                
-            } else if let circleOverlay = overlay as? MKCircle {
-                let circleRenderer = MKCircleRenderer(overlay: circleOverlay)
-                circleRenderer.fillColor = .blue
-                circleRenderer.alpha = 0.1
-                return circleRenderer
-                
-            } else {
-                return MKOverlayRenderer()
-            }
-        }
-    }
-    
+    /**
+     
+     */
     func addRoute(to mapView: MKMapView) {
         let request = MKDirections.Request()
         request.transportType = .walking
@@ -135,10 +107,16 @@ struct RadarView: UIViewRepresentable {
         }
     }
     
+    /**
+     
+     */
     func removePolyline(from mapView: MKMapView) {
         mapView.removeOverlay(polyline!)
     }
     
+    /**
+     
+     */
     func addAnnotations(to mapView: MKMapView) {
         for image in mapMarkerImages {
             let annotation = PointAnnotation(coordinate: CLLocationCoordinate2D(latitude: image.lat, longitude: image.lng))
@@ -146,21 +124,55 @@ struct RadarView: UIViewRepresentable {
         }
     }
     
-    func addCircle(to view: MKMapView) {
+    /**
+     
+     */
+    class Coordinator: NSObject, MKMapViewDelegate {
         
-        let radius: Double = 50
-        if !view.overlays.isEmpty { view.removeOverlays(view.overlays) }
+        @Binding var mapImages: [ApiImage]
+        private let mapView: RadarView
+        let identifier = "radar"
         
-        let aCircle = MKCircle(center: view.centerCoordinate, radius: radius)
-        let mapRect = aCircle.boundingMapRect
+        init(_ mapView: RadarView, mapImages: Binding<[ApiImage]>) {
+            self.mapView = mapView
+            _mapImages = mapImages
+        }
         
-        view.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
-        view.addOverlay(aCircle)
+        /**
+         
+         */
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            if annotation is PointAnnotation {
+                let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as! RadarAnnotationView
+                annotationView.canShowCallout = false
+                annotationView.annotation = annotation
+                return annotationView
+                
+            } else {
+                return nil
+            }
+        }
+        
+        /**
+         
+         */
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            if let polyOverlay = overlay as? MKPolyline {
+                let renderer = MKPolylineRenderer(overlay: polyOverlay)
+                renderer.strokeColor = .systemBlue
+                renderer.lineWidth = 3
+                return renderer
+            } else {
+                return MKOverlayRenderer()
+            }
+        }
     }
 }
 
+/**
+ 
+ */
 final class PointAnnotation: NSObject, MKAnnotation {
-    
     let coordinate: CLLocationCoordinate2D
     
     init(coordinate: CLLocationCoordinate2D) {

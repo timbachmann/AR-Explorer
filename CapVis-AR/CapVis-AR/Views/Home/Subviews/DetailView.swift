@@ -8,7 +8,15 @@
 import SwiftUI
 import OpenAPIClient
 
+/**
+ 
+ */
 struct DetailView: View {
+    
+    @State var currentScale: CGFloat = 1.0
+    @State var previousScale: CGFloat = 1.0
+    @State var currentOffset = CGSize.zero
+    @State var previousOffset = CGSize.zero
     
     @State private var detailImage: Image?
     @State private var detailDate: Text?
@@ -32,7 +40,20 @@ struct DetailView: View {
                     Spacer()
                     detailImage?
                         .resizable()
-                        .scaledToFit()
+                        .zIndex(1)
+                        .aspectRatio(contentMode: .fit)
+                        .offset(x: self.currentOffset.width, y: self.currentOffset.height)
+                        .scaleEffect(max(self.currentScale, 1.0))
+                        .gesture(MagnificationGesture()
+                            .onChanged { value in
+                                let delta = value / self.previousScale
+                                self.previousScale = value
+                                self.currentScale = self.currentScale * delta
+                            }
+                            .onEnded { value in self.previousScale = 1.0 }
+                        )
+                        .clipped()
+                    
                     detailYaw ?? Text("").font(.headline)
                     Spacer()
                     Button(action: {
@@ -56,7 +77,9 @@ struct DetailView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .padding()
-        .onAppear { loadImage() }
+        .onAppear {
+            loadImage()
+        }
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack {
@@ -101,8 +124,12 @@ struct DetailView: View {
         }
     }
 }
+
 extension DetailView {
     
+    /**
+     
+     */
     func loadImage() {
         image = imageData.capVisImages[imageIndex ?? 0]
         
@@ -138,15 +165,12 @@ extension DetailView {
         }
     }
     
+    /**
+     
+     */
     func setImage() {
         let uiImage = UIImage(data: image.data)
         detailImage = Image(uiImage: uiImage!)
         isLoading = false
     }
 }
-
-//struct DetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DetailView()
-//    }
-//}

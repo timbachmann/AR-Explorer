@@ -10,7 +10,10 @@ import MapKit
 import ARKit
 import OpenAPIClient
 
-struct Home: View {
+/**
+ 
+ */
+struct MapTab: View {
     
     private let buttonSize: CGFloat = 48.0
     private let buttonOpacity: CGFloat = 0.95
@@ -223,14 +226,20 @@ struct Home: View {
     }
 }
 
-extension Home {
+extension MapTab {
     
+    /**
+     
+     */
     func applyMapTypeChange() {
         changeMapType = true
         mapStyleSheetVisible = false
         MKMapView.appearance().mapType = mapType
     }
     
+    /**
+     
+     */
     func requestZoomOnLocation() {
         zoomOnLocation = true
         let span: Double = locationButtonCount % 2 == 0 ? 0.005001 : 0.005002
@@ -238,6 +247,9 @@ extension Home {
         locationButtonCount += 1
     }
     
+    /**
+     
+     */
     func syncLocalFiles() {
         let progFrac: Double = (1.0/Double(imageData.imagesToUpload.count))
         showUploadProgress = true
@@ -269,6 +281,9 @@ extension Home {
         }
     }
     
+    /**
+     
+     */
     func createNotifications() {
         
         for image in imageData.capVisImages {
@@ -308,10 +323,16 @@ extension Home {
         }
     }
     
+    /**
+     
+     */
     func getCacheDirectoryPath() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
     }
     
+    /**
+     
+     */
     func requestNotificationAuthorization() {
         
         let nc = UNUserNotificationCenter.current()
@@ -324,9 +345,10 @@ extension Home {
     }
 }
 
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape( RoundedCorner(radius: radius, corners: corners) )
+struct Home_Previews: PreviewProvider {
+    static var previews: some View {
+        MapTab(selectedTab: .constant(.home))
+            .environmentObject(ImageData())
     }
 }
 
@@ -335,20 +357,30 @@ struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
     
+    /**
+     
+     */
     func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         return Path(path.cgPath)
     }
 }
 
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        Home(selectedTab: .constant(.home))
-            .environmentObject(ImageData())
+extension View {
+    
+    /**
+     
+     */
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
 }
 
 extension MKCoordinateRegion: Equatable {
+    
+    /**
+     
+     */
     public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
         if lhs.center.latitude == rhs.center.latitude && lhs.span.latitudeDelta == rhs.span.latitudeDelta && lhs.span.longitudeDelta == rhs.span.longitudeDelta {
             return true
@@ -359,11 +391,18 @@ extension MKCoordinateRegion: Equatable {
 }
 
 extension UINavigationController: UIGestureRecognizerDelegate {
+    
+    /**
+     
+     */
     override open func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
     }
     
+    /**
+     
+     */
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1
     }

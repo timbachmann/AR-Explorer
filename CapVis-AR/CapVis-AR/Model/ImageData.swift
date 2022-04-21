@@ -9,12 +9,19 @@ import Foundation
 import Combine
 import OpenAPIClient
 
+/**
+ Observable class image data to represent current images and images to upload.
+ Contains functions to save and load data from the app's cache directory
+ */
 class ImageData: ObservableObject {
     @Published var capVisImages: [ApiImage] = []
     @Published var imagesToUpload: [ApiImage] = []
     @Published var localFilesSynced: Bool = true
     @Published var navigationImage: ApiImage? = nil
     
+    /**
+     Initialize images by loading from cache
+     */
     init() {
         loadAllImages { (data, error) in
             if let retrievedData = data {
@@ -31,6 +38,9 @@ class ImageData: ObservableObject {
         }
     }
     
+    /**
+     Loads previously queried images from cache and returns list
+     */
     func loadAllImages(completion: @escaping (_ data: [ApiImage]?, _ error: String?) -> ())  {
         var images: [ApiImage] = []
         var receivedError: String?
@@ -86,6 +96,9 @@ class ImageData: ObservableObject {
         }
     }
     
+    /**
+     Loads previously captured but not yet uploaded images from cache and returns list
+     */
     func loadLocalImages(completion: @escaping (_ data: [ApiImage]?, _ error: String?) -> ())  {
         var images: [ApiImage]?
         var receivedError: String?
@@ -113,6 +126,9 @@ class ImageData: ObservableObject {
         }
     }
     
+    /**
+     Saves all images to cache while invalidating old state
+     */
     func saveImagesToFile() {
         let path = getCacheDirectoryPath().appendingPathComponent("images")
         do {
@@ -169,6 +185,9 @@ class ImageData: ObservableObject {
         self.localFilesSynced = self.imagesToUpload.isEmpty
     }
     
+    /**
+     Returns cache directory
+     */
     func getCacheDirectoryPath() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
     }
