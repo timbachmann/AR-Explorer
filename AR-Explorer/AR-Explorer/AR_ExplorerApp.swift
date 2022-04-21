@@ -16,12 +16,14 @@ struct AR_ExplorerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var imageData = ImageData()
     @StateObject private var locationManagerModel = LocationManagerModel()
+    @StateObject private var settingsModel = SettingsModel()
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(imageData)
                 .environmentObject(locationManagerModel)
+                .environmentObject(settingsModel)
         }
     }
 }

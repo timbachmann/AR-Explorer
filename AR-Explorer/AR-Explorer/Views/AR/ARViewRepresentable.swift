@@ -55,7 +55,7 @@ struct ARViewRepresentable: UIViewRepresentable {
      
      */
     func loadImageNodes() {
-        for apiImage in imageData.capVisImages {
+        for apiImage in imageData.explorerImages {
             let nodeLocation = CLLocation(latitude: apiImage.lat, longitude: apiImage.lng)
             let distance = locationManagerModel.location.distance(from: nodeLocation)
             
@@ -68,9 +68,9 @@ struct ARViewRepresentable: UIViewRepresentable {
                         }
                         
                         if (response != nil) {
-                            let index = imageData.capVisImages.firstIndex(where: {$0.id == apiImage.id})!
-                            imageData.capVisImages[index].data = response!.data
-                            createImageNode(image: imageData.capVisImages[index], location: nodeLocation)
+                            let index = imageData.explorerImages.firstIndex(where: {$0.id == apiImage.id})!
+                            imageData.explorerImages[index].data = response!.data
+                            createImageNode(image: imageData.explorerImages[index], location: nodeLocation)
                             dump(response)
                         }
                     }

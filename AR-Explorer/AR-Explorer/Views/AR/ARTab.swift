@@ -36,7 +36,7 @@ struct ARTab: View {
             VStack {
                 HStack {
                     Spacer()
-                    RadarView(mapMarkerImages: $imageData.capVisImages, navigationImage: $imageData.navigationImage, redrawImages: $redrawImages, applyAnnotations: $applyAnnotations)
+                    RadarView(mapMarkerImages: $imageData.explorerImages, navigationImage: $imageData.navigationImage, redrawImages: $redrawImages, applyAnnotations: $applyAnnotations)
                         .frame(width: 96.0, height: 96.0)
                         .clipShape(
                             Circle()
@@ -47,7 +47,7 @@ struct ARTab: View {
                             Circle()
                                 .stroke(Color(uiColor: UIColor.systemBackground), lineWidth: 4)
                         )
-                        .onChange(of: imageData.capVisImages) { tag in
+                        .onChange(of: imageData.explorerImages) { tag in
                             applyAnnotations = true
                         }
                         .offset(x: 0.0, y: 40)

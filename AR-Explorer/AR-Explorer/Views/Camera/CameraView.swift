@@ -158,8 +158,8 @@ extension CameraView {
         
         let imageToSaveLocally = ApiImage(id: model.photo.id , data: model.photo.originalData, thumbnail: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: UIDevice.current.name, bearing: Int(model.photo.heading.trueHeading), yaw: model.photo.yaw, pitch: model.photo.pitch)
         
-        if !imageData.capVisImages.contains(imageToSaveLocally) && !imageData.imagesToUpload.contains(imageToSaveLocally){
-            imageData.capVisImages.append(imageToSaveLocally)
+        if !imageData.explorerImages.contains(imageToSaveLocally) && !imageData.imagesToUpload.contains(imageToSaveLocally){
+            imageData.explorerImages.append(imageToSaveLocally)
             imageData.imagesToUpload.append(imageToSaveLocally)
             imageData.saveImagesToFile()
         }

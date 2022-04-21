@@ -34,7 +34,8 @@
 		2285093927B3DF3F00E9FB26 /* GeometryUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092A27B3DF3F00E9FB26 /* GeometryUtils.swift */; };
 		2285093A27B3DF3F00E9FB26 /* ARTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092B27B3DF3F00E9FB26 /* ARTab.swift */; };
 		228D292E27D12ACB00F6EA9F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 228D292D27D12ACB00F6EA9F /* Launch Screen.storyboard */; };
-		22A276D62810031400A26BD4 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A276D52810031400A26BD4 /* Settings.swift */; };
+		22A276D62810031400A26BD4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A276D52810031400A26BD4 /* SettingsView.swift */; };
+		22A6E18C2811E72C0094C890 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A6E18B2811E72C0094C890 /* SettingsModel.swift */; };
 		22AA75552806BA1200A847DB /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA75542806BA1200A847DB /* AlertError.swift */; };
 		22AA75572806BFFF00A847DB /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA75562806BFFF00A847DB /* UIImage+Extension.swift */; };
 		22AA755D2806C0D300A847DB /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA755C2806C0D300A847DB /* CameraModel.swift */; };
@@ -97,7 +98,8 @@
 		2285092B27B3DF3F00E9FB26 /* ARTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARTab.swift; sourceTree = "<group>"; };
 		228D292C27D12A0200F6EA9F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		228D292D27D12ACB00F6EA9F /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		22A276D52810031400A26BD4 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		22A276D52810031400A26BD4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		22A6E18B2811E72C0094C890 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		22AA75542806BA1200A847DB /* AlertError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertError.swift; sourceTree = "<group>"; };
 		22AA75562806BFFF00A847DB /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Extension.swift"; path = "../../../../../../.Trash/UIImage+Extension.swift"; sourceTree = "<group>"; };
 		22AA755C2806C0D300A847DB /* CameraModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModel.swift; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 			children = (
 				2227E9F327B54CF200E545D4 /* ImageData.swift */,
 				22371D8827DA4F7D00E9B07C /* LocationManagerModel.swift */,
+				22A6E18B2811E72C0094C890 /* SettingsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -309,7 +312,7 @@
 				22CFC77B27DB932300E4BD26 /* FilterView.swift */,
 				22E69AAF27D9E04900803960 /* GalleryView.swift */,
 				22E69AB127D9EC6F00803960 /* DetailView.swift */,
-				22A276D52810031400A26BD4 /* Settings.swift */,
+				22A276D52810031400A26BD4 /* SettingsView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -465,12 +468,13 @@
 				22371D8927DA4F7D00E9B07C /* LocationManagerModel.swift in Sources */,
 				22CFC77727DB912200E4BD26 /* ImageAnnotation.swift in Sources */,
 				2285093A27B3DF3F00E9FB26 /* ARTab.swift in Sources */,
+				22A6E18C2811E72C0094C890 /* SettingsModel.swift in Sources */,
 				22AA75572806BFFF00A847DB /* UIImage+Extension.swift in Sources */,
 				227CCA4927CE82620049C4B8 /* Photo.swift in Sources */,
 				22CFC77327DB90B300E4BD26 /* ImageAnnotationView.swift in Sources */,
 				2285093227B3DF3F00E9FB26 /* PhotoCaptureProcessor.swift in Sources */,
 				222F3C4B27B3C59200EEF17B /* AR_ExplorerApp.swift in Sources */,
-				22A276D62810031400A26BD4 /* Settings.swift in Sources */,
+				22A276D62810031400A26BD4 /* SettingsView.swift in Sources */,
 				22E69AB227D9EC6F00803960 /* DetailView.swift in Sources */,
 				2285093927B3DF3F00E9FB26 /* GeometryUtils.swift in Sources */,
 				2285092F27B3DF3F00E9FB26 /* CaptureOrientation.swift in Sources */,
@@ -639,7 +643,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AR-Explorer/Preview Content\"";
 				DEVELOPMENT_TEAM = 883GXF926S;
 				ENABLE_PREVIEWS = YES;
@@ -653,8 +657,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -662,7 +666,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.AR-Explorer";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.ar-explorer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -677,7 +681,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"AR-Explorer/Preview Content\"";
 				DEVELOPMENT_TEAM = 883GXF926S;
 				ENABLE_PREVIEWS = YES;
@@ -691,8 +695,8 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -700,7 +704,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.AR-Explorer";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.timbachmann.ar-explorer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

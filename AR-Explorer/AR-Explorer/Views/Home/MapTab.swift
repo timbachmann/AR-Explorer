@@ -46,9 +46,9 @@ struct MapTab: View {
     var body: some View {
         NavigationView {
             ZStack {
-                MapView(mapMarkerImages: $imageData.capVisImages, navigationImage: $imageData.navigationImage, selectedTab: $selectedTab, showDetail: $showDetail, detailId: $detailId, zoomOnLocation: $zoomOnLocation, changeMapType: $changeMapType, applyAnnotations: $applyAnnotations, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
+                MapView(mapMarkerImages: $imageData.explorerImages, navigationImage: $imageData.navigationImage, selectedTab: $selectedTab, showDetail: $showDetail, detailId: $detailId, zoomOnLocation: $zoomOnLocation, changeMapType: $changeMapType, applyAnnotations: $applyAnnotations, region: coordinateRegion, mapType: mapType, showsUserLocation: true, userTrackingMode: .follow)
                     .edgesIgnoringSafeArea(.top)
-                    .onChange(of: imageData.capVisImages) { tag in
+                    .onChange(of: imageData.explorerImages) { tag in
                         applyAnnotations = true
                         createNotifications()
                     }
@@ -181,7 +181,7 @@ struct MapTab: View {
                     EmptyView()
                 }
                 
-                NavigationLink(destination: DetailView(imageIndex: imageData.capVisImages.firstIndex(where: {$0.id == detailId}), selectedTab: $selectedTab), isActive: $showDetail) {
+                NavigationLink(destination: DetailView(imageIndex: imageData.explorerImages.firstIndex(where: {$0.id == detailId}), selectedTab: $selectedTab), isActive: $showDetail) {
                     EmptyView()
                 }
                 
@@ -286,7 +286,7 @@ extension MapTab {
      */
     func createNotifications() {
         
-        for image in imageData.capVisImages {
+        for image in imageData.explorerImages {
             let notificationIdentifier = image.id + "_" + "capvisar"
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notificationIdentifier])
             

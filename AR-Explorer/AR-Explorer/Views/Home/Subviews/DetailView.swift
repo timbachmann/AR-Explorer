@@ -110,7 +110,7 @@ struct DetailView: View {
                                 }
                                 
                                 if (response != nil) {
-                                    imageData.capVisImages.remove(at: imageIndex!)
+                                    imageData.explorerImages.remove(at: imageIndex!)
                                     imageData.saveImagesToFile()
                                     self.mode.wrappedValue.dismiss()
                                     dump(response)
@@ -131,7 +131,7 @@ extension DetailView {
      
      */
     func loadImage() {
-        image = imageData.capVisImages[imageIndex ?? 0]
+        image = imageData.explorerImages[imageIndex ?? 0]
         
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -153,9 +153,9 @@ extension DetailView {
                 }
                 
                 if (response != nil) {
-                    index = imageData.capVisImages.firstIndex{$0.id == image.id}!
-                    imageData.capVisImages[index!].data = response!.data
-                    image = imageData.capVisImages[index!]
+                    index = imageData.explorerImages.firstIndex{$0.id == image.id}!
+                    imageData.explorerImages[index!].data = response!.data
+                    image = imageData.explorerImages[index!]
                     setImage()
                     dump(response)
                 }

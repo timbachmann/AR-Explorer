@@ -55,15 +55,15 @@ struct GalleryView: View {
         ScrollView {
             ///
             
-            NavigationLink(destination: Settings(), isActive: $showSettings) {
+            NavigationLink(destination: SettingsView(), isActive: $showSettings) {
                 EmptyView()
             }
             
             LazyVGrid(columns: threeColumnGrid, spacing: 10) {
-                ForEach(imageData.capVisImages) { item in
+                ForEach(imageData.explorerImages) { item in
                     
                     if $notSelectingImages.wrappedValue {
-                        NavigationLink(destination: DetailView(imageIndex: imageData.capVisImages.firstIndex(of: item)!, selectedTab: $selectedTab)) {
+                        NavigationLink(destination: DetailView(imageIndex: imageData.explorerImages.firstIndex(of: item)!, selectedTab: $selectedTab)) {
                             Image(uiImage: UIImage(data: item.thumbnail)!)
                                 .resizable()
                                 .scaledToFill()
@@ -95,9 +95,9 @@ struct GalleryView: View {
             .onChange(of: sortingOption) { newSelection in
                 switch newSelection {
                 case "Date (standard)":
-                    imageData.capVisImages.sort(by: { $0.date < $1.date })
+                    imageData.explorerImages.sort(by: { $0.date < $1.date })
                 case "Date (recent images first)":
-                    imageData.capVisImages.sort(by: { $0.date > $1.date })
+                    imageData.explorerImages.sort(by: { $0.date > $1.date })
                 default:
                     print("No sorting option selected")
                 }
@@ -162,7 +162,7 @@ struct GalleryView: View {
                                         }
                                         
                                         if (response != nil) {
-                                            imageData.capVisImages.remove(at: imageData.capVisImages.firstIndex(where: {$0.id == imageId})!)
+                                            imageData.explorerImages.remove(at: imageData.explorerImages.firstIndex(where: {$0.id == imageId})!)
                                             imageData.saveImagesToFile()
                                             dump(response)
                                         }

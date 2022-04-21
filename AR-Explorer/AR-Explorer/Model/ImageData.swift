@@ -14,7 +14,7 @@ import OpenAPIClient
  Contains functions to save and load data from the app's cache directory
  */
 class ImageData: ObservableObject {
-    @Published var capVisImages: [ApiImage] = []
+    @Published var explorerImages: [ApiImage] = []
     @Published var imagesToUpload: [ApiImage] = []
     @Published var localFilesSynced: Bool = true
     @Published var navigationImage: ApiImage? = nil
@@ -25,8 +25,8 @@ class ImageData: ObservableObject {
     init() {
         loadAllImages { (data, error) in
             if let retrievedData = data {
-                self.capVisImages = retrievedData
-                self.capVisImages.sort(by: { $0.date < $1.date })
+                self.explorerImages = retrievedData
+                self.explorerImages.sort(by: { $0.date < $1.date })
             }
         }
         
@@ -137,7 +137,7 @@ class ImageData: ObservableObject {
             print("Unable to delete directory \(error.debugDescription)")
         }
         
-        for image in self.capVisImages {
+        for image in self.explorerImages {
             let folderPath = getCacheDirectoryPath().appendingPathComponent("images").appendingPathComponent(image.id)
             do {
                 try FileManager.default.createDirectory(atPath: folderPath.path, withIntermediateDirectories: true, attributes: nil)
