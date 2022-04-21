@@ -7,7 +7,7 @@
 
 import XCTest
 
-class CapVis_ARUITestsLaunchTests: XCTestCase {
+class AR_ExplorerUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

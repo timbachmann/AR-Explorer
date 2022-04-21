@@ -8,7 +8,7 @@
 import XCTest
 @testable import CapVis_AR
 
-class CapVis_ARTests: XCTestCase {
+class AR_ExplorerTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

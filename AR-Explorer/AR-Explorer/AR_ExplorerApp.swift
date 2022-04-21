@@ -12,7 +12,7 @@ import SwiftUI
  Initializes App delegate to deal with notifications and environment objects to pass to child views.
  */
 @main
-struct CapVis_ARApp: App {
+struct AR_ExplorerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var imageData = ImageData()
     @StateObject private var locationManagerModel = LocationManagerModel()
