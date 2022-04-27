@@ -166,7 +166,8 @@ struct ARViewRepresentable: UIViewRepresentable {
      
      */
     func translateNode (_ location: CLLocation, altitude: CLLocationDistance) -> SCNVector3 {
-        let locationTransform = GeometryUtils.transformMatrix(matrix_identity_float4x4, locationManagerModel.location, location)
+        let currCameraTransform = arDelegate.cameraTransform ?? matrix_identity_float4x4
+        let locationTransform = GeometryUtils.transformMatrix(currCameraTransform, locationManagerModel.location, location)
         return SCNVector3Make(locationTransform.columns.3.x, locationTransform.columns.3.y + Float(altitude), locationTransform.columns.3.z)
     }
 }

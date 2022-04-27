@@ -11,7 +11,7 @@ import ARKit
 import OpenAPIClient
 
 /**
- 
+ Main Tab displaying a full sized map and controls to navigate to gallery, camera view and some map options.
  */
 struct MapTab: View {
     
@@ -39,8 +39,8 @@ struct MapTab: View {
     @State private var showCamera: Bool = false
     @State private var includePublic: Bool = false
     @State private var radius: Double = 2.0
-    @State var startDate: Date = Date(timeIntervalSince1970: -3155673600.0)
-    @State var endDate: Date = Date()
+    @State private var startDate: Date = Date(timeIntervalSince1970: -3155673600.0)
+    @State private var endDate: Date = Date()
     @State private var coordinateRegion = MKCoordinateRegion.init(center: CLLocationCoordinate2D(latitude: CLLocationManager().location?.coordinate.latitude ?? 47.559_601, longitude: CLLocationManager().location?.coordinate.longitude ?? 7.588_576), span: MKCoordinateSpan(latitudeDelta: 0.0051, longitudeDelta: 0.0051))
     
     var body: some View {
@@ -229,7 +229,7 @@ struct MapTab: View {
 extension MapTab {
     
     /**
-     
+     Called if new map type is selected and requests change on map by changing state variable
      */
     func applyMapTypeChange() {
         changeMapType = true
@@ -238,7 +238,7 @@ extension MapTab {
     }
     
     /**
-     
+     Called if location button is pressed and requests zoom on map by changing state variable.
      */
     func requestZoomOnLocation() {
         zoomOnLocation = true
@@ -248,7 +248,7 @@ extension MapTab {
     }
     
     /**
-     
+     Called if sync with server button is pressed and displays a progress bar while sending new image request to server.
      */
     func syncLocalFiles() {
         let progFrac: Double = (1.0/Double(imageData.imagesToUpload.count))
@@ -256,7 +256,7 @@ extension MapTab {
         
         for newImage in imageData.imagesToUpload {
             
-            let newImageRequest = NewImageRequest(userID: UIDevice.current.identifierForVendor!.uuidString, id: newImage.id, data: newImage.data, lat: newImage.lat, lng: newImage.lng, date: newImage.date, source: newImage.source, bearing: newImage.bearing, yaw: newImage.yaw, pitch: newImage.pitch)
+            let newImageRequest = NewImageRequest(userID: UIDevice.current.identifierForVendor!.uuidString, id: newImage.id, data: newImage.data, lat: newImage.lat, lng: newImage.lng, date: newImage.date, source: newImage.source, bearing: newImage.bearing, yaw: newImage.yaw, pitch: newImage.pitch, publicImage: newImage.publicImage)
             
             uploadProgress += progFrac/2
             
@@ -282,7 +282,7 @@ extension MapTab {
     }
     
     /**
-     
+     Schedules notifications for all images with a location trigger.
      */
     func createNotifications() {
         
@@ -297,14 +297,14 @@ extension MapTab {
             let content = UNMutableNotificationContent()
             content.title = "Photo in Range"
             content.subtitle = "Click to view in AR"
-            content.body = String(format: "10m")
+            content.body = String(format: "50m")
             content.sound = UNNotificationSound.default
             content.badge = 1
             content.categoryIdentifier = "capVisAR"
             content.userInfo = ["customDataKey": "cusom_data_value"]
             
             // 2. Create Trigger and Configure the desired behaviour - Location
-            let region = CLCircularRegion(center: location.coordinate, radius: 10.0, identifier: UUID().uuidString)
+            let region = CLCircularRegion(center: location.coordinate, radius: 50.0, identifier: UUID().uuidString)
             region.notifyOnEntry = true
             region.notifyOnExit = false
             let trigger = UNLocationNotificationTrigger(region: region, repeats: true)
@@ -324,14 +324,14 @@ extension MapTab {
     }
     
     /**
-     
+     Returns cache directory path
      */
     func getCacheDirectoryPath() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
     }
     
     /**
-     
+     Requests authorization to send notifications
      */
     func requestNotificationAuthorization() {
         
@@ -352,14 +352,14 @@ struct Home_Previews: PreviewProvider {
     }
 }
 
+/**
+ Struct to represent a rectangle with rounded corners
+ */
 struct RoundedCorner: Shape {
     
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
     
-    /**
-     
-     */
     func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         return Path(path.cgPath)
@@ -369,31 +369,31 @@ struct RoundedCorner: Shape {
 extension View {
     
     /**
-     
+     View extension to apply the rounded corner struct to any view.
      */
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
 }
 
-extension MKCoordinateRegion: Equatable {
-    
-    /**
-     
-     */
-    public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
-        if lhs.center.latitude == rhs.center.latitude && lhs.span.latitudeDelta == rhs.span.latitudeDelta && lhs.span.longitudeDelta == rhs.span.longitudeDelta {
-            return true
-        } else {
-            return false
-        }
-    }
-}
+//extension MKCoordinateRegion: Equatable {
+//
+//    /**
+//
+//     */
+//    public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
+//        if lhs.center.latitude == rhs.center.latitude && lhs.span.latitudeDelta == rhs.span.latitudeDelta && lhs.span.longitudeDelta == rhs.span.longitudeDelta {
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
+//}
 
 extension UINavigationController: UIGestureRecognizerDelegate {
     
     /**
-     
+     Add pop gesture recognizer to UINavigationController to recognize swipe back gestures
      */
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -401,7 +401,7 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     }
     
     /**
-     
+     Gesture reognizer should be active if there is more than one view controller.
      */
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1

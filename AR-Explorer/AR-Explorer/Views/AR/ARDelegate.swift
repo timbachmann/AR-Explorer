@@ -13,7 +13,8 @@ import UIKit
  
  */
 class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
-    @Published var message:String = "starting AR"
+    @Published var message: String = "starting AR"
+    @Published var cameraTransform: simd_float4x4? = nil
     private var arView: ARSCNView?
     private var images: [SCNNode] = []
     private var polyNodes: [SCNNode] = []
@@ -72,6 +73,13 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
         case .notAvailable:
             message = "Tracking not available"
         }
+    }
+    
+    /**
+     
+     */
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        cameraTransform = frame.camera.transform
     }
     
     /**
