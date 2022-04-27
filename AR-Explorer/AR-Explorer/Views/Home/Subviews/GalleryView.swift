@@ -37,6 +37,7 @@ struct GalleryView: View {
             VStack{
                 Spacer()
                 HStack{
+                    
                     Spacer()
                     Circle()
                         .foregroundColor(Color.white)
@@ -47,6 +48,24 @@ struct GalleryView: View {
                             
                         )
                 }
+            }
+        }
+    }
+    
+    /**
+     
+     */
+    var isPublicOverlay: some View {
+        ZStack{
+            VStack{
+                HStack{
+                    Spacer()
+                    Image(systemName: "globe.europe.africa")
+                        .foregroundColor(Color.white)
+                        .frame(width: 21.0, height: 21.0)
+                        .padding(5.0)
+                }
+                Spacer()
             }
         }
     }
@@ -69,6 +88,7 @@ struct GalleryView: View {
                                 .scaledToFill()
                                 .frame(width: gridWidth, height: gridWidth)
                                 .aspectRatio(1, contentMode: .fill)
+                                .overlay(item.publicImage == 1 ? isPublicOverlay : nil)
                                 .cornerRadius(2)
                                 .clipped()
                         }
@@ -80,7 +100,12 @@ struct GalleryView: View {
                             .aspectRatio(1, contentMode: .fill)
                             .cornerRadius(2)
                             .clipped()
-                            .overlay(selectedImages.contains(item.id) ? isSelectedOverlay : nil)
+                            .overlay(
+                                ZStack {
+                                    item.publicImage == 1 ? isPublicOverlay : nil
+                                    selectedImages.contains(item.id) ? isSelectedOverlay : nil
+                                }
+                            )
                             .onTapGesture {
                                 if selectedImages.contains(item.id) {
                                     selectedImages.remove(at: selectedImages.firstIndex(of: item.id)!)

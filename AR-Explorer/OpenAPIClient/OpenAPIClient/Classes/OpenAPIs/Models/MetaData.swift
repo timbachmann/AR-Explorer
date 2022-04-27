@@ -21,8 +21,9 @@ public struct MetaData: Codable, JSONEncodable, Hashable {
     public var bearing: Int
     public var yaw: Float
     public var pitch: Float
+    public var publicImage: Int
 
-    public init(id: String, lat: Double, lng: Double, date: String, source: String, bearing: Int, yaw: Float, pitch: Float) {
+    public init(id: String, lat: Double, lng: Double, date: String, source: String, bearing: Int, yaw: Float, pitch: Float, publicImage: Int) {
         self.id = id
         self.lat = lat
         self.lng = lng
@@ -31,5 +32,6 @@ public struct MetaData: Codable, JSONEncodable, Hashable {
         self.bearing = bearing
         self.yaw = yaw
         self.pitch = pitch
+        self.publicImage = publicImage
     }
 }

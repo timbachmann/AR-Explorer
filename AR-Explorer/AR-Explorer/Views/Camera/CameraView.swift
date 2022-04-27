@@ -156,7 +156,7 @@ extension CameraView {
         formatter.timeZone = .current
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
-        let imageToSaveLocally = ApiImage(id: model.photo.id , data: model.photo.originalData, thumbnail: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: UIDevice.current.name, bearing: Int(model.photo.heading.trueHeading), yaw: model.photo.yaw, pitch: model.photo.pitch)
+        let imageToSaveLocally = ApiImage(id: model.photo.id , data: model.photo.originalData, thumbnail: model.photo.originalData , lat: model.photo.coordinates.latitude, lng: model.photo.coordinates.longitude, date: formatter.string(from: date), source: UIDevice.current.name, bearing: Int(model.photo.heading.trueHeading), yaw: model.photo.yaw, pitch: model.photo.pitch, publicImage: 0)
         
         if !imageData.explorerImages.contains(imageToSaveLocally) && !imageData.imagesToUpload.contains(imageToSaveLocally){
             imageData.explorerImages.append(imageToSaveLocally)

@@ -22,8 +22,9 @@ public struct NewImageRequest: Codable, JSONEncodable, Hashable {
     public var bearing: Int
     public var yaw: Float
     public var pitch: Float
+    public var publicImage: Int
 
-    public init(userID: String, id: String, data: Data, lat: Double, lng: Double, date: String, source: String, bearing: Int, yaw: Float, pitch: Float) {
+    public init(userID: String, id: String, data: Data, lat: Double, lng: Double, date: String, source: String, bearing: Int, yaw: Float, pitch: Float, publicImage: Int) {
         self.userID = userID
         self.id = id
         self.data = data
@@ -34,6 +35,7 @@ public struct NewImageRequest: Codable, JSONEncodable, Hashable {
         self.bearing = bearing
         self.yaw = yaw
         self.pitch = pitch
+        self.publicImage = publicImage
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -47,6 +49,7 @@ public struct NewImageRequest: Codable, JSONEncodable, Hashable {
         case bearing
         case yaw
         case pitch
+        case publicImage
     }
 
     // Encodable protocol methods
@@ -63,6 +66,7 @@ public struct NewImageRequest: Codable, JSONEncodable, Hashable {
         try container.encode(bearing, forKey: .bearing)
         try container.encode(yaw, forKey: .yaw)
         try container.encode(pitch, forKey: .pitch)
+        try container.encode(publicImage, forKey: .publicImage)
     }
 }
 

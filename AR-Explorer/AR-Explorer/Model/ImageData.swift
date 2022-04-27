@@ -80,7 +80,7 @@ class ImageData: ObservableObject {
                             thumbData = Data()
                         }
                         
-                        images.append(ApiImage(id: metaData.id, data: imageData, thumbnail: thumbData, lat: metaData.lat, lng: metaData.lng, date: metaData.date, source: metaData.source, bearing: metaData.bearing, yaw: metaData.yaw, pitch: metaData.pitch))
+                        images.append(ApiImage(id: metaData.id, data: imageData, thumbnail: thumbData, lat: metaData.lat, lng: metaData.lng, date: metaData.date, source: metaData.source, bearing: metaData.bearing, yaw: metaData.yaw, pitch: metaData.pitch, publicImage: metaData.publicImage))
                         
                     } catch {
                         receivedError = "Couldn't parse \(metaPath.path) as \(MetaData.self):\n\(error)"
@@ -144,7 +144,7 @@ class ImageData: ObservableObject {
             } catch let error as NSError {
                 print("Unable to create directory \(error.debugDescription)")
             }
-            let meta = MetaData(id: image.id, lat: image.lat, lng: image.lng, date: image.date, source: image.source, bearing: image.bearing, yaw: image.yaw, pitch: image.pitch)
+            let meta = MetaData(id: image.id, lat: image.lat, lng: image.lng, date: image.date, source: image.source, bearing: image.bearing, yaw: image.yaw, pitch: image.pitch, publicImage: image.publicImage)
             
             let metaPath = folderPath.appendingPathComponent("\(image.id).json")
             do {
@@ -186,7 +186,7 @@ class ImageData: ObservableObject {
     }
     
     /**
-     Returns cache directory
+     Returns cache directory path
      */
     func getCacheDirectoryPath() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
