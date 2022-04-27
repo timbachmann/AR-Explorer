@@ -22,12 +22,9 @@
 		22371D8927DA4F7D00E9B07C /* LocationManagerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22371D8827DA4F7D00E9B07C /* LocationManagerModel.swift */; };
 		227CCA4927CE82620049C4B8 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227CCA4827CE82620049C4B8 /* Photo.swift */; };
 		2285092E27B3DF3F00E9FB26 /* MapTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285091D27B3DF3F00E9FB26 /* MapTab.swift */; };
-		2285092F27B3DF3F00E9FB26 /* CaptureOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285091F27B3DF3F00E9FB26 /* CaptureOrientation.swift */; };
 		2285093027B3DF3F00E9FB26 /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092027B3DF3F00E9FB26 /* CameraPreview.swift */; };
-		2285093127B3DF3F00E9FB26 /* CameraServiceEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092127B3DF3F00E9FB26 /* CameraServiceEnums.swift */; };
 		2285093227B3DF3F00E9FB26 /* PhotoCaptureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092227B3DF3F00E9FB26 /* PhotoCaptureProcessor.swift */; };
 		2285093327B3DF3F00E9FB26 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092327B3DF3F00E9FB26 /* CameraView.swift */; };
-		2285093427B3DF3F00E9FB26 /* ImageResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092427B3DF3F00E9FB26 /* ImageResizer.swift */; };
 		2285093627B3DF3F00E9FB26 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092627B3DF3F00E9FB26 /* CameraService.swift */; };
 		2285093727B3DF3F00E9FB26 /* ARDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092827B3DF3F00E9FB26 /* ARDelegate.swift */; };
 		2285093827B3DF3F00E9FB26 /* ARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2285092927B3DF3F00E9FB26 /* ARViewRepresentable.swift */; };
@@ -85,12 +82,9 @@
 		22371D8827DA4F7D00E9B07C /* LocationManagerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerModel.swift; sourceTree = "<group>"; };
 		227CCA4827CE82620049C4B8 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		2285091D27B3DF3F00E9FB26 /* MapTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTab.swift; sourceTree = "<group>"; };
-		2285091F27B3DF3F00E9FB26 /* CaptureOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptureOrientation.swift; sourceTree = "<group>"; };
 		2285092027B3DF3F00E9FB26 /* CameraPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
-		2285092127B3DF3F00E9FB26 /* CameraServiceEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraServiceEnums.swift; sourceTree = "<group>"; };
 		2285092227B3DF3F00E9FB26 /* PhotoCaptureProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCaptureProcessor.swift; sourceTree = "<group>"; };
 		2285092327B3DF3F00E9FB26 /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
-		2285092427B3DF3F00E9FB26 /* ImageResizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageResizer.swift; sourceTree = "<group>"; };
 		2285092627B3DF3F00E9FB26 /* CameraService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		2285092827B3DF3F00E9FB26 /* ARDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARDelegate.swift; sourceTree = "<group>"; };
 		2285092927B3DF3F00E9FB26 /* ARViewRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARViewRepresentable.swift; sourceTree = "<group>"; };
@@ -169,7 +163,6 @@
 				222F3C4C27B3C59200EEF17B /* ContentView.swift */,
 				220A0B5027F86F8E0088FB45 /* AppDelegate.swift */,
 				2285091927B3DF3F00E9FB26 /* Model */,
-				227CCA4527CE7ABF0049C4B8 /* Utils */,
 				2285091A27B3DF3F00E9FB26 /* Views */,
 				222F3C4E27B3C59300EEF17B /* Assets.xcassets */,
 				222F3C5027B3C59300EEF17B /* Preview Content */,
@@ -217,16 +210,6 @@
 				2211EAE3280EB4F400783F20 /* LaunchScreen.storyboard */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		227CCA4527CE7ABF0049C4B8 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				2285092427B3DF3F00E9FB26 /* ImageResizer.swift */,
-				2285092127B3DF3F00E9FB26 /* CameraServiceEnums.swift */,
-				2285091F27B3DF3F00E9FB26 /* CaptureOrientation.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		2285091927B3DF3F00E9FB26 /* Model */ = {
@@ -454,7 +437,6 @@
 			files = (
 				22CFC77C27DB932300E4BD26 /* FilterView.swift in Sources */,
 				222F3C4D27B3C59200EEF17B /* ContentView.swift in Sources */,
-				2285093127B3DF3F00E9FB26 /* CameraServiceEnums.swift in Sources */,
 				2285093827B3DF3F00E9FB26 /* ARViewRepresentable.swift in Sources */,
 				2285093327B3DF3F00E9FB26 /* CameraView.swift in Sources */,
 				2213A27527B6890C00497182 /* MapView.swift in Sources */,
@@ -477,10 +459,8 @@
 				22A276D62810031400A26BD4 /* SettingsView.swift in Sources */,
 				22E69AB227D9EC6F00803960 /* DetailView.swift in Sources */,
 				2285093927B3DF3F00E9FB26 /* GeometryUtils.swift in Sources */,
-				2285092F27B3DF3F00E9FB26 /* CaptureOrientation.swift in Sources */,
 				2203DAEF27FAF152006D093F /* RadarView.swift in Sources */,
 				22E69AB027D9E04900803960 /* GalleryView.swift in Sources */,
-				2285093427B3DF3F00E9FB26 /* ImageResizer.swift in Sources */,
 				22CFC77527DB90F700E4BD26 /* ClusterAnnotationView.swift in Sources */,
 				22AA755D2806C0D300A847DB /* CameraModel.swift in Sources */,
 				2285093727B3DF3F00E9FB26 /* ARDelegate.swift in Sources */,

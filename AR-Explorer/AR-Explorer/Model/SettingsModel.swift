@@ -10,13 +10,14 @@ import Combine
 import OpenAPIClient
 
 /**
- 
+ Observable class SettingsModel to represent current settings.
+ Contains functions to save and load settings from the app's cache directory
  */
 class SettingsModel: ObservableObject {
     @Published var serverAddress: String = OpenAPIClientAPI.basePath
     
     /**
-     
+     Initialize settings by loading from cache
      */
     init() {
         loadSettings { (data, error) in
@@ -27,7 +28,7 @@ class SettingsModel: ObservableObject {
     }
     
     /**
-     
+     Loads previously saved settings from cache and returns them
      */
     func loadSettings(completion: @escaping (_ data: Settings?, _ error: String?) -> ())  {
         var settings: Settings? = nil
@@ -51,7 +52,7 @@ class SettingsModel: ObservableObject {
     
     
     /**
-    
+     Saves current settings to cache while invalidating old state
      */
     func saveSettingsToFile() {
         let path = getCacheDirectoryPath().appendingPathComponent("settings.json")

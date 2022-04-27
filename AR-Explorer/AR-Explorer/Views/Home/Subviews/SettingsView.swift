@@ -8,6 +8,9 @@
 import SwiftUI
 import OpenAPIClient
 
+/**
+ 
+ */
 struct SettingsView: View {
     
     @EnvironmentObject var settingsModel: SettingsModel
@@ -30,8 +33,7 @@ struct SettingsView: View {
                 .onAppear(perform: {
                     serverAddress = settingsModel.serverAddress
                 })
-                
-                
+                                
                 Spacer()
             }
         }
