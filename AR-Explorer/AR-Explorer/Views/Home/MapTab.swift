@@ -19,6 +19,7 @@ struct MapTab: View {
     private let buttonOpacity: CGFloat = 0.95
     @EnvironmentObject var imageData: ImageData
     @EnvironmentObject var locationManagerModel: LocationManagerModel
+    @EnvironmentObject var settingsModel: SettingsModel
     @Binding var selectedTab: ContentView.Tab
     @State private var showFavoritesOnly = false
     @State private var mapStyleSheetVisible: Bool = false
@@ -55,7 +56,9 @@ struct MapTab: View {
                 
                 VStack {
                     HStack {
-                        Spacer()
+                        if $settingsModel.userThumbRight.wrappedValue == true {
+                            Spacer()
+                        }
                         VStack(alignment: .leading) {
                             VStack(spacing: 0) {
                                 Button(action: {
@@ -162,6 +165,10 @@ struct MapTab: View {
                             Spacer()
                         }
                         .padding(8.0)
+                        
+                        if $settingsModel.userThumbRight.wrappedValue != true {
+                            Spacer()
+                        }
                     }
                     if $showUploadProgress.wrappedValue {
                         ZStack {

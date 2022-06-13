@@ -15,6 +15,7 @@ struct SettingsView: View {
     
     @EnvironmentObject var settingsModel: SettingsModel
     @State var serverAddress: String = ""
+    @State var userThumbLeft: Bool = true
     
     var body: some View {
         ZStack {
@@ -33,7 +34,25 @@ struct SettingsView: View {
                 .onAppear(perform: {
                     serverAddress = settingsModel.serverAddress
                 })
-                                
+                
+                GroupBox(label:
+                    Label("Control Center Alignment", systemImage: "hand.point.up")
+                ) {
+                    VStack() {
+                        Toggle(isOn: $userThumbLeft) {
+                            Text("Left handed use")
+                        }
+                    }
+                }
+                .padding([.leading, .trailing, .top])
+                .onAppear(perform: {
+                    userThumbLeft = !settingsModel.userThumbRight
+                })
+                .onChange(of: userThumbLeft) { value in
+                    settingsModel.userThumbRight = !userThumbLeft
+                    settingsModel.saveSettingsToFile()
+                }
+
                 Spacer()
             }
         }

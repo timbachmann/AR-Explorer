@@ -15,8 +15,10 @@ import AnyCodable
 public struct Settings: Codable, JSONEncodable, Hashable {
     
     public var serverAddress: String
+    public var userThumbRight: Bool
     
-    public init(serverAddress: String) {
+    public init(serverAddress: String, userThumbRight: Bool) {
         self.serverAddress = serverAddress
+        self.userThumbRight = true
     }
 }

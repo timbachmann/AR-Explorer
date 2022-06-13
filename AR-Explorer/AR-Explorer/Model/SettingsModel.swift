@@ -15,6 +15,7 @@ import OpenAPIClient
  */
 class SettingsModel: ObservableObject {
     @Published var serverAddress: String = OpenAPIClientAPI.basePath
+    @Published var userThumbRight: Bool = true
     
     /**
      Initialize settings by loading from cache
@@ -23,6 +24,7 @@ class SettingsModel: ObservableObject {
         loadSettings { (data, error) in
             if let retrievedData = data {
                 self.serverAddress = retrievedData.serverAddress
+                self.userThumbRight = retrievedData.userThumbRight
             }
         }
     }
@@ -62,7 +64,7 @@ class SettingsModel: ObservableObject {
             print("Unable to delete old Settings \(error.debugDescription)")
         }
         
-        let settings = Settings(serverAddress: serverAddress)
+        let settings = Settings(serverAddress: serverAddress,  userThumbRight: userThumbRight)
         do {
             let jsonDataLocal = try JSONEncoder().encode(settings)
             try jsonDataLocal.write(to: path)
