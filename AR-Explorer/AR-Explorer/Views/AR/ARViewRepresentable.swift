@@ -41,6 +41,7 @@ struct ARViewRepresentable: UIViewRepresentable {
      */
     func updateUIView(_ uiView: UIViewType, context: Context) {
         if redrawImages {
+            
             arDelegate.removeAllNodes()
             loadImageNodes()
             if imageData.navigationImage != nil {

@@ -75,6 +75,7 @@ struct ARTab: View {
                         .padding(.bottom, 20)
                     Spacer()
                     Button(action: {
+                        arDelegate.reset()
                         $redrawImages.wrappedValue.toggle()
                     }, label: {
                         Image(systemName: "arrow.triangle.2.circlepath")
@@ -91,7 +92,7 @@ struct ARTab: View {
         }
         .edgesIgnoringSafeArea(.top)
         .onChange(of: locationManagerModel.location, perform: { newLocation in
-            if newLocation.distance(from: currLocation) >= 5.0 {
+            if newLocation.distance(from: currLocation) >= 3.0 {
                 currLocation = newLocation
                 $redrawImages.wrappedValue.toggle()
             }

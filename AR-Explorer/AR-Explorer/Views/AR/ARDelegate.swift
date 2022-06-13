@@ -85,6 +85,22 @@ class ARDelegate: NSObject, ARSCNViewDelegate, ObservableObject {
     /**
      
      */
+    func reset() {
+        if arView != nil {
+            arView?.session.pause()
+            arView?.scene.rootNode.enumerateChildNodes { (node, stop) in
+                node.removeFromParentNode()
+            }
+            let configuration = ARWorldTrackingConfiguration()
+            configuration.worldAlignment = .gravityAndHeading
+            configuration.planeDetection = .horizontal
+            arView?.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        }
+    }
+    
+    /**
+     
+     */
     private func moveNode(_ node:SCNNode, raycastResult:ARRaycastResult) {
         node.simdWorldTransform = raycastResult.worldTransform
         node.rotation = SCNVector4Make(0, 0, 1, .pi / -2)
