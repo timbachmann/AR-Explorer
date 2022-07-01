@@ -27,6 +27,7 @@ struct DetailView: View {
     @State var index: Int? = nil
     @State var isLoading: Bool = true
     @State private var showingOptions = false
+    @State private var showingUpdate = false
     @Binding var selectedTab: ContentView.Tab
     @EnvironmentObject var imageData: ImageData
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
@@ -53,8 +54,6 @@ struct DetailView: View {
                             .onEnded { value in self.previousScale = 1.0 }
                         )
                         .clipped()
-                    
-                    detailYaw ?? Text("").font(.headline)
                     Spacer()
                     Button(action: {
                         if image != ApiImage() {
@@ -89,10 +88,42 @@ struct DetailView: View {
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: {
+                    showingUpdate = true
+                }, label: {
+                    Image(systemName: "globe.europe.africa")
+                        .foregroundColor(Color.accentColor)
+                })
+                .actionSheet(isPresented: $showingUpdate) {
+                    return ActionSheet(title: Text("Make image public?"), buttons: [
+                        .destructive(Text("Yes")){
+                            
+                            let localIndex = imageData.imagesToUpload.firstIndex{$0.id == image.id}
+                            if (localIndex != nil) {
+                                return
+                            }
+                            ImageAPI.updateImageById(userID: UIDevice.current.identifierForVendor!.uuidString, imageId: image.id) { (response, error) in
+                                guard error == nil else {
+                                    print(error ?? "Could not update image!")
+                                    return
+                                }
+                                
+                                if (response != nil) {
+                                    imageData.explorerImages.remove(at: imageIndex!)
+                                    imageData.saveImagesToFile()
+                                    self.mode.wrappedValue.dismiss()
+                                    dump(response)
+                                }
+                            }
+                        },
+                        .cancel()
+                    ])
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
                     showingOptions = true
                 }, label: {
                     Image(systemName: "trash.circle")
-                        .padding()
                         .foregroundColor(Color.accentColor)
                 })
                 .actionSheet(isPresented: $showingOptions) {

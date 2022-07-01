@@ -37,7 +37,7 @@
 		22AA75572806BFFF00A847DB /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA75562806BFFF00A847DB /* UIImage+Extension.swift */; };
 		22AA755D2806C0D300A847DB /* CameraModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA755C2806C0D300A847DB /* CameraModel.swift */; };
 		22AA75602806C28400A847DB /* RadarAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AA755F2806C28400A847DB /* RadarAnnotationView.swift */; };
-		22B9C3D1280588D8002C07C6 /* OpenAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 22B9C3D0280588D8002C07C6 /* OpenAPIClient */; };
+		22AAA854286F2F4D00E0F54A /* OpenAPIClient in Frameworks */ = {isa = PBXBuildFile; productRef = 22AAA853286F2F4D00E0F54A /* OpenAPIClient */; };
 		22CFC77327DB90B300E4BD26 /* ImageAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFC77227DB90B300E4BD26 /* ImageAnnotationView.swift */; };
 		22CFC77527DB90F700E4BD26 /* ClusterAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFC77427DB90F700E4BD26 /* ClusterAnnotationView.swift */; };
 		22CFC77727DB912200E4BD26 /* ImageAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CFC77627DB912200E4BD26 /* ImageAnnotation.swift */; };
@@ -80,6 +80,7 @@
 		222F3C6527B3C59400EEF17B /* AR_ExplorerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AR_ExplorerUITests.swift; sourceTree = "<group>"; };
 		222F3C6727B3C59400EEF17B /* AR_ExplorerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AR_ExplorerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		22371D8827DA4F7D00E9B07C /* LocationManagerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerModel.swift; sourceTree = "<group>"; };
+		225480982865FE620085843E /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		227CCA4827CE82620049C4B8 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		2285091D27B3DF3F00E9FB26 /* MapTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTab.swift; sourceTree = "<group>"; };
 		2285092027B3DF3F00E9FB26 /* CameraPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
@@ -98,7 +99,7 @@
 		22AA75562806BFFF00A847DB /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Extension.swift"; path = "../../../../../../.Trash/UIImage+Extension.swift"; sourceTree = "<group>"; };
 		22AA755C2806C0D300A847DB /* CameraModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraModel.swift; sourceTree = "<group>"; };
 		22AA755F2806C28400A847DB /* RadarAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarAnnotationView.swift; sourceTree = "<group>"; };
-		22B9C3CF280588CE002C07C6 /* OpenAPIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OpenAPIClient; sourceTree = "<group>"; };
+		22AAA852286F2C9100E0F54A /* OpenAPIClient */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = OpenAPIClient; sourceTree = "<group>"; };
 		22CFC77227DB90B300E4BD26 /* ImageAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAnnotationView.swift; sourceTree = "<group>"; };
 		22CFC77427DB90F700E4BD26 /* ClusterAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterAnnotationView.swift; sourceTree = "<group>"; };
 		22CFC77627DB912200E4BD26 /* ImageAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAnnotation.swift; sourceTree = "<group>"; };
@@ -112,7 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22B9C3D1280588D8002C07C6 /* OpenAPIClient in Frameworks */,
+				22AAA854286F2F4D00E0F54A /* OpenAPIClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +137,7 @@
 		222F3C3E27B3C59200EEF17B = {
 			isa = PBXGroup;
 			children = (
+				225480982865FE620085843E /* Location.gpx */,
 				2243ABE027D648DB00B9052C /* Packages */,
 				222F3C4927B3C59200EEF17B /* AR-Explorer */,
 				222F3C5A27B3C59400EEF17B /* AR-ExplorerTests */,
@@ -199,7 +201,7 @@
 		2243ABE027D648DB00B9052C /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				22B9C3CF280588CE002C07C6 /* OpenAPIClient */,
+				22AAA852286F2C9100E0F54A /* OpenAPIClient */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -317,7 +319,7 @@
 			);
 			name = "AR-Explorer";
 			packageProductDependencies = (
-				22B9C3D0280588D8002C07C6 /* OpenAPIClient */,
+				22AAA853286F2F4D00E0F54A /* OpenAPIClient */,
 			);
 			productName = "AR-Explorer";
 			productReference = 222F3C4727B3C59200EEF17B /* AR-Explorer.app */;
@@ -810,7 +812,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		22B9C3D0280588D8002C07C6 /* OpenAPIClient */ = {
+		22AAA853286F2F4D00E0F54A /* OpenAPIClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenAPIClient;
 		};

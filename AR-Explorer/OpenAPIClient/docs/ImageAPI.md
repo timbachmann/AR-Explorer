@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**deleteImageById**](ImageAPI.md#deleteimagebyid) | **DELETE** /images/{userID}/{imageId} | Delete image by id
 [**getAllImagesWithFilter**](ImageAPI.md#getallimageswithfilter) | **GET** /images | Get all images with filter
 [**getImageById**](ImageAPI.md#getimagebyid) | **GET** /images/{userID}/{imageId} | Get image by id
+[**updateImageById**](ImageAPI.md#updateimagebyid) | **PUT** /images/{userID}/{imageId} | Update image by id
 
 
 # **createImage**
@@ -22,7 +23,7 @@ Create new image
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let newImageRequest = NewImageRequest(userID: "userID_example", id: "id_example", data: [123], lat: 123, lng: 123, date: "date_example", source: "source_example", bearing: 123, yaw: 123, pitch: 123) // NewImageRequest |  (optional)
+let newImageRequest = NewImageRequest(userID: "userID_example", id: "id_example", data: [123], lat: 123, lng: 123, date: "date_example", source: "source_example", bearing: 123, yaw: 123, pitch: 123, publicImage: 123) // NewImageRequest |  (optional)
 
 // Create new image
 ImageAPI.createImage(newImageRequest: newImageRequest) { (response, error) in
@@ -206,6 +207,56 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ApiImage**](ApiImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **updateImageById**
+```swift
+    open class func updateImageById(userID: String, imageId: String, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
+```
+
+Update image by id
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let userID = "userID_example" // String | user ID
+let imageId = "imageId_example" // String | id to search for
+
+// Update image by id
+ImageAPI.updateImageById(userID: userID, imageId: imageId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userID** | **String** | user ID | 
+ **imageId** | **String** | id to search for | 
+
+### Return type
+
+Void (empty response body)
 
 ### Authorization
 

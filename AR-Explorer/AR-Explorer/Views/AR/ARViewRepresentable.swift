@@ -90,12 +90,19 @@ struct ARViewRepresentable: UIViewRepresentable {
         var width: CGFloat = 0
         var height: CGFloat = 0
         let finalYaw = image.yaw - 90.0
-        if image.pitch != -1.0 && image.pitch != 1.0 {
-            width = imageUI.size.height
-            height = imageUI.size.width
-        } else {
+        var finalBearing = image.bearing
+        
+        if image.pitch == -1.0 {
             width = imageUI.size.width
             height = imageUI.size.height
+            finalBearing -= 90
+        } else if image.pitch == 1.0 {
+            width = imageUI.size.width
+            height = imageUI.size.height
+            finalBearing += 90
+        } else {
+            width = imageUI.size.height
+            height = imageUI.size.width
         }
         
         let scnPlane = SCNPlane(width: width*0.0008, height: height*0.0008)
@@ -106,7 +113,7 @@ struct ARViewRepresentable: UIViewRepresentable {
         imageNode.worldPosition = translateNode(location, altitude: 0.0)
         
         let currentOrientation = GLKQuaternionMake(imageNode.orientation.x, imageNode.orientation.y, imageNode.orientation.z, imageNode.orientation.w)
-        let bearingRotation = GLKQuaternionMakeWithAngleAndAxis(GLKMathDegreesToRadians(-Float(image.bearing)), 0, 1, 0)
+        let bearingRotation = GLKQuaternionMakeWithAngleAndAxis(GLKMathDegreesToRadians(-Float(finalBearing)), 0, 1, 0)
         let yawRotation = GLKQuaternionMakeWithAngleAndAxis(GLKMathDegreesToRadians(finalYaw), 0, 0, 1)
         let finalOrientation = GLKQuaternionMultiply(GLKQuaternionMultiply(currentOrientation, bearingRotation), yawRotation)
         imageNode.orientation = SCNQuaternion(finalOrientation.x, finalOrientation.y, finalOrientation.z, finalOrientation.w)

@@ -35,7 +35,7 @@ open class ImageAPI {
      Create new image
      - POST /images
      - parameter newImageRequest: (body)  (optional)
-     - returns: RequestBuilder<Void> 
+     - returns: RequestBuilder<Void>
      */
     open class func createImageWithRequestBuilder(newImageRequest: NewImageRequest? = nil) -> RequestBuilder<Void> {
         let localVariablePath = "/images"
@@ -58,8 +58,8 @@ open class ImageAPI {
     /**
      Delete image by id
      
-     - parameter userID: (path) user ID 
-     - parameter imageId: (path) id to search for 
+     - parameter userID: (path) user ID
+     - parameter imageId: (path) id to search for
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -78,9 +78,9 @@ open class ImageAPI {
     /**
      Delete image by id
      - DELETE /images/{userID}/{imageId}
-     - parameter userID: (path) user ID 
-     - parameter imageId: (path) id to search for 
-     - returns: RequestBuilder<Void> 
+     - parameter userID: (path) user ID
+     - parameter imageId: (path) id to search for
+     - returns: RequestBuilder<Void>
      */
     open class func deleteImageByIdWithRequestBuilder(userID: String, imageId: String) -> RequestBuilder<Void> {
         var localVariablePath = "/images/{userID}/{imageId}"
@@ -109,13 +109,13 @@ open class ImageAPI {
     /**
      Get all images with filter
      
-     - parameter userID: (query) user ID 
-     - parameter startDate: (query) start date for temporal filter 
-     - parameter endDate: (query) end date for temporal filter 
-     - parameter lat: (query) latitude for spatial filter 
-     - parameter lng: (query) longitude for spatial filter 
-     - parameter radius: (query) radius for spatial filter 
-     - parameter includePublic: (query) include public images or not 
+     - parameter userID: (query) user ID
+     - parameter startDate: (query) start date for temporal filter
+     - parameter endDate: (query) end date for temporal filter
+     - parameter lat: (query) latitude for spatial filter
+     - parameter lng: (query) longitude for spatial filter
+     - parameter radius: (query) radius for spatial filter
+     - parameter includePublic: (query) include public images or not
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -134,14 +134,14 @@ open class ImageAPI {
     /**
      Get all images with filter
      - GET /images
-     - parameter userID: (query) user ID 
-     - parameter startDate: (query) start date for temporal filter 
-     - parameter endDate: (query) end date for temporal filter 
-     - parameter lat: (query) latitude for spatial filter 
-     - parameter lng: (query) longitude for spatial filter 
-     - parameter radius: (query) radius for spatial filter 
-     - parameter includePublic: (query) include public images or not 
-     - returns: RequestBuilder<ImageListResponse> 
+     - parameter userID: (query) user ID
+     - parameter startDate: (query) start date for temporal filter
+     - parameter endDate: (query) end date for temporal filter
+     - parameter lat: (query) latitude for spatial filter
+     - parameter lng: (query) longitude for spatial filter
+     - parameter radius: (query) radius for spatial filter
+     - parameter includePublic: (query) include public images or not
+     - returns: RequestBuilder<ImageListResponse>
      */
     open class func getAllImagesWithFilterWithRequestBuilder(userID: String, startDate: String, endDate: String, lat: String, lng: String, radius: String, includePublic: String) -> RequestBuilder<ImageListResponse> {
         let localVariablePath = "/images"
@@ -173,8 +173,8 @@ open class ImageAPI {
     /**
      Get image by id
      
-     - parameter userID: (path) user ID 
-     - parameter imageId: (path) id to search for 
+     - parameter userID: (path) user ID
+     - parameter imageId: (path) id to search for
      - parameter apiResponseQueue: The queue on which api response is dispatched.
      - parameter completion: completion handler to receive the data and the error objects
      */
@@ -193,9 +193,9 @@ open class ImageAPI {
     /**
      Get image by id
      - GET /images/{userID}/{imageId}
-     - parameter userID: (path) user ID 
-     - parameter imageId: (path) id to search for 
-     - returns: RequestBuilder<ApiImage> 
+     - parameter userID: (path) user ID
+     - parameter imageId: (path) id to search for
+     - returns: RequestBuilder<ApiImage>
      */
     open class func getImageByIdWithRequestBuilder(userID: String, imageId: String) -> RequestBuilder<ApiImage> {
         var localVariablePath = "/images/{userID}/{imageId}"
@@ -219,5 +219,56 @@ open class ImageAPI {
         let localVariableRequestBuilder: RequestBuilder<ApiImage>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
+    }
+    
+    /**
+     Update image by id
+     
+     - parameter userID: (path) user ID 
+     - parameter imageId: (path) id to search for 
+     - parameter apiResponseQueue: The queue on which api response is dispatched.
+     - parameter completion: completion handler to receive the data and the error objects
+     */
+    @discardableResult
+    open class func updateImageById(userID: String, imageId: String, apiResponseQueue: DispatchQueue = OpenAPIClientAPI.apiResponseQueue, completion: @escaping ((_ data: Void?, _ error: Error?) -> Void)) -> RequestTask {
+        return updateImageByIdWithRequestBuilder(userID: userID, imageId: imageId).execute(apiResponseQueue) { result in
+            switch result {
+            case .success:
+                completion((), nil)
+            case let .failure(error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /**
+     Update image by id
+     - PUT /images/{userID}/{imageId}
+     - parameter userID: (path) user ID 
+     - parameter imageId: (path) id to search for 
+     - returns: RequestBuilder<Void> 
+     */
+    open class func updateImageByIdWithRequestBuilder(userID: String, imageId: String) -> RequestBuilder<Void> {
+        var localVariablePath = "/images/{userID}/{imageId}"
+        let userIDPreEscape = "\(APIHelper.mapValueToPathItem(userID))"
+        let userIDPostEscape = userIDPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{userID}", with: userIDPostEscape, options: .literal, range: nil)
+        let imageIdPreEscape = "\(APIHelper.mapValueToPathItem(imageId))"
+        let imageIdPostEscape = imageIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{imageId}", with: imageIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "PUT", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters)
     }
 }
